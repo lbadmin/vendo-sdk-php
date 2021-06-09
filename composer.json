@@ -1,0 +1,34 @@
+{
+    "name": "vendoservices/vendo-sdk",
+    "description": "Vendo Services SDK for PHP",
+    "keywords": [
+        "payments",
+        "billing",
+        "integration",
+        "vendo",
+        "vservices",
+        "vendoservices"
+    ],
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Vendo Development Team",
+            "email": "dev+sdk@vendoservices.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2.5 || ^8.0",
+        "guzzlehttp/guzzle": "7.*",
+        "league/uri": "^6.4",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "VendoSdk\\": "src/"
+        }
+    }
+}
