@@ -13,7 +13,7 @@ use VendoSdk\Exception;
  * @method string getSubscription()
  * @method setOffers(array $offers) The array of Vendo Oneclick Offers IDs. Optional.
  * @method array getOffers()
- * @method setOffer(int $selectedOfferId) The offer that must be preselected. Mandatory.
+ * @method setOffer(int $selectedOneclickOfferId) The offer that must be preselected. Mandatory.
  * @method int getOffer()
  * @method setSuccessUrl(string $url) The user will be redirected to this URL if the transaction was successful. You can use placeholders to get transaction details @see https://docs.vendoservices.com/docs/standard-join-link#redirection-parameters
  * @method string getSuccessUrl()

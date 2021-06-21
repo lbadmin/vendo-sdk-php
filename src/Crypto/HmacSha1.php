@@ -22,13 +22,13 @@ class HmacSha1
     }
 
     /**
-     * Signs $data and returns the signature
+     * Hashes $data and returns the hash
      *
-     * @param string $data the data for which the signature must be generated
+     * @param string $data
      * @return string
      * @throws Exception
      */
-    public function getSignature(string $data): string
+    public function getHash(string $data): string
     {
         if (empty($this->key)) {
             throw new Exception('They hashing key was not set');

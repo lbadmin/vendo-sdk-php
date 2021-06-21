@@ -47,10 +47,10 @@ abstract class Base
      * @throws Exception
      */
     public function __set(string $paramName, $paramValue): void {
-        if (!array_key_exists($paramName, $this->allowedUrlParams)) {
-            throw new Exception('Url parameter ' . $paramName . ' is not valid for this operation');
+        if (!in_array($paramName, $this->allowedUrlParams)) {
+            throw new Exception('Url parameter "' . $paramName . '" is not valid for this operation');
         }
-        if (array_key_exists($paramName, $this->urlParamValidators)) {
+        if (isset($this->urlParamValidators[$paramName]) && is_callable($this->urlParamValidators[$paramName])) {
             $this->urlParamValidators[$paramName]($paramValue);
         }
         $this->urlParamValues[$paramName] = $paramValue;
@@ -80,9 +80,7 @@ abstract class Base
         } else {
             $operation = substr($name, 0, 3);
 
-            if (($operation === 'set' && count($arguments) === 0)
-                ||  $operation === 'get'
-            ) {
+            if ($operation === 'set' ||  $operation === 'get') {
                 $paramName = substr($name, 3);
                 //CameCase to snake_case conversion. It will convert SiteName to site_name
                 $paramName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $paramName));

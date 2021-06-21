@@ -177,6 +177,8 @@ class Join extends Base
             //Parameters for white-labelled sites
             'site_name',
             'site_url',
+            //signed url expiration
+            'expires',
         ];
     }
 }

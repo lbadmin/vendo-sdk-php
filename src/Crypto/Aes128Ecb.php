@@ -15,9 +15,7 @@ class Aes128Ecb
      */
     public static function encrypt(string $uncryptedData, string $key): string
     {
-        $ivSize = openssl_cipher_iv_length(self::ALGO);
-        $iv = openssl_random_pseudo_bytes($ivSize);
-        return openssl_encrypt($uncryptedData, self::ALGO, $key, OPENSSL_RAW_DATA, $iv);
+        return openssl_encrypt($uncryptedData, self::ALGO, $key, OPENSSL_RAW_DATA);
     }
 
     /**
@@ -30,8 +28,6 @@ class Aes128Ecb
      */
     public static function decrypt(string $encryptedData, string $key): string
     {
-        $ivSize = openssl_cipher_iv_length(self::ALGO);
-        $iv = openssl_random_pseudo_bytes($ivSize);
-        return openssl_decrypt($encryptedData, self::ALGO, $key, OPENSSL_RAW_DATA, $iv);
+        return openssl_decrypt($encryptedData, self::ALGO, $key, OPENSSL_RAW_DATA);
     }
 }

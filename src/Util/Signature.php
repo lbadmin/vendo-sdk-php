@@ -25,14 +25,14 @@ class Signature
     /**
      * Validates data against a signature
      *
-     * @param string $data
+     * @param string $data Example http://dummy/?test=test&foo=bar
      * @param string $signature
      * @return bool
      * @throws \VendoSdk\Exception
      */
     public function isValid(string $data, string $signature): bool
     {
-        return $this->isValidSignature($data, $signature);
+        return $signature == $this->getSignature($data);
     }
 
     /**
@@ -41,15 +41,13 @@ class Signature
      * Only the path and query string parts of the url are checked for authenticity. The host, port and schema etc. are
      * ignored. This method also works with the URLs that only contains path and query segments.
      *
-     * If the url contains an expiry parameter, it is also checked
+     * If the url contains an "expires" parameter, it is also checked
      *
      * @param string $url
-     * @param string $signatureParamName
-     * @param string $expiryParamName
      * @return bool
      * @throws \VendoSdk\Exception
      */
-    public function isValidUrl(string $url, string $signatureParamName = 'signature', string $expiryParamName = 'expires'): bool
+    public function isValidUrl(string $url): bool
     {
         $urlObject = Uri\Http::createFromString($url);
 
@@ -59,14 +57,16 @@ class Signature
         $params = [];
         parse_str($query, $params);
 
-        if (!empty($expiryParamName) && !empty($params[$expiryParamName]) && (int)$params[$expiryParamName] < time()) {
+        if (!empty($params['expires']) && (int)$params['expires'] < time()) {
             $isValid = false;
-        } elseif (isset($params[$signatureParamName])) {
-            $signature = $params[$signatureParamName];
-            unset($params[$signatureParamName]);
+        } else {
+            if (!empty($params['signature'])) {
+                $signature = $params['signature'];
+                unset($params['signature']);
+            }
 
             $components = [];
-            if ($path > '') {
+            if (!empty($path)) {
                 $components['path'] = $path;
             }
             if (!empty($params)) {
@@ -74,11 +74,7 @@ class Signature
             }
 
             $data = (string)Uri\Http::createFromComponents($components);
-
-            // Create secondary raw data string similar to the old signature helper to provide backwards compatibility
-            $data2 = preg_replace('/(\b&?signature=[^&$]+|(https?)?\:\/\/[^\/]+)/', '', $url);
-
-            $isValid = $this->isValid($data, $signature) || $this->isValid($data2, $signature);
+            $isValid = $this->isValid($data, $signature);
         }
         return $isValid ?? false;
     }
@@ -92,18 +88,17 @@ class Signature
      */
     public function getSignature(string $data): string
     {
-        return $this->hasher->getSignature($data);
+        return $this->hasher->getHash($data);
     }
 
     /**
      * Returns the url with embedded signature parameter
      *
      * @param string $url
-     * @param string $signatureParamName
      * @return string
      * @throws \VendoSdk\Exception
      */
-    public function sign(string $url, string $signatureParamName = 'signature'): string
+    public function sign(string $url): string
     {
         $urlParser = new Uri\UriString();
 
@@ -123,29 +118,14 @@ class Signature
         }
 
         $data = (string)Uri\Http::createFromComponents($signedComponents);
-
         $signature = $this->getSignature($data);
 
         $params = [];
         parse_str($allComponents['query'], $params);
-        $params[$signatureParamName] = $signature;
+        $params['signature'] = $signature;
         $allComponents['query'] = http_build_query($params);
         $signedUrl = $urlParser->build($allComponents);
 
         return (string)$signedUrl;
     }
-
-    /**
-     * Checks if the specified signature matches the data's signature
-     *
-     * @param string $data
-     * @param string $signature
-     * @return bool
-     * @throws \VendoSdk\Exception
-     */
-    public function isValidSignature(string $data, string $signature): bool
-    {
-        return $signature == $this->hasher->getSignature($data);
-    }
-
 }
