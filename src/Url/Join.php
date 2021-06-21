@@ -106,6 +106,10 @@ class Join extends Base
             if (is_array($paramValue)) {
                 $paramValue = explode(',', $paramValue);
             }
+        } elseif ($paramName === 'password') {
+            if (!empty($this->urlParamValues[$paramName])) {
+                $paramValue = Aes128Ecb::decrypt($this->urlParamValues[$paramName], $this->getSharedSecret());
+            }
         }
         return $paramValue;
     }
