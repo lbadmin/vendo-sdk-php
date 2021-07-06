@@ -62,7 +62,7 @@ abstract class Base
      * @throws Exception
      */
     public function __get(string $paramName) {
-        if (!array_key_exists($paramName, $this->allowedUrlParams)) {
+        if (!in_array($paramName, $this->allowedUrlParams)) {
             throw new Exception('Url parameter ' . $paramName . ' is not valid for this operation');
         }
         return $this->urlParamValues[$paramName] ?? null;
