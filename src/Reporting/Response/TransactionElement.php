@@ -23,6 +23,8 @@ namespace VendoSdk\Reporting\Response;
  * @property InvoiceElement $invoice
  * @property ReportingElement $reporting
  * @property OfferElement $offer
+ * @property string $reafundReason
+ * @property string $chargebackReason
  */
 abstract class TransactionElement implements \ArrayAccess
-{}
+{ }
