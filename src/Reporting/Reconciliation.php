@@ -9,15 +9,9 @@ use VendoSdk\Reporting\Response\RowElement;
 use VendoSdk\Url\Base;
 
 /**
- * Queries Vendo's Reconciliation API
+ * Queries Vendo's Reconciliation API.
  *
  * @package VendoSdk\Reporting
- *
- * @property int $merchantID
- * @property string $startDate
- * @property string $endDate
- * @property string $siteIDs
- * @property int $format
  */
 class Reconciliation extends Base
 {
@@ -25,6 +19,65 @@ class Reconciliation extends Base
     const FORMAT_XML = 1;
 
     protected $rawResponse;
+
+    public function setMerchantId(int $vendoMerchantId): void
+    {
+        $this->merchantID = $vendoMerchantId;
+    }
+    public function getMerchantId(): int
+    {
+        return $this->merchantID;
+    }
+
+    public function setStartDate(\DateTime $startDate): void
+    {
+        $this->startDate = $startDate->format('Y-m-d');
+    }
+    public function getStartDate(): ?\DateTime
+    {
+        if (!empty($this->startDate)) {
+           return \DateTime::createFromFormat('Y-m-d', $this->startDate);
+        }
+        return null;
+    }
+
+    public function setEndDate(\DateTime $endDate): void
+    {
+        $this->endDate = $endDate->format('Y-m-d');
+    }
+    public function getEndDate(): ?\DateTime
+    {
+        if (!empty($this->endDate)) {
+            return \DateTime::createFromFormat('Y-m-d', $this->endDate);
+        }
+        return null;
+    }
+
+    /**
+     * @param int[] $vendoSiteIds
+     */
+    public function setSiteIds(array $vendoSiteIds): void
+    {
+        $this->siteIDs = implode(',', $vendoSiteIds);
+    }
+    public function getSiteIds(): string
+    {
+        return explode(',', $this->siteIDs);
+    }
+
+    /**
+     * Valid values are 1 and 0. 1 = XML and 0 = CSV
+     *
+     * @param int $format
+     */
+    public function setFormat(int $format): void
+    {
+        $this->format = $format;
+    }
+    public function getFormat(): int
+    {
+        return $this->format;
+    }
 
     /**
      * @inheritdoc
@@ -53,7 +106,7 @@ class Reconciliation extends Base
      * @throws Exception
      * @throws \Exception
      */
-    public function getParsedResponse()
+    public function getTransactions()
     {
         if (empty($this->rawResponse)) {
             throw new Exception('Your must call $reconciliation->postRequest() first.');
@@ -118,7 +171,6 @@ class Reconciliation extends Base
             'endDate',
             'siteIDs',
             'format',
-            //'transactionId',
         ];
     }
 
