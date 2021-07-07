@@ -81,6 +81,7 @@ class Oneclick extends Base
             'ref',
             'site_name',
             'site_url',
+            'expires',
         ];
     }
 }
