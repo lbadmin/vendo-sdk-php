@@ -2,7 +2,7 @@
 include __DIR__ . '/../vendor/autoload.php';
 
 $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
-$joinLink = new VendoSdk\Url\Join($sharedSecret);
+$joinLink = new \VendoSdk\Url\Join($sharedSecret);
 $joinLink->setSite(2);
 $joinLink->setOffers([123,222,333]);
 $joinLink->setSelectedOffer(222);
