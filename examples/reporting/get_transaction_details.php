@@ -5,7 +5,7 @@ include __DIR__ . '/../../vendor/autoload.php';
  * This scripts gets the details of one specific transaction.
  */
 $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
-$reporting = new VendoSdk\Reporting\Transaction($sharedSecret);
+$reporting = new \VendoSdk\Reporting\Transaction($sharedSecret);
 $reporting->setMerchantId(1);
 $reporting->setTransactionId(73768494);
 

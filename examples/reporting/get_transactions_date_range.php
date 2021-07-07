@@ -7,7 +7,7 @@ include __DIR__ . '/../../vendor/autoload.php';
  * on June 28th, 2021 00:00 to July 5th, 2021 23:59:59
  */
 $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
-$reporting = new VendoSdk\Reporting\Reconciliation($sharedSecret);
+$reporting = new \VendoSdk\Reporting\Reconciliation($sharedSecret);
 $reporting->setMerchantId(1);
 $reporting->setSiteIds([1, 2]);
 $reporting->setStartDate(DateTime::createFromFormat('Y-m-d', '2021-06-28'));
