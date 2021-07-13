@@ -22,10 +22,10 @@ try {
             echo "Vendo Customer ID = " . $row->customer['id'] . ", ";
             echo "Customer First name = " . $row->customer->firstname . ", ";
             echo "Customer Email address = " . $row->customer->email . ", ";
-            if (in_array($row->transaction->type , [30, 31])) {//is it a refund or a partial refund?
+            if (in_array($row->transaction->type , [Transaction::TYPE_REFUND, Transaction::TYPE_PARTIAL_REFUND])) {
                 echo "Refund reason = " . $row->transaction->refundReason . ", ";
             }
-            if ($row->transaction->type == 20) {//is it a chargeback?
+            if ($row->transaction->type == Transaction::TYPE_CHARGEBACK) {
                 echo "Chargeback reason = " . $row->transaction->chargebackReason . ", ";
             }
             echo "\n";
