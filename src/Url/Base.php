@@ -20,7 +20,7 @@ abstract class Base
         $this->setSharedSecret($sharedSecret);
     }
 
-    protected abstract function setAllowedUrlParameters();
+    protected abstract function setAllowedUrlParameters(): void;
 
     public function getBaseUrl(): string {
         return self::BASE_URL;

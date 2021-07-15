@@ -70,7 +70,7 @@ class Oneclick extends Base
         $this->urlParamValidators['site_url'] = $this->urlParamValidators['success_url'];
     }
 
-    protected function setAllowedUrlParameters()
+    protected function setAllowedUrlParameters(): void
     {
         $this->allowedUrlParams = [
             'subscription',
