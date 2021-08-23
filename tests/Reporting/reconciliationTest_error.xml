@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reconciliation>
+    <error code="0006">AuthToken or Signature is incorrect</error>
+</reconciliation>
