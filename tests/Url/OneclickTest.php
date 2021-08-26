@@ -3,7 +3,7 @@ namespace VendoSdkUnit\Url;
 
 use VendoSdk\Url\Oneclick;
 
-class JoinTest extends \PHPUnit\Framework\TestCase
+class OneclickTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testGetUrl()
