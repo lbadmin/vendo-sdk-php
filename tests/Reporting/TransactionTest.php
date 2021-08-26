@@ -5,8 +5,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Exception\RequestException;
 use VendoSdk\Exception;
 
 class TransactionTest extends \PHPUnit\Framework\TestCase
@@ -21,7 +19,7 @@ class TransactionTest extends \PHPUnit\Framework\TestCase
 
     public function testGetDetailsOk(): void
     {
-        $mockHttpClient = $this->getMockHttpClient(new Response(200, [], file_get_contents(__DIR__ . '/testGetDetails_ok.xml')));
+        $mockHttpClient = $this->getMockHttpClient(new Response(200, [], file_get_contents(__DIR__ . '/transactionTest_ok.xml')));
         $reporting = new \VendoSdk\Reporting\Transaction('the_secret');
         $reporting->setMerchantId(1);
         $reporting->setTransactionId(73806356);
@@ -39,7 +37,7 @@ class TransactionTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(Exception::class);
 
-        $mockHttpClient = $this->getMockHttpClient(new Response(200, [], file_get_contents(__DIR__ . '/testGetDetails_error.xml')));
+        $mockHttpClient = $this->getMockHttpClient(new Response(200, [], file_get_contents(__DIR__ . '/transactionTest_error.xml')));
         $reporting = new \VendoSdk\Reporting\Transaction('the_secret');
         $reporting->setMerchantId(1);
         $reporting->setTransactionId(7380635);
