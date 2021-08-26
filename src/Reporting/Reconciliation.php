@@ -20,6 +20,8 @@ class Reconciliation extends Base
 
     protected $rawResponse;
 
+    protected $httpClient;
+
     public function setMerchantId(int $vendoMerchantId): void
     {
         $this->merchantID = $vendoMerchantId;
@@ -108,7 +110,8 @@ class Reconciliation extends Base
      */
     public function getTransactions()
     {
-        if (empty($this->rawResponse)) {
+        $rawResponse = $this->getRawResponse();
+        if (empty($rawResponse)) {
             throw new Exception('Your must call $reconciliation->postRequest() first.');
         }
         if ($this->format != self::FORMAT_XML) {
@@ -116,7 +119,7 @@ class Reconciliation extends Base
                 'before calling $reconciliation->postRequest() in order to use this method'
             );
         }
-        $xml = new Parser($this->rawResponse);
+        $xml = new Parser($rawResponse);
         if (!empty($xml->error)) {
             throw new Exception('Vendo\'s Reconciliation API returned this error: (' . $xml->error['code']
                 . ') ' . $xml->error . '"'
@@ -135,6 +138,18 @@ class Reconciliation extends Base
         return $this->rawResponse;
     }
 
+    public function getHttpClient(): HttpClient
+    {
+        if (empty($this->httpClient)) {
+            $this->httpClient = new HttpClient();
+        }
+        return $this->httpClient;
+    }
+
+    public function setHttpClient(HttpClient $httpClient): void
+    {
+        $this->httpClient = $httpClient;
+    }
 
     /**
      * Queries Vendo's Reconciliation API. Returns true if the request was successful.
@@ -147,7 +162,7 @@ class Reconciliation extends Base
     public function postRequest(): bool
     {
         $url = $this->getSignedUrl();
-        $client = new HttpClient();
+        $client = $this->getHttpClient();
         $response = $client->request('POST', $url);
 
         $httpStatus = $response->getStatusCode();

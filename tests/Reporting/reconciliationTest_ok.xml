@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reconciliation>
+    <header>
+        <siteIDs>1,2</siteIDs>
+        <startDate>2021-06-28</startDate>
+        <endDate>2021-07-05</endDate>
+        <transactionCount>6</transactionCount>
+    </header>
+    <body>
+        <row id="0">
+            <transaction id="73768494">
+                <dateTime>2021-06-29 11:08:26</dateTime>
+                <type>10</type>
+                <isNegative>0</isNegative>
+                <isTest>1</isTest>
+                <siteID>1</siteID>
+                <paymentMethodID>2</paymentMethodID>
+                <bin>411111</bin>
+                <lastFour>1111</lastFour>
+                <merchantReference></merchantReference>
+                <sellerAffiliateCode></sellerAffiliateCode>
+                <originalTransactionID>0</originalTransactionID>
+                <programID></programID>
+                <campaignID></campaignID>
+                <affiliateID></affiliateID>
+                <invoice>
+                    <amount>58.95</amount>
+                    <currency>EUR</currency>
+                </invoice>
+                <reporting>
+                    <amount>69.46</amount>
+                    <amountGross>69.46</amountGross>
+                    <currency>USD</currency>
+                    <taxRate>0.000</taxRate>
+                </reporting>
+                <displayed>
+                    <amount>58.95</amount>
+                    <currency>EUR</currency>
+                </displayed>
+                <offer id="19821">
+                    <typeID>1</typeID>
+                    <pricePoint>
+                        <typeID>2</typeID>
+                        <identifier>90day6999</identifier>
+                        <duration>3</duration>
+                        <durationUnit>month</durationUnit>
+                        <amount>69.99</amount>
+                    </pricePoint>
+                </offer>
+            </transaction>
+            <customer id="85190601">
+                <email>test2@testtingonly.com</email>
+                <firstname>Card</firstname>
+                <lastname>TestLastname</lastname>
+                <street></street>
+                <zip></zip>
+                <city></city>
+                <country>ES</country>
+                <language>es</language>
+                <ip>10.10.10.10</ip>
+            </customer>
+            <subscription id="73054915">
+                <username>test249572</username>
+                <password>12345678</password>
+            </subscription>
+        </row>
+        <row id="1">
+            <transaction id="73769604">
+                <dateTime>2021-06-29 13:03:33</dateTime>
+                <type>102</type>
+                <isNegative>0</isNegative>
+                <isTest>1</isTest>
+                <siteID>2</siteID>
+                <paymentMethodID>2</paymentMethodID>
+                <bin>411111</bin>
+                <lastFour>1111</lastFour>
+                <merchantReference></merchantReference>
+                <sellerAffiliateCode></sellerAffiliateCode>
+                <originalTransactionID>0</originalTransactionID>
+                <programID></programID>
+                <campaignID></campaignID>
+                <affiliateID></affiliateID>
+                <invoice>
+                    <amount>1.00</amount>
+                    <currency>USD</currency>
+                </invoice>
+                <reporting>
+                    <amount>1.00</amount>
+                    <amountGross>1.00</amountGross>
+                    <currency>USD</currency>
+                    <taxRate>0.000</taxRate>
+                </reporting>
+                <displayed>
+                    <amount>6783.67</amount>
+                    <currency>PYG</currency>
+                </displayed>
+                <offer id="20114">
+                    <typeID>1</typeID>
+                    <pricePoint>
+                        <typeID>1</typeID>
+                        <identifier>sid2_trial</identifier>
+                        <duration>1</duration>
+                        <durationUnit>day</durationUnit>
+                        <amount>1.00</amount>
+                    </pricePoint>
+                </offer>
+            </transaction>
+            <customer id="85295182">
+                <email>test3@testtingonly.com</email>
+                <firstname>Card</firstname>
+                <lastname>Test</lastname>
+                <street></street>
+                <zip></zip>
+                <city></city>
+                <country>PY</country>
+                <language>es</language>
+                <ip>20.20.20.20</ip>
+            </customer>
+            <subscription id="73055593">
+                <username>testusername</username>
+                <password>12345678</password>
+            </subscription>
+        </row>
+    </body>
+</reconciliation>

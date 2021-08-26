@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reconciliation>
+    <header>
+        <siteIDs>*</siteIDs>
+        <startDate></startDate>
+        <endDate></endDate>
+        <transactionCount>1</transactionCount>
+    </header>
+    <body>
+        <row id="0">
+            <transaction id="73806356">
+                <dateTime>2021-07-01 12:00:08</dateTime>
+                <type>30</type>
+                <isNegative>1</isNegative>
+                <isTest>1</isTest>
+                <siteID>85133</siteID>
+                <paymentMethodID>2</paymentMethodID>
+                <bin>411111</bin>
+                <lastFour>1111</lastFour>
+                <merchantReference></merchantReference>
+                <sellerAffiliateCode></sellerAffiliateCode>
+                <originalTransactionID>73768485</originalTransactionID>
+                <programID></programID>
+                <campaignID></campaignID>
+                <affiliateID></affiliateID>
+                <refundReason>Test transaction</refundReason>
+                <invoice>
+                    <amount>2.95</amount>
+                    <currency>EUR</currency>
+                </invoice>
+                <reporting>
+                    <amount>3.54</amount>
+                    <amountGross>3.54</amountGross>
+                    <currency>USD</currency>
+                    <taxRate>0.000</taxRate>
+                </reporting>
+                <displayed>
+                    <amount>2.95</amount>
+                    <currency>EUR</currency>
+                </displayed>
+                <offer id="17703">
+                    <typeID>1</typeID>
+                    <pricePoint>
+                        <typeID>1</typeID>
+                        <identifier>qa-auto_trial</identifier>
+                        <duration>1</duration>
+                        <durationUnit>day</durationUnit>
+                        <amount>3.00</amount>
+                    </pricePoint>
+                </offer>
+            </transaction>
+            <customer id="85779199">
+                <email>test@testtingonly.com</email>
+                <firstname>Card</firstname>
+                <lastname>Test</lastname>
+                <street></street>
+                <zip></zip>
+                <city></city>
+                <country>ES</country>
+                <language>en</language>
+                <ip>10.10.10.10</ip>
+            </customer>
+            <subscription id="73054909">
+                <username>test249576</username>
+                <password>12345678</password>
+            </subscription>
+        </row>
+    </body>
+</reconciliation>
