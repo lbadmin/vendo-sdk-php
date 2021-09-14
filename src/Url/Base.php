@@ -94,6 +94,7 @@ abstract class Base
     }
 
     public function getUrl(): string {
+        $this->urlParamValues['vendo_php_sdk_version'] = include __DIR__ . '/../../sdk-version.php';
         return $this->getBaseUrl() . '?' . http_build_query($this->urlParamValues);
     }
 
