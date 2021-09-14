@@ -1,0 +1,32 @@
+name: Vendo PHP SDK CI workflow
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  composer:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Composer install
+        uses: php-actions/composer@v5
+        with:
+          version: 2
+          php_version: 7.4
+          php_extensions: intl openssl simplexml curl json
+          command: install
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v3
+        with:
+          version: 9.5
+          configuration: phpunit.xml
+          php_version: 7.4
+          php_extensions: intl openssl simplexml curl json
+          memory_limit: 512M
