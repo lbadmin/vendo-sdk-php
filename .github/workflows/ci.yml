@@ -25,7 +25,7 @@ jobs:
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v3
         with:
-          version: 9.5
+          bootstrap: vendor/autoload.php
           configuration: phpunit.xml
           php_version: 7.4
           php_extensions: intl openssl simplexml curl json
