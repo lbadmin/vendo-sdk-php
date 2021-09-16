@@ -3,6 +3,7 @@ namespace VendoSdk\Reporting;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
 use VendoSdk\Exception;
 use VendoSdk\Reporting\Response\Parser;
 use VendoSdk\Reporting\Response\RowElement;
@@ -163,7 +164,11 @@ class Reconciliation extends Base
     {
         $url = $this->getSignedUrl();
         $client = $this->getHttpClient();
-        $response = $client->request('POST', $url);
+        $headers = [
+            'VENDO_PHP_SDK_VERSION' => include __DIR__ . '/../../sdk-version.php',
+        ];
+        $request = new Request('POST', $url, $headers);
+        $response = $client->send($request);
 
         $httpStatus = $response->getStatusCode();
         if ($httpStatus == 200) {

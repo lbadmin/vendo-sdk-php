@@ -18,7 +18,10 @@ class OneclickTest extends \PHPUnit\Framework\TestCase
 
         $linkTo = $url->getUrl();
 
-        $this->assertEquals('https://secure.vend-o.com/v/oneclick?subscription=112233&offer=998877&decline_url=http%3A%2F%2Fyahoo.com&success_url=http%3A%2F%2Fgoogle.com&ref=xyzfoobar', $linkTo);
+        $sdkVersion = include __DIR__ . '/../../sdk-version.php';
+        $expectedUrl = 'https://secure.vend-o.com/v/oneclick?subscription=112233&offer=998877&decline_url=http%3A%2F%2Fyahoo.com&success_url=http%3A%2F%2Fgoogle.com&ref=xyzfoobar&vendo_php_sdk_version=' . $sdkVersion;
+
+        $this->assertEquals($expectedUrl, $linkTo);
 
     }
 }
