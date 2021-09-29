@@ -5,7 +5,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use VendoSdk\Exception;
 use VendoSdk\Gateway\Response\CaptureResponse;
-use VendoSdk\Gateway\Response\PaymentResponse;
 use VendoSdk\Util\HttpClientTrait;
 use VendoSdk\Vendo;
 

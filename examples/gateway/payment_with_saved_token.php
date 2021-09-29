@@ -70,8 +70,6 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $tokenPayment->setRequestDetails($request);
 
-    echo "Were about to post this request: \n" . $tokenPayment->getRawRequest(true) . "\n";
-
     $response = $tokenPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";

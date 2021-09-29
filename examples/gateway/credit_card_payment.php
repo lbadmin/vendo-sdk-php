@@ -94,8 +94,6 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $creditCardPayment->setRequestDetails($request);
 
-    echo "Were about to post this request: \n" . $creditCardPayment->getRawRequest(true) . "\n";
-
     $response = $creditCardPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";

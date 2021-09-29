@@ -7,54 +7,42 @@ use VendoSdk\Vendo;
 
 class RefundResponse
 {
-    const API_REFUND_TRANSACTION_SUCCESSFULLY_REFUNDED = '5907';
-
     /** @var int */
     protected $status;
-    /** @var ?Transaction */
-    protected $transaction;
     /** @var ?string */
+    protected $requestId;
+
+    /** @var ?int */
     protected $errorCode;
     /** @var ?string */
     protected $errorMessage;
 
+    /** @var ?Transaction */
+    protected $transactionDetails;
+
     /**
-     * @param string $xmlResponse
+     * @param string $rawJsonResponse
      * @throws Exception
      * @throws \Exception
      */
-    public function __construct(string $xmlResponse)
+    public function __construct(string $rawJsonResponse)
     {
-        $response= simplexml_load_string($xmlResponse);
-        if ($response == false) {
-            throw new Exception('The refund response cannot be parsed.');
+        $responseArray = json_decode($rawJsonResponse, true);
+        if (empty($responseArray)) {
+            throw new Exception('The response from Vendo\'s API cannot be decoded');
         }
-        if (!empty($response->response['code'])
-            && (string)$response->response['code'] == self::API_REFUND_TRANSACTION_SUCCESSFULLY_REFUNDED
-        ) {
-            $this->setStatus(Vendo::GATEWAY_STATUS_OK);
-            $this->setTransaction(new Transaction(['id' => (int)$response->transactionId]));
-        } else {
-            $this->setStatus(Vendo::GATEWAY_STATUS_NOT_OK);
-            $this->setErrorCode((string)$response->response['code']);
-            $this->setErrorMessage((string)$response->response);
+
+        $this->setStatus($responseArray['status']);
+        $this->setRequestId($responseArray['request_id'] ?? null);
+
+        if (!empty($responseArray['transaction_id'])) {
+            $this->setTransactionDetails(new Transaction(['id' => $responseArray['transaction_id']]));
         }
-    }
 
-    /**
-     * @return ?Transaction
-     */
-    public function getTransaction(): ?Transaction
-    {
-        return $this->transaction;
-    }
-
-    /**
-     * @param ?Transaction $transaction
-     */
-    public function setTransaction(?Transaction $transaction): void
-    {
-        $this->transaction = $transaction;
+        if ($responseArray['status'] == Vendo::GATEWAY_STATUS_NOT_OK) {
+            $this->setErrorCode($responseArray['error']['code'] ?? null);
+            $this->setErrorMessage($responseArray['error']['message'] ?? '-unknown-');
+        }
     }
 
     /**
@@ -76,15 +64,31 @@ class RefundResponse
     /**
      * @return string|null
      */
-    public function getErrorCode(): ?string
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
+    }
+
+    /**
+     * @param string|null $requestId
+     */
+    public function setRequestId(?string $requestId): void
+    {
+        $this->requestId = $requestId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getErrorCode(): ?int
     {
         return $this->errorCode;
     }
 
     /**
-     * @param string|null $errorCode
+     * @param int|null $errorCode
      */
-    public function setErrorCode(?string $errorCode): void
+    public function setErrorCode($errorCode): void
     {
         $this->errorCode = $errorCode;
     }
@@ -92,7 +96,7 @@ class RefundResponse
     /**
      * @return string|null
      */
-    public function getErrorMessage(): ?string
+    public function getErrorMessage()
     {
         return $this->errorMessage;
     }
@@ -100,11 +104,24 @@ class RefundResponse
     /**
      * @param string|null $errorMessage
      */
-    public function setErrorMessage(?string $errorMessage): void
+    public function setErrorMessage($errorMessage): void
     {
-        if (!empty($errorMessage)) {
-            $errorMessage = trim($errorMessage);
-        }
         $this->errorMessage = $errorMessage;
+    }
+
+    /**
+     * @return Transaction|null
+     */
+    public function getTransactionDetails(): ?Transaction
+    {
+        return $this->transactionDetails;
+    }
+
+    /**
+     * @param Transaction|null $transactionDetails
+     */
+    public function setTransactionDetails(?Transaction $transactionDetails): void
+    {
+        $this->transactionDetails = $transactionDetails;
     }
 }

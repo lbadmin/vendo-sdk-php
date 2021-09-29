@@ -14,8 +14,6 @@ try {
     $capture->setIsTest(true);
     $capture->setTransactionId(70110209);//The Vendo Transaction ID that you want to capture.
 
-    echo "Were about to post this request: \n" . $capture->getRawRequest(true) . "\n";
-
     $response = $capture->postRequest();
 
     echo "\n\nRESULT BELOW\n";
