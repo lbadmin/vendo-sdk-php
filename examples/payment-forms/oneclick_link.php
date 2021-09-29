@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/../vendor/autoload.php';
+include __DIR__ . '/../../vendor/autoload.php';
 
 $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
 $oneclikLink = new \VendoSdk\Url\Oneclick($sharedSecret);

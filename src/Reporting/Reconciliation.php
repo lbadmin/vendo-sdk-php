@@ -1,13 +1,14 @@
 <?php
 namespace VendoSdk\Reporting;
 
-use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use VendoSdk\Exception;
 use VendoSdk\Reporting\Response\Parser;
 use VendoSdk\Reporting\Response\RowElement;
 use VendoSdk\Url\Base;
+use VendoSdk\Util\HttpClientTrait;
+use VendoSdk\Vendo;
 
 /**
  * Queries Vendo's Reconciliation API.
@@ -16,12 +17,12 @@ use VendoSdk\Url\Base;
  */
 class Reconciliation extends Base
 {
+    use HttpClientTrait;
+
     const FORMAT_CSV = 0;
     const FORMAT_XML = 1;
 
     protected $rawResponse;
-
-    protected $httpClient;
 
     public function setMerchantId(int $vendoMerchantId): void
     {
@@ -139,24 +140,10 @@ class Reconciliation extends Base
         return $this->rawResponse;
     }
 
-    public function getHttpClient(): HttpClient
-    {
-        if (empty($this->httpClient)) {
-            $this->httpClient = new HttpClient();
-        }
-        return $this->httpClient;
-    }
-
-    public function setHttpClient(HttpClient $httpClient): void
-    {
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * Queries Vendo's Reconciliation API. Returns true if the request was successful.
      *
      * @return bool
-     * @throws Exception
      * @throws GuzzleException
      * @throws \Exception
      */
@@ -164,21 +151,10 @@ class Reconciliation extends Base
     {
         $url = $this->getSignedUrl();
         $client = $this->getHttpClient();
-        $headers = [
-            'VENDO_PHP_SDK_VERSION' => include __DIR__ . '/../../sdk-version.php',
-        ];
-        $request = new Request('POST', $url, $headers);
+        $request = $this->getHttpRequest('POST', $url);
         $response = $client->send($request);
-
-        $httpStatus = $response->getStatusCode();
-        if ($httpStatus == 200) {
-            $this->rawResponse = $response->getBody();
-            return true;
-        } else {
-            throw new Exception('The HTTP request failed. Status code:' . $httpStatus .
-                ' Http message:' . $response->getReasonPhrase() ?? '-no message-'
-            );
-        }
+        $this->rawResponse = $response->getBody();
+        return true;
     }
 
     /**
