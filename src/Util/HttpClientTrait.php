@@ -46,7 +46,7 @@ trait HttpClientTrait
         string $version = '1.1'
     ): Request
     {
-        $headers['X-VENDO_PHP_SDK_VERSION'] = Vendo::SDK_VERSION;
+        $headers['X-VENDO-PHP-SDK-VERSION'] = Vendo::SDK_VERSION;
         return new Request($method, $uri, $headers, $body, $version);
     }
 

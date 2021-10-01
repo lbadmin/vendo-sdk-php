@@ -48,9 +48,7 @@ class CreditCard implements \JsonSerializable
      */
     public function setExpirationMonth(string $expirationMonth): void
     {
-        if (strlen($expirationMonth) < 2) {
-            $expirationMonth = '0' . $expirationMonth;
-        }
+        $expirationMonth = \substr('0' . $expirationMonth, -2);
         $this->expirationMonth = $expirationMonth;
     }
 
