@@ -3,12 +3,11 @@ namespace VendoSdk\Url;
 
 use VendoSdk\Exception;
 use VendoSdk\Util\SignatureTrait;
+use VendoSdk\Vendo;
 
 abstract class Base
 {
     use SignatureTrait;
-
-    const BASE_URL = 'https://secure.vend-o.com';
 
     protected $allowedUrlParams = [];
     protected $urlParamValues = [];
@@ -23,7 +22,7 @@ abstract class Base
     protected abstract function setAllowedUrlParameters(): void;
 
     public function getBaseUrl(): string {
-        return self::BASE_URL;
+        return Vendo::BASE_URL;
     }
 
     protected function setUrlParametersValidators(): void {
@@ -82,7 +81,7 @@ abstract class Base
 
             if ($operation === 'set' ||  $operation === 'get') {
                 $paramName = substr($name, 3);
-                //CameCase to snake_case conversion. It will convert SiteName to site_name
+                //CamelCase to snake_case conversion. It will convert SiteName to site_name
                 $paramName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $paramName));
                 if ($operation === 'set') {
                     $this->{$paramName} = $arguments[0];
@@ -94,7 +93,7 @@ abstract class Base
     }
 
     public function getUrl(): string {
-        $this->urlParamValues['vendo_php_sdk_version'] = include __DIR__ . '/../../sdk-version.php';
+        $this->urlParamValues['sdkv'] = Vendo::SDK_VERSION;
         return $this->getBaseUrl() . '?' . http_build_query($this->urlParamValues);
     }
 
