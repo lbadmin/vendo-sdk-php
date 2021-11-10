@@ -6,19 +6,20 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\Gateway\CapturePayment;
+use VendoSdk\Gateway\RefundPayment;
 use VendoSdk\Vendo;
 
-class CapturePaymentTest extends \PHPUnit\Framework\TestCase
+class RefundPaymentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCapturePaymentSuccess()
+    public function testRefundPaymentSuccess()
     {
-        $payment = new CapturePayment();
+        $payment = new RefundPayment();
         $payment->setIsTest(true);
         $payment->setApiSecret('test-secret');
         $payment->setIsTest(true);
         $payment->setMerchantId(1234567);
         $payment->setTransactionId(87654321);
+        $payment->setPartialAmount(5.34);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -39,7 +40,7 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $payment->postRequest();
 
         $this->assertEquals(true, $payment->isTest());
-        $this->assertEquals('https://secure.vend-o.com/api/gateway/capture', $payment->getApiEndpoint());
+        $this->assertEquals('https://secure.vend-o.com/api/gateway/refund', $payment->getApiEndpoint());
         $this->assertEquals('test-secret', $payment->getApiSecret());
         $this->assertEquals(1234567, $payment->getMerchantId());
         $this->assertEquals(87654321, $payment->getTransactionId());
@@ -49,13 +50,14 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
     "api_secret": "test-secret",
     "merchant_id": 1234567,
     "is_test": 1,
-    "transaction_id": 87654321
+    "transaction_id": 87654321,
+    "partial_amount": 5.34
 }', $payment->getRawRequest(true));
     }
 
-    public function testCapturePaymentClientException()
+    public function testRefundPaymentClientException()
     {
-        $payment = new CapturePayment();
+        $payment = new RefundPayment();
         $httpClient = $this->createMock(Client::class);
         $payment->setHttpClient($httpClient);
 
@@ -77,9 +79,9 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('{"status":0,"error_code":999,"error_message":"Test client exception"}', $payment->getRawResponse());
     }
 
-    public function testCapturePaymentServerException()
+    public function testRefundPaymentServerException()
     {
-        $payment = new CapturePayment();
+        $payment = new RefundPayment();
         $httpClient = $this->createMock(Client::class);
         $payment->setHttpClient($httpClient);
 
