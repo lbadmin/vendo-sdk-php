@@ -11,7 +11,7 @@ try {
     $cancel = new \VendoSdk\Subscription\CancelSubscription($sharedSecret);
     $cancel->setMerchantId(1);//Your Vendo Merchant ID
     $cancel->setSubscriptionId(72537045);//The Vendo Subscription ID that you want to cancel.
-    /** You can also process a partial refund using the method below */
+    $cancel->setReasonId(26);//reason 26: "test transaction"
 
     $response = $cancel->postRequest();
 
@@ -21,7 +21,7 @@ try {
     } else {
         echo "The subscription " . $response->getSubscriptionId() . " was not cancelled.";
         echo "\nmerchant ID: " . $response->getMerchantId();
-        echo "\nError message: " . $response->getResponseMesage();
+        echo "\nError message: " . $response->getResponseMessage();
         echo "\nError code: " . $response->getResponseCode();
     }
     echo "\n\n\n";

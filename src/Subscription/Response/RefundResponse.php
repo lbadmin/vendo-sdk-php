@@ -3,13 +3,16 @@ namespace VendoSdk\Subscription\Response;
 
 use VendoSdk\Reporting\Response\Parser;
 
-class CancelResponse
+class RefundResponse
 {
     /** @var int */
-    protected $subscriptionId;
+    protected $transactionId;
 
     /** @var int */
     protected $merchantId;
+
+    /** @var int */
+    protected $actionType;
 
     /** @var string */
     protected $responseCode;
@@ -24,7 +27,8 @@ class CancelResponse
     public function __construct(Parser $xml)
     {
         $this->merchantId = (int)$xml->merchantId;
-        $this->subscriptionId = (int)$xml->subscriptionId;
+        $this->transactionId = (int)$xml->transactionId;
+        $this->actionType = (int)$xml->actionType;
         $this->responseCode = (string)$xml->response['code'];
         $this->responseMessage = \trim((string)$xml->response);
     }
@@ -32,9 +36,9 @@ class CancelResponse
     /**
      * @return int
      */
-    public function getSubscriptionId(): int
+    public function getTransactionId(): int
     {
-        return $this->subscriptionId;
+        return $this->transactionId;
     }
 
     /**
@@ -59,5 +63,13 @@ class CancelResponse
     public function getResponseMessage(): string
     {
         return $this->responseMessage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getActionType(): int
+    {
+        return $this->actionType;
     }
 }

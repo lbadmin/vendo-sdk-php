@@ -2,7 +2,7 @@
 namespace VendoSdk\Subscription;
 
 use VendoSdk\Exception;
-use VendoSdk\Subscription\Response\CancelResponse;
+use VendoSdk\Subscription\Response\RefundResponse;
 use VendoSdk\Util\HttpClientTrait;
 use GuzzleHttp\Exception\GuzzleException;
 use VendoSdk\Reporting\Response\Parser;
@@ -13,9 +13,19 @@ use VendoSdk\Url\Base;
  *
  * @package VendoSdk\Reporting
  */
-class CancelSubscription extends Base
+class RefundSubscription extends Base
 {
     use HttpClientTrait;
+
+    const ACTION_REFUND_ONLY = 0;
+    const ACTION_REFUND_AND_CANCEL = 1;
+    const ACTION_REFUND_AND_BLACKLIST = 2;
+
+    const ACTION_TYPES = [
+        self::ACTION_REFUND_ONLY,
+        self::ACTION_REFUND_AND_CANCEL,
+        self::ACTION_REFUND_AND_BLACKLIST,
+    ];
 
     /** @var string */
     protected $rawResponse;
@@ -25,14 +35,28 @@ class CancelSubscription extends Base
         $this->merchantId = $vendoMerchantId;
     }
 
-    public function setSubscriptionId(int $subscriptionId): void
+    public function setTransactionId(int $transactionId): void
     {
-        $this->subscriptionId = $subscriptionId;
+        $this->transactionId = $transactionId;
     }
 
-    public function setReasonId(int $reasonId): void
+    public function setActionType(int $actionType): void
     {
-        $this->reasonId = $reasonId;
+        if(!in_array($actionType, self::ACTION_TYPES)){
+            throw new Exception(\sprintf('Illegal action type: %s', $actionType));
+        }
+
+        $this->actionType = $actionType;
+    }
+
+    public function setPartialAmount(float $partialAmount): void
+    {
+        $this->partial_amount = $partialAmount;
+    }
+
+    public function setRefundReasonId(int $refundReasonId): void
+    {
+        $this->refund_reason_id = $refundReasonId;
     }
 
     /**
@@ -40,7 +64,7 @@ class CancelSubscription extends Base
      */
     public function getBaseUrl(): string
     {
-        return parent::getBaseUrl() . '/api/cancel';
+        return parent::getBaseUrl() . '/api/refund';
     }
 
     /**
@@ -56,7 +80,7 @@ class CancelSubscription extends Base
      * Returns the parsed response
      * Throws \VendoSdk\Exception if the API returned an error.
      *
-     * @return CancelSubscription
+     * @return RefundResponse
      * @throws Exception
      * @throws \Exception
      */
@@ -67,7 +91,7 @@ class CancelSubscription extends Base
             throw new Exception('Your must call $cancelSubscription->postRequest() first.');
         }
 
-        return new CancelResponse(new Parser($rawResponse));
+        return new RefundResponse(new Parser($rawResponse));
     }
 
     /**
@@ -85,9 +109,9 @@ class CancelSubscription extends Base
      * @return bool
      * @throws GuzzleException
      * @throws \Exception
-     * @return CancelResponse
+     * @return RefundResponse
      */
-    public function postRequest(): CancelResponse
+    public function postRequest(): RefundResponse
     {
         $url = $this->getSignedUrl();
         $client = $this->getHttpClient();
@@ -105,8 +129,10 @@ var_dump($url);
     protected function setAllowedUrlParameters(): void {
         $this->allowedUrlParams = [
             'merchantId',
-            'subscriptionId',
-            'reasonId',
+            'transactionId',
+            'actionType',
+            'partial_amount',
+            'refund_reason_id',
         ];
     }
 
@@ -114,19 +140,33 @@ var_dump($url);
      * @inheritdoc
      */
     protected function setUrlParametersValidators(): void {
-        $this->urlParamValidators['subscriptionId'] = function ($value) {
+        $this->urlParamValidators['transactionId'] = function ($value) {
             if (!is_numeric($value)) {
-                throw new Exception("This Subscription ID is invalid: " . $value);
+                throw new Exception("This Transaction ID is invalid: " . $value);
             }
         };
+
         $this->urlParamValidators['merchantId'] = function ($value) {
             if (!is_numeric($value)) {
                 throw new Exception("This merchant ID is invalid: " . $value);
             }
         };
-        $this->urlParamValidators['reasonId'] = function ($value) {
+
+        $this->urlParamValidators['actionType'] = function ($value) {
+            if (!in_array($value, self::ACTION_TYPES)) {
+                throw new Exception("This action ID is invalid: " . $value);
+            }
+        };
+
+        $this->urlParamValidators['partial_amount'] = function ($value) {
+            if ($value < 0.0) {
+                throw new Exception("Partial refund must be >0.0, is: " . $value);
+            }
+        };
+
+        $this->urlParamValidators['refund_reason_id'] = function ($value) {
             if (!is_numeric($value)) {
-                throw new Exception("This Reason ID is invalid: " . $value);
+                throw new Exception("This reason ID is invalid: " . $value);
             }
         };
     }
