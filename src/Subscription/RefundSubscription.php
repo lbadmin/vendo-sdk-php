@@ -116,7 +116,7 @@ class RefundSubscription extends Base
         $url = $this->getSignedUrl();
         $client = $this->getHttpClient();
         $request = $this->getHttpRequest('POST', $url);
-var_dump($url);
+
         $response = $client->send($request);
         $this->rawResponse = $response->getBody();
 
