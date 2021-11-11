@@ -18,4 +18,6 @@ final class Vendo
 
     const PAYMENT_TYPE_CREDIT_CARD = 'card';
     const PAYMENT_TYPE_SEPA = 'sepa';
+
+    const SUBSCRIPTION_CANCEL_RESPONSE_CODE_OK = '5915';
 }
