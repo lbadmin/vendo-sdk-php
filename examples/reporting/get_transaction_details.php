@@ -1,6 +1,8 @@
 <?php
 include __DIR__ . '/../../vendor/autoload.php';
 
+use VendoSdk\Reporting\Transaction;
+
 /*
  * This scripts gets the details of one specific transaction.
  */
