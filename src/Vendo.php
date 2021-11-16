@@ -3,7 +3,7 @@ namespace VendoSdk;
 
 final class Vendo
 {
-    const SDK_VERSION = '1.0.2';
+    const SDK_VERSION = '1.0.3';
 
     const CURRENCY_USD = 'USD';
     const CURRENCY_EUR = 'EUR';
