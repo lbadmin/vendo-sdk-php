@@ -18,9 +18,9 @@ class CancelSubscription extends SubscriptionBase implements \JsonSerializable
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getReasonId(): int
+    public function getReasonId(): ?int
     {
         return $this->reasonId;
     }
@@ -47,7 +47,10 @@ class CancelSubscription extends SubscriptionBase implements \JsonSerializable
     public function getBaseFields(): array
     {
         $result = parent::getBaseFields();
-        $result['reason_id'] = $this->getReasonId();
+
+        if(!empty($this->getReasonId())){
+            $result['reason_id'] = $this->getReasonId();
+        }
 
         return $result;
     }
