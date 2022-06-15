@@ -7,10 +7,7 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $changeSubscription = new \VendoSdk\Gateway\ChangeSubscription();
-
-//@todo remove/uncomment before merge
-//    $changeSubscription->setApiSecret('your_secret_api_secret');
-$changeSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
+    $changeSubscription->setApiSecret('your_secret_api_secret');
 
     $changeSubscription->setIsTest(true);
     $changeSubscription->setMerchantId(1);//Your Vendo Merchant ID
