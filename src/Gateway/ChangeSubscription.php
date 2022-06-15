@@ -2,9 +2,13 @@
 namespace VendoSdk\Gateway;
 
 use VendoSdk\Exception;
+use VendoSdk\Gateway\Request\Details\SubscriptionSchedule;
 
 class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
 {
+    /** @var SubscriptionSchedule */
+    protected $subscriptionSchedule;
+
     /**
      * @inheritdoc
      */
@@ -14,19 +18,19 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     }
 
     /**
-     * @return CreditCard
+     * @return SubscriptionSchedule
      */
-    public function getCreditCardDetails(): CreditCard
+    public function getSubscriptionSchedule(): SubscriptionSchedule
     {
-        return $this->creditCardDetails;
+        return $this->subscriptionSchedule;
     }
 
     /**
-     * @param CreditCard $creditCardDetails
+     * @param SubscriptionSchedule $subscriptionSchedule
      */
-    public function setCreditCardDetails(CreditCard $creditCardDetails): void
+    public function setSubscriptionSchedule(SubscriptionSchedule $subscriptionSchedule): void
     {
-        $this->creditCardDetails = $creditCardDetails;
+        $this->subscriptionSchedule = $subscriptionSchedule;
     }
 
     /**
@@ -38,5 +42,13 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
         $fields = $this->getBaseFields();
 
         return $fields;
+    }
+
+    public function getBaseFields(): array
+    {
+        $result = parent::getBaseFields();
+        $result['subscription_schedule'] = $this->getSubscriptionSchedule();
+
+        return $result;
     }
 }

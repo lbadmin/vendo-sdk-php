@@ -11,6 +11,7 @@ use VendoSdk\Gateway\Request\Details\Item;
 use VendoSdk\Gateway\Request\Details\Request;
 use VendoSdk\Gateway\Request\Details\ShippingAddress;
 use VendoSdk\Gateway\Response\PaymentResponse;
+use VendoSdk\Gateway\Response\SubscriptionResponse;
 use VendoSdk\Util\HttpClientTrait;
 use VendoSdk\Vendo;
 
@@ -148,11 +149,11 @@ abstract class SubscriptionBase
     /**
      * Post the request to Vendo's Gateway API
      *
-     * @return PaymentResponse
+     * @return SubscriptionResponse
      * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function postRequest(): PaymentResponse
+    public function postRequest(): SubscriptionResponse
     {
         $client = $this->getHttpClient();
         $body = $this->getRawRequest();
@@ -200,12 +201,12 @@ abstract class SubscriptionBase
     }
 
     /**
-     * @return PaymentResponse
+     * @return SubscriptionResponse
      * @throws Exception
      */
-    public function getResponse(): PaymentResponse
+    public function getResponse(): SubscriptionResponse
     {
-        return new PaymentResponse($this->rawResponse);
+        return new SubscriptionResponse($this->rawResponse);
     }
 
     /**
@@ -217,7 +218,7 @@ abstract class SubscriptionBase
             'api_secret' => $this->getApiSecret(),
             'is_test' => (int)$this->isTest(),
             'merchant_id' => $this->getMerchantId(),
-            'subscription_id' => $this->getSubscriptionId(),
+            'subscription_id' => (int)$this->getSubscriptionId(),
         ];
     }
 }

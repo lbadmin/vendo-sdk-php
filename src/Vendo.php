@@ -12,7 +12,7 @@ final class Vendo
 
 //@todo uncomment/remove before merge
 //    const BASE_URL = 'https://secure.vend-o.com';
-const BASE_URL = 'https://secure.staging.aws.vend-o.com';
+const BASE_URL = 'http://secure1.vend-o.local';
 
     const GATEWAY_STATUS_NOT_OK = 0;
     const GATEWAY_STATUS_OK = 1;
