@@ -6,19 +6,28 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use VendoSdk\Gateway\CancelSubscription;
 use VendoSdk\Gateway\CapturePayment;
+use VendoSdk\Gateway\ChangeSubscription;
+use VendoSdk\Gateway\SubscriptionBase;
 use VendoSdk\Vendo;
 
 class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCancelSubscriptionSuccess()
     {
-        $payment = new CapturePayment();
-        $payment->setIsTest(true);
-        $payment->setApiSecret('test-secret');
-        $payment->setIsTest(true);
-        $payment->setMerchantId(1234567);
-        $payment->setTransactionId(87654321);
+        $changeSubscription = new ChangeSubscription();
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setApiSecret('test-secret');
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setMerchantId(1234567);
+        $changeSubscription->setSubscriptionId(87654321);
+
+        $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
+        $schedule->setNextRebillDate('2025-10-11');
+        $schedule->setRebillDuration(12);//days
+        $schedule->setRebillAmount(10.34);//billing currency
+        $changeSubscription->setSubscriptionSchedule($schedule);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -26,73 +35,86 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
         $response->method('getBody')->willReturn(json_encode([
             'status' => Vendo::GATEWAY_STATUS_OK,
             'request_id' => 234,
-            'transaction' => [
+            'subscription' => [
                 'id' => 9876543,
-                'amount' => 10.23,
-                'currency' => 'USD',
-                'datetime' => '2021-11-10 14:52:34',
             ],
         ]));
         $httpClient->method('send')->willReturn($response);
 
-        $payment->setHttpClient($httpClient);
-        $payment->postRequest();
+        $changeSubscription->setHttpClient($httpClient);
+        $changeSubscription->postRequest();
 
-        $this->assertEquals(true, $payment->isTest());
-        $this->assertEquals('https://secure.vend-o.com/api/gateway/capture', $payment->getApiEndpoint());
-        $this->assertEquals('test-secret', $payment->getApiSecret());
-        $this->assertEquals(1234567, $payment->getMerchantId());
-        $this->assertEquals(87654321, $payment->getTransactionId());
-        $this->assertEquals('{"status":1,"request_id":234,"transaction":{"id":9876543,"amount":10.23,"currency":"USD","datetime":"2021-11-10 14:52:34"}}', $payment->getRawResponse());
+        $this->assertEquals(true, $changeSubscription->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription', $changeSubscription->getApiEndpoint());
+        $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
+        $this->assertEquals(1234567, $changeSubscription->getMerchantId());
+        $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
+        $this->assertEquals('{"status":1,"request_id":234,"subscription":{"id":9876543}}', $changeSubscription->getRawResponse());
 
         $this->assertEquals('{
     "api_secret": "test-secret",
-    "merchant_id": 1234567,
     "is_test": 1,
-    "transaction_id": 87654321
-}', $payment->getRawRequest(true));
+    "merchant_id": 1234567,
+    "subscription_id": 87654321,
+    "subscription_schedule": {
+        "next_rebill_date": "2025-10-11",
+        "rebill_amount": 10.34,
+        "rebill_duration": 12
+    }
+}', $changeSubscription->getRawRequest(true));
     }
 
-    public function testCapturePaymentClientException()
+    public function testCancelSubscriptionErrorBadParam()
     {
-        $payment = new CapturePayment();
-        $httpClient = $this->createMock(Client::class);
-        $payment->setHttpClient($httpClient);
+        $changeSubscription = new ChangeSubscription();
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setApiSecret('test-secret');
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setMerchantId(1234567);
+        $changeSubscription->setSubscriptionId(87654321);
 
-        $payment->setApiSecret('test-secret');
-        $payment->setMerchantId(1234567);
-        $payment->setTransactionId(87654321);
+        $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
+        $schedule->setNextRebillDate('2025-10-11');
+        $schedule->setRebillDuration(12);//days
+        $schedule->setRebillAmount(10.34);//billing currency
+        $changeSubscription->setSubscriptionSchedule($schedule);
+
+        $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
             'status' => Vendo::GATEWAY_STATUS_NOT_OK,
-            'error_code' => 999,
-            'error_message' => 'Test client exception',
+            'error' => [
+                'code' => '8105',
+                'message' => 'Invalid parameter xyz'
+            ],
+            'request_id' => 234,
+            'subscription' => [
+                'id' => 9876543,
+            ],
         ]));
+        $httpClient->method('send')->willReturn($response);
 
-        $request = $this->createMock(RequestInterface::class);
-        $httpClient->method('send')->willThrowException(new ClientException('Test ServerException', $request, $response));
+        $changeSubscription->setHttpClient($httpClient);
+        $changeSubscription->postRequest();
 
-        $payment->postRequest();
-        $this->assertEquals('{"status":0,"error_code":999,"error_message":"Test client exception"}', $payment->getRawResponse());
+        $this->assertEquals(true, $changeSubscription->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription', $changeSubscription->getApiEndpoint());
+        $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
+        $this->assertEquals(1234567, $changeSubscription->getMerchantId());
+        $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
+        $this->assertEquals('{"status":0,"error":{"code":"8105","message":"Invalid parameter xyz"},"request_id":234,"subscription":{"id":9876543}}', $changeSubscription->getRawResponse());
+
+        $this->assertEquals('{
+    "api_secret": "test-secret",
+    "is_test": 1,
+    "merchant_id": 1234567,
+    "subscription_id": 87654321,
+    "subscription_schedule": {
+        "next_rebill_date": "2025-10-11",
+        "rebill_amount": 10.34,
+        "rebill_duration": 12
     }
-
-    public function testCapturePaymentServerException()
-    {
-        $payment = new CapturePayment();
-        $httpClient = $this->createMock(Client::class);
-        $payment->setHttpClient($httpClient);
-
-        $payment->setApiSecret('test-secret');
-        $payment->setMerchantId(1234567);
-        $payment->setTransactionId(87654321);
-
-        $response = $this->createMock(ResponseInterface::class);
-        $request = $this->createMock(RequestInterface::class);
-        $httpClient->method('send')->willThrowException(new ServerException('Test ServerException', $request, $response));
-
-        $this->expectException(\Exception::class);
-        $this->expectErrorMessage('A server exception occurred. If this persists then contact Vendo Client Support');
-        $payment->postRequest();
+}', $changeSubscription->getRawRequest(true));
     }
 }
