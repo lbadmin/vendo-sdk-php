@@ -51,6 +51,14 @@ class SubscriptionResponse
         if (!empty($responseArray['subscription'])) {
             $this->setSubscriptionDetails(new Subscription($responseArray['subscription']));
         }
+
+        if (!empty($responseArray['error']['code'])) {
+            $this->setErrorCode($responseArray['error']['code']);
+        }
+
+        if (!empty($responseArray['error']['message'])) {
+            $this->setErrorMessage($responseArray['error']['message']);
+        }
     }
 
     /**
