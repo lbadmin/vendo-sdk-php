@@ -19,8 +19,8 @@ $changeSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151
 
     $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
     $schedule->setNextRebillDate('2025-10-11');
-    $schedule->setRebillDuration(12);
-    $schedule->setRebillAmount(10.34);
+    $schedule->setRebillDuration(12);//days
+    $schedule->setRebillAmount(10.34);//billing currency
     $changeSubscription->setSubscriptionSchedule($schedule);
 
     $response = $changeSubscription->postRequest();
