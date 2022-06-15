@@ -10,7 +10,7 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
      */
     public function getApiEndpoint(): string
     {
-        return parent::getApiEndpoint() . '/payment';
+        return parent::getApiEndpoint() . '/change-subscription';
     }
 
     /**
