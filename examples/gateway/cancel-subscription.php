@@ -1,34 +1,39 @@
 <?php
 /**
- * This example shows you how to cancel a subscription
+ * This example shows you how to change a subscription schedule
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
+    $cancelSubscription = new \VendoSdk\Gateway\CancelSubscription();
 
-    $cancel = new \VendoSdk\Subscription\CancelSubscription($sharedSecret);
-    $cancel->setMerchantId(1);//Your Vendo Merchant ID
-    $cancel->setSubscriptionId(72537045);//The Vendo Subscription ID that you want to cancel.
-    $cancel->setReasonId(26);//reason 26: "test transaction"
+//@todo remove/uncomment before merge
+//    $cancelSubscription->setApiSecret('your_secret_api_secret');
+$cancelSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
 
-    $response = $cancel->postRequest();
+    $cancelSubscription->setIsTest(true);
+    $cancelSubscription->setMerchantId(1);//Your Vendo Merchant ID
+    $cancelSubscription->setSubscriptionId(160042563);//The Vendo Transaction ID that you want to refund.
+    $cancelSubscription->setReasonId(13);
+
+    $response = $cancelSubscription->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-    if ($response->getResponseCode() == \VendoSdk\Vendo::SUBSCRIPTION_CANCEL_RESPONSE_CODE_OK) {
-        echo "The subscription " . $response->getSubscriptionId() . " was successfully cancelled. The Vendo Transaction ID is: ";
-    } else {
-        echo "The subscription " . $response->getSubscriptionId() . " was not cancelled.";
-        echo "\nmerchant ID: " . $response->getMerchantId();
-        echo "\nError message: " . $response->getResponseMessage();
-        echo "\nError code: " . $response->getResponseCode();
+    if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {
+        echo "The subscription was successfully cancelled. The Vendo Subscription ID is: " . $response->getSubscriptionDetails()->getId();
+    } elseif ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_NOT_OK) {
+        echo "The operation failed.";
+        echo "\nError message: " . $response->getErrorMessage();
+        echo "\nError code: " . $response->getErrorCode();
     }
     echo "\n\n\n";
+
 
 } catch (\VendoSdk\Exception $exception) {
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
+
 

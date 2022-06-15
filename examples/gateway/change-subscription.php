@@ -29,7 +29,7 @@ $changeSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151
     if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {
         echo "The subscription schedule was successfully updated. The Vendo Subscription ID is: " . $response->getSubscriptionDetails()->getId();
     } elseif ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_NOT_OK) {
-        echo "The transaction failed.";
+        echo "The operation failed.";
         echo "\nError message: " . $response->getErrorMessage();
         echo "\nError code: " . $response->getErrorCode();
     }
