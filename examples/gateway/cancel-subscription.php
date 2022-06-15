@@ -14,7 +14,7 @@ $cancelSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151
 
     $cancelSubscription->setIsTest(true);
     $cancelSubscription->setMerchantId(1);//Your Vendo Merchant ID
-    $cancelSubscription->setSubscriptionId(160042563);//The Vendo Transaction ID that you want to refund.
+    $cancelSubscription->setSubscriptionId(160042563);//The Vendo Subscription ID that you want to cancel.
     $cancelSubscription->setReasonId(13);
 
     $response = $cancelSubscription->postRequest();

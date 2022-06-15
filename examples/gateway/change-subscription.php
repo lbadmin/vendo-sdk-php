@@ -14,7 +14,7 @@ $changeSubscription->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151
 
     $changeSubscription->setIsTest(true);
     $changeSubscription->setMerchantId(1);//Your Vendo Merchant ID
-    $changeSubscription->setSubscriptionId(160042557);//The Vendo Transaction ID that you want to refund.
+    $changeSubscription->setSubscriptionId(160042557);//The Vendo Subscription ID that you want to change.
     /** Set new schedule */
 
     $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
