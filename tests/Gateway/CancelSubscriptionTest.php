@@ -20,6 +20,7 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
         $cancelSubscription->setIsTest(true);
         $cancelSubscription->setMerchantId(1234567);
         $cancelSubscription->setSubscriptionId(87654321);
+        $cancelSubscription->setReasonId(26);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -47,7 +48,8 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
     "api_secret": "test-secret",
     "is_test": 1,
     "merchant_id": 1234567,
-    "subscription_id": 87654321
+    "subscription_id": 87654321,
+    "reason_id": 26
 }', $cancelSubscription->getRawRequest(true));
     }
 }
