@@ -68,14 +68,18 @@ class SubscriptionSchedule implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        if (empty($this->nextRebillDate)) {
-            throw new Exception('You must set the nextRebillDate field in ' . get_class($this));
+        if(!empty($this->nextRebillDate)){
+            $result['next_rebill_date'] = $this->nextRebillDate;
         }
 
-        return [
-            'next_rebill_date' => $this->nextRebillDate,
-            'rebill_amount' => $this->rebillAmount,
-            'rebill_duration' => $this->rebillDuration,
-        ];
+        if(!empty($this->rebillAmount)){
+            $result['rebill_amount'] = $this->rebillAmount;
+        }
+
+        if(!empty($this->rebillDuration)){
+            $result['rebill_duration'] = $this->rebillDuration;
+        }
+
+        return $result ?? [];
     }
 }
