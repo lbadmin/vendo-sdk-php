@@ -10,11 +10,6 @@ try {
     $creditCardSignup = new \VendoSdk\Gateway\CreditCardSignup();
     $creditCardSignup->setApiSecret('your_secret_api_secret');
 
-//@todo remove/uncomment before merge
-//    $changeSubscription->setApiSecret('your_secret_api_secret');
-    $creditCardSignup->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
-
-
     $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
     $creditCardSignup->setSiteId(1);//Your Vendo Site ID
     $creditCardSignup->setAmount(10.50);
