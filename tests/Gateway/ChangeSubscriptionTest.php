@@ -64,7 +64,7 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
 }', $changeSubscription->getRawRequest(true));
     }
 
-    public function testCancelSubscriptionErrorBadParam()
+    public function testChangeSubscriptionErrorBadParam()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);
