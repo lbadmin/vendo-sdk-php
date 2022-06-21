@@ -126,7 +126,6 @@ try {
 
 
 } catch (\VendoSdk\Exception $exception) {
-var_dump($exception->getMessage());die;
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
