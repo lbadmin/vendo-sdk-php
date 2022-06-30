@@ -1,4 +1,5 @@
 <?php
+
 namespace VendoSdk\Gateway\Request\Details;
 
 use VendoSdk\Exception;
@@ -7,8 +8,12 @@ class Customer extends ShippingAddress implements \JsonSerializable
 {
     /** @var string */
     protected $email;
+
     /** @var string */
     protected $language;
+
+    /** @var string */
+    protected $nationalIdentifier;
 
     /**
      * @return string
@@ -52,6 +57,21 @@ class Customer extends ShippingAddress implements \JsonSerializable
         $this->language = strtolower($languageCode);
     }
 
+    /**
+     * @return string
+     */
+    public function getNationalIdentifier(): string
+    {
+        return $this->nationalIdentifier;
+    }
+
+    /**
+     * @param string $nationalIdentifier
+     */
+    public function setNationalIdentifier(string $nationalIdentifier): void
+    {
+        $this->nationalIdentifier = $nationalIdentifier;
+    }
 
     /**
      * @return array
@@ -75,7 +95,7 @@ class Customer extends ShippingAddress implements \JsonSerializable
             throw new Exception('You must set the country field in ' . get_class($this));
         }
 
-        return array_filter([
+        $result = array_filter([
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
             'language' => $this->language,
@@ -85,5 +105,11 @@ class Customer extends ShippingAddress implements \JsonSerializable
             'postal_code' => $this->postalCode,
             'phone' => $this->phone,
         ]);
+
+        if (!empty($this->nationalIdentifier)) {
+            $result['national_identifier'] = $this->nationalIdentifier;
+        }
+
+        return $result;
     }
 }
