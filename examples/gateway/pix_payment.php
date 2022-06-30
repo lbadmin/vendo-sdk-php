@@ -9,18 +9,8 @@ include __DIR__ . '/../../vendor/autoload.php';
 try {
     $pixPayment = new \VendoSdk\Gateway\PixPayment();
     $pixPayment->setApiSecret('your_secret_api_secret');
-
-/**
- * @todo remove before merge
-*/
-$pixPayment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
-
     $pixPayment->setMerchantId(1);//Your Vendo Merchant ID
-    $pixPayment->setSiteId(85133);//Your Vendo Site ID
-/**
- * @todo remove before merge
- */
-$pixPayment->setSiteId(85133);//Your Vendo Site ID
+    $pixPayment->setSiteId(1);//Your Vendo Site ID
 
     $pixPayment->setAmount(10.50);
     $pixPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
