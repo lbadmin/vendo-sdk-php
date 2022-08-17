@@ -29,7 +29,7 @@ class Payment extends PaymentBase implements \JsonSerializable
         $fields['payment_details'] = $this->getPaymentDetails()->jsonSerialize();
 
         if (method_exists($this->paymentDetails, 'isPreAuth')) {
-            $fields['is_preauth'] = $this->paymentDetails->isPreAuth();
+            $fields['preauth_only'] = $this->paymentDetails->isPreAuth();
         }
 
         return $fields;

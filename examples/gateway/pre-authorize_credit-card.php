@@ -7,18 +7,13 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardPayment = new \VendoSdk\Gateway\CreditCardPayment();
+    $creditCardPayment = new \VendoSdk\Gateway\Payment();
     $creditCardPayment->setApiSecret('your_secret_api_secret');
     $creditCardPayment->setMerchantId(1);//Your Vendo Merchant ID
     $creditCardPayment->setSiteId(1);//Your Vendo Site ID
     $creditCardPayment->setAmount(8.00);
     $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardPayment->setIsTest(true);
-
-    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
-    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
-    // the CapturePayment class.
-    $creditCardPayment->setIsPreAuth(true);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_999');
@@ -43,7 +38,12 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardPayment->setCreditCardDetails($ccDetails);
+
+    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
+    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
+    // the CapturePayment class.
+    $ccDetails->setIsPreAuth(true);
+    $creditCardPayment->setPaymentDetails($ccDetails);
 
     /**
      * Customer details
@@ -84,6 +84,12 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $creditCardPayment->setRequestDetails($request);
 
+/**
+* @todo remove before merge
+*/
+$creditCardPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
+$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
+    
     $response = $creditCardPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";

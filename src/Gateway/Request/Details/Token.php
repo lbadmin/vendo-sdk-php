@@ -3,7 +3,7 @@ namespace VendoSdk\Gateway\Request\Details;
 
 use VendoSdk\Exception;
 
-class Token implements \JsonSerializable
+class Token implements PaymentDetails, \JsonSerializable
 {
     /** @var string */
     protected $token;
