@@ -1,4 +1,5 @@
 <?php
+
 namespace VendoSdk\Gateway;
 
 use VendoSdk\Exception;
@@ -82,7 +83,9 @@ class Signup extends PaymentBase implements \JsonSerializable
     {
         $fields = $this->getBaseFields();
         $fields['site_id'] = $this->getSiteId();
-        $fields['preauth_only'] = $this->isPreAuth();
+        if (method_exists($this->paymentDetails, 'isPreAuth')) {
+            $fields['preauth_only'] = $this->paymentDetails->isPreAuth();
+        }
         $fields['payment_details'] = $this->getPaymentDetails();
         $fields['subscription_schedule'] = $this->getSubscriptionSchedule();
 
