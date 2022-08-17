@@ -7,6 +7,8 @@ use VendoSdk\Gateway\Request\Details\Token;
 
 /**
  * This class allows you to use a payment details token to process a new payment
+ *
+ * @deprecated please use Payment class instead. see example: ./examples/gateway/payment_with_saved_token.php
  */
 class TokenPayment extends PaymentBase implements \JsonSerializable
 {
