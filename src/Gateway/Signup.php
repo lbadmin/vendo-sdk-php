@@ -6,12 +6,11 @@ use VendoSdk\Gateway\Request\Details\CreditCard;
 use VendoSdk\Gateway\Request\Details\SubscriptionSchedule;
 
 /**
- * Class CreditCardSignup
+ * Class Signup
  * @package VendoSdk\Gateway
  *
- * @deprecated use Signup class instead. see example: php ./examples/gateway/credit_card_signup.php
  */
-class CreditCardSignup extends PaymentBase implements \JsonSerializable
+class Signup extends PaymentBase implements \JsonSerializable
 {
     /** @var CreditCard */
     protected $creditCardDetails;
@@ -60,18 +59,6 @@ class CreditCardSignup extends PaymentBase implements \JsonSerializable
     }
 
     /**
-     * Set this flag to true when you do not want to capture the transaction amount immediately but only validate the
-     * payment details and block (reserve) the amount.
-     * The capture of a preauth-only transaction can be performed with the CapturePayment class.
-     *
-     * @param bool $isPreAuth
-     */
-    public function setIsPreAuth(bool $isPreAuth): void
-    {
-        $this->isPreAuth = $isPreAuth;
-    }
-
-    /**
      * @return SubscriptionSchedule
      */
     public function getSubscriptionSchedule(): SubscriptionSchedule
@@ -96,7 +83,7 @@ class CreditCardSignup extends PaymentBase implements \JsonSerializable
         $fields = $this->getBaseFields();
         $fields['site_id'] = $this->getSiteId();
         $fields['preauth_only'] = $this->isPreAuth();
-        $fields['payment_details'] = $this->getCreditCardDetails();
+        $fields['payment_details'] = $this->getPaymentDetails();
         $fields['subscription_schedule'] = $this->getSubscriptionSchedule();
 
         return $fields;
