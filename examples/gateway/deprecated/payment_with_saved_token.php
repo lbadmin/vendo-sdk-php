@@ -1,27 +1,27 @@
 <?php
 /**
- * This example shows you how to process a PIX transaction.
- * You need to redirect user to the url returned by API to let her/him finish the operation
+ * This example shows you how to use a payment detail token that was saved in a previous transaction.
+ * You can get a test payment detail token by running the example in credit_card_payment.php
  */
 
-include __DIR__ . '/../../vendor/autoload.php';
+include __DIR__ . '/../../../vendor/autoload.php';
 
 try {
-    $payment = new \VendoSdk\Gateway\Payment();
-    $payment->setApiSecret('your_secret_api_secret');
-    $payment->setMerchantId(1);//Your Vendo Merchant ID
-    $payment->setSiteId(85133);//Your Vendo Site ID
+    $tokenPayment = new \VendoSdk\Gateway\TokenPayment();
+    $tokenPayment->setApiSecret('your_secret_api_secret');
+    $tokenPayment->setMerchantId(1);//Your Vendo Merchant ID
+    $tokenPayment->setSiteId(1);//Your Vendo Site ID
+    $tokenPayment->setAmount(10.50);
+    $tokenPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+    $tokenPayment->setIsTest(true);
 
-    $payment->setAmount(10.50);
-    $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-    $payment->setIsTest(true);
-
-    //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $payment->setIsMerchantInitiatedTransaction(false);
+    //You must set the flag below to TRUE if you're processing a recurring billing transaction or if you initiated this
+    //payment on behalf of your user.
+    $tokenPayment->setIsMerchantInitiatedTransaction(false);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
-    $externalRef->setTransactionReference('your_tx_reference_123');
-    $payment->setExternalReferences($externalRef);
+    $externalRef->setTransactionReference('your_tx_reference_555');
+    $tokenPayment->setExternalReferences($externalRef);
 
     /**
      * Add items to your request, you can add one or more
@@ -31,62 +31,36 @@ try {
     $cartItem->setDescription('Registration fee');//your product description
     $cartItem->setPrice(4.00);
     $cartItem->setQuantity(1);
-    $payment->addItem($cartItem);
+    $tokenPayment->addItem($cartItem);
 
     $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
     $cartItem2->setId(123);//set your product id
     $cartItem2->setDescription('Unlimited video download');//your product description
     $cartItem2->setPrice(6.50);
     $cartItem2->setQuantity(1);
-    $payment->addItem($cartItem2);
+    $tokenPayment->addItem($cartItem2);
 
     /**
-     * Customer details
+     * Provide the token of the payment details that were used by this user for this site
      */
-    $customer = new \VendoSdk\Gateway\Request\Details\Customer();
-    $customer->setFirstName('John');
-    $customer->setLastName('Doe');
-    $customer->setEmail('john.doe.test@thisisatest.test');
-
-    /**
-     * Payment details
-     */
-    $paymentDetails = new \VendoSdk\Gateway\Request\Details\Pix();
-    $payment->setPaymentDetails($paymentDetails);
-    $payment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
-
-/**
- * @todo remove before merge
- */
-$customer->setEmail('qa+epag+test@vendoservices.com');
-
-    $customer->setLanguageCode('en');
-    /** PIX payments are supported for Brazil only */
-    $customer->setCountryCode('BR');
-    /** CPF is necessary */
-    $customer->setNationalIdentifier('723.785.048-29');
-
-    $payment->setCustomerDetails($customer);
+    $token = new \VendoSdk\Gateway\Request\Details\Token();
+    $token->setToken('cfc715414b5231e1302ef559be109d38');//this is a dummy example, get it from your database or use a token from a previous test
+    $tokenPayment->setPaymentDetailsToken($token);
 
     /**
      * Shipping details. This is required.
      */
     $shippingAddress = new \VendoSdk\Gateway\Request\Details\ShippingAddress();
-    $shippingAddress->setFirstName($customer->getFirstName());
-    $shippingAddress->setLastName($customer->getLastName());
-    $shippingAddress->setAddress($customer->getAddress());
-    $shippingAddress->setCountryCode($customer->getCountryCode());
-    $shippingAddress->setCity($customer->getCity());
-    $shippingAddress->setState($customer->getState());
-    $shippingAddress->setPostalCode($customer->getPostalCode());
-    $shippingAddress->setPhone($customer->getPhone());
+    $shippingAddress->setFirstName('John');
+    $shippingAddress->setLastName('Doe');
+    $shippingAddress->setCountryCode('US');
     //If you're selling digital content then you are allowed to use dummy details like the ones below
     $shippingAddress->setAddress('123 Example Street');
     $shippingAddress->setCity('Miami');
     $shippingAddress->setState('FL');
     $shippingAddress->setPostalCode('33000');
     $shippingAddress->setPhone('1000000000');
-    $payment->setShippingAddress($shippingAddress);
+    $tokenPayment->setShippingAddress($shippingAddress);
 
     /**
      * User request details
@@ -94,14 +68,22 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     $request = new \VendoSdk\Gateway\Request\Details\Request();
     $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
-    $payment->setRequestDetails($request);
+    $tokenPayment->setRequestDetails($request);
 
-    $response = $payment->postRequest();
+/**
+ * @todo remove before merge
+ */
+$tokenPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
+$tokenPayment->setSiteId(85133);//Your Vendo Site ID
+$token->setToken('97aa5f20e8a163d97c30fb67bfc048d8');//this is a dummy example, get it from your database or use a token from a previous test
+
+
+    $response = $tokenPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {
         echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
-        echo "\nThe payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
+        echo "\nThe credit card payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
         echo "\nThe Payment Details Token is: ". $response->getPaymentToken();
         echo "\nYou must save the payment details token if you need or want to process future recurring billing or one-clicks\n";
         echo "\nThis is your transaction reference (the one you set it in the request): " . $response->getExternalReferences()->getTransactionReference();
@@ -112,10 +94,10 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     } elseif ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_VERIFICATION_REQUIRED) {
         echo "The transaction must be verified";
         echo "\nYou MUST :";
-        echo "\n   1. Save the payment token: " . $response->getPaymentToken();
-        echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
+        echo "\n   1. Save the payment token :" . $response->getPaymentToken();
+        echo "\n   2. Redirect the user to the verification URL:" . $response->getResultDetails()->getVerificationUrl();
         echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class.";
+        echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class again.";
     }
     echo "\n\n\n";
 

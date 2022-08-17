@@ -1,27 +1,28 @@
 <?php
 /**
- * This example shows you how to process a PIX transaction.
- * You need to redirect user to the url returned by API to let her/him finish the operation
+ * This example shows you how to process a credit card pre authorization.
+ * You can use the payment detail token returned in this example to run the example in payment_with_saved_token.php
  */
 
-include __DIR__ . '/../../vendor/autoload.php';
+include __DIR__ . '/../../../vendor/autoload.php';
 
 try {
-    $payment = new \VendoSdk\Gateway\Payment();
-    $payment->setApiSecret('your_secret_api_secret');
-    $payment->setMerchantId(1);//Your Vendo Merchant ID
-    $payment->setSiteId(85133);//Your Vendo Site ID
+    $creditCardPayment = new \VendoSdk\Gateway\CreditCardPayment();
+    $creditCardPayment->setApiSecret('your_secret_api_secret');
+    $creditCardPayment->setMerchantId(1);//Your Vendo Merchant ID
+    $creditCardPayment->setSiteId(1);//Your Vendo Site ID
+    $creditCardPayment->setAmount(8.00);
+    $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+    $creditCardPayment->setIsTest(true);
 
-    $payment->setAmount(10.50);
-    $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-    $payment->setIsTest(true);
-
-    //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $payment->setIsMerchantInitiatedTransaction(false);
+    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
+    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
+    // the CapturePayment class.
+    $creditCardPayment->setIsPreAuth(true);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
-    $externalRef->setTransactionReference('your_tx_reference_123');
-    $payment->setExternalReferences($externalRef);
+    $externalRef->setTransactionReference('your_tx_reference_999');
+    $creditCardPayment->setExternalReferences($externalRef);
 
     /**
      * Add items to your request, you can add one or more
@@ -29,16 +30,20 @@ try {
     $cartItem = new \VendoSdk\Gateway\Request\Details\Item();
     $cartItem->setId(123);//set your product id
     $cartItem->setDescription('Registration fee');//your product description
-    $cartItem->setPrice(4.00);
+    $cartItem->setPrice(8.00);
     $cartItem->setQuantity(1);
-    $payment->addItem($cartItem);
+    $creditCardPayment->addItem($cartItem);
 
-    $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
-    $cartItem2->setId(123);//set your product id
-    $cartItem2->setDescription('Unlimited video download');//your product description
-    $cartItem2->setPrice(6.50);
-    $cartItem2->setQuantity(1);
-    $payment->addItem($cartItem2);
+    /**
+     * Provide the credit card details that you collected from the user
+     */
+    $ccDetails = new \VendoSdk\Gateway\Request\Details\CreditCard();
+    $ccDetails->setNameOnCard('John Doe');
+    $ccDetails->setCardNumber('4111111111111111');//this is a test card number, it will only work for test transactions
+    $ccDetails->setExpirationMonth('05');
+    $ccDetails->setExpirationYear('2029');
+    $ccDetails->setCvv(123);//do not store nor log the CVV
+    $creditCardPayment->setCreditCardDetails($ccDetails);
 
     /**
      * Customer details
@@ -47,26 +52,9 @@ try {
     $customer->setFirstName('John');
     $customer->setLastName('Doe');
     $customer->setEmail('john.doe.test@thisisatest.test');
-
-    /**
-     * Payment details
-     */
-    $paymentDetails = new \VendoSdk\Gateway\Request\Details\Pix();
-    $payment->setPaymentDetails($paymentDetails);
-    $payment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
-
-/**
- * @todo remove before merge
- */
-$customer->setEmail('qa+epag+test@vendoservices.com');
-
     $customer->setLanguageCode('en');
-    /** PIX payments are supported for Brazil only */
-    $customer->setCountryCode('BR');
-    /** CPF is necessary */
-    $customer->setNationalIdentifier('723.785.048-29');
-
-    $payment->setCustomerDetails($customer);
+    $customer->setCountryCode('US');
+    $creditCardPayment->setCustomerDetails($customer);
 
     /**
      * Shipping details. This is required.
@@ -86,7 +74,7 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     $shippingAddress->setState('FL');
     $shippingAddress->setPostalCode('33000');
     $shippingAddress->setPhone('1000000000');
-    $payment->setShippingAddress($shippingAddress);
+    $creditCardPayment->setShippingAddress($shippingAddress);
 
     /**
      * User request details
@@ -94,14 +82,21 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     $request = new \VendoSdk\Gateway\Request\Details\Request();
     $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
-    $payment->setRequestDetails($request);
+    $creditCardPayment->setRequestDetails($request);
 
-    $response = $payment->postRequest();
+/**
+ * @todo remove before merge
+ */
+$creditCardPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
+$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
+
+    $response = $creditCardPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {
         echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
-        echo "\nThe payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
+        echo "\n**IMPORTANT:** You must save the Vendo Transaction ID if you need to capture the payment later.";
+        echo "\nThe credit card payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
         echo "\nThe Payment Details Token is: ". $response->getPaymentToken();
         echo "\nYou must save the payment details token if you need or want to process future recurring billing or one-clicks\n";
         echo "\nThis is your transaction reference (the one you set it in the request): " . $response->getExternalReferences()->getTransactionReference();
