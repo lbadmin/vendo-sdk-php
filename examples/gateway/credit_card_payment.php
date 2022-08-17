@@ -7,7 +7,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardPayment = new \VendoSdk\Gateway\CreditCardPayment();
+    $creditCardPayment = new \VendoSdk\Gateway\Payment();
     $creditCardPayment->setApiSecret('your_secret_api_secret');
     $creditCardPayment->setMerchantId(1);//Your Vendo Merchant ID
     $creditCardPayment->setSiteId(1);//Your Vendo Site ID
@@ -17,11 +17,6 @@ try {
 
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
     $creditCardPayment->setIsMerchantInitiatedTransaction(false);
-
-    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
-    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
-    // the CapturePayment class.
-    $creditCardPayment->setIsPreAuth(false);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
@@ -53,7 +48,12 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardPayment->setCreditCardDetails($ccDetails);
+
+    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
+    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
+    // the CapturePayment class.
+    $ccDetails->setIsPreAuth(false);
+    $creditCardPayment->setPaymentDetails($ccDetails);
 
     /**
      * Customer details
@@ -94,6 +94,12 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $creditCardPayment->setRequestDetails($request);
 
+/**
+ * @todo remove before merge
+ */
+$creditCardPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
+$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
+$ccDetails->setIsPreAuth(true);
     $response = $creditCardPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";

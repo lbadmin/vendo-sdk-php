@@ -4,6 +4,12 @@ namespace VendoSdk\Gateway;
 use VendoSdk\Exception;
 use VendoSdk\Gateway\Request\Details\CreditCard;
 
+/**
+ * Class CreditCardPayment
+ * @package VendoSdk\Gateway
+ *
+ * @deprecated please use VendoSdk\Gateway\Payment instead
+ */
 class CreditCardPayment extends PaymentBase implements \JsonSerializable
 {
     /** @var CreditCard */
@@ -42,6 +48,7 @@ class CreditCardPayment extends PaymentBase implements \JsonSerializable
     }
 
     /**
+     * @deprecated please use Request\Details\CreditCard::isPreAuth instead
      * @return bool
      */
     public function isPreAuth(): bool
@@ -50,6 +57,8 @@ class CreditCardPayment extends PaymentBase implements \JsonSerializable
     }
 
     /**
+     * @deprecated please use Request\Details\CreditCard::setIsPreAuth instead
+     *
      * Set this flag to true when you do not want to capture the transaction amount immediately but only validate the
      * payment details and block (reserve) the amount.
      * The capture of a preauth-only transaction can be performed with the CapturePayment class.

@@ -1,9 +1,14 @@
 <?php
+
 namespace VendoSdk\Gateway;
 
 use VendoSdk\Exception;
 
-class PixPayment extends PaymentBase implements \JsonSerializable
+/**
+ * Class Payment
+ * @package VendoSdk\Gateway
+ */
+class Payment extends PaymentBase implements \JsonSerializable
 {
     /**
      * @inheritdoc
@@ -21,9 +26,11 @@ class PixPayment extends PaymentBase implements \JsonSerializable
     {
         $fields = $this->getBaseFields();
         $fields['site_id'] = $this->getSiteId();
-        $fields['payment_details'] = [
-            'payment_method' => 'pix',
-        ];
+        $fields['payment_details'] = $this->getPaymentDetails()->jsonSerialize();
+
+        if (method_exists($this->paymentDetails, 'isPreAuth')) {
+            $fields['is_preauth'] = $this->paymentDetails->isPreAuth();
+        }
 
         return $fields;
     }

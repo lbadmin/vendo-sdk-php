@@ -7,22 +7,21 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $pixPayment = new \VendoSdk\Gateway\PixPayment();
-    $pixPayment->setApiSecret('your_secret_api_secret');
-    $pixPayment->setMerchantId(1);//Your Vendo Merchant ID
-    $pixPayment->setSiteId(1);//Your Vendo Site ID
+    $payment = new \VendoSdk\Gateway\Payment();
+    $payment->setApiSecret('your_secret_api_secret');
+    $payment->setMerchantId(1);//Your Vendo Merchant ID
+    $payment->setSiteId(85133);//Your Vendo Site ID
 
-    $pixPayment->setAmount(10.50);
-    $pixPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-    $pixPayment->setIsTest(true);
+    $payment->setAmount(10.50);
+    $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+    $payment->setIsTest(true);
 
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $pixPayment->setIsMerchantInitiatedTransaction(false);
-
+    $payment->setIsMerchantInitiatedTransaction(false);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
-    $pixPayment->setExternalReferences($externalRef);
+    $payment->setExternalReferences($externalRef);
 
     /**
      * Add items to your request, you can add one or more
@@ -32,14 +31,14 @@ try {
     $cartItem->setDescription('Registration fee');//your product description
     $cartItem->setPrice(4.00);
     $cartItem->setQuantity(1);
-    $pixPayment->addItem($cartItem);
+    $payment->addItem($cartItem);
 
     $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
     $cartItem2->setId(123);//set your product id
     $cartItem2->setDescription('Unlimited video download');//your product description
     $cartItem2->setPrice(6.50);
     $cartItem2->setQuantity(1);
-    $pixPayment->addItem($cartItem2);
+    $payment->addItem($cartItem2);
 
     /**
      * Customer details
@@ -48,6 +47,13 @@ try {
     $customer->setFirstName('John');
     $customer->setLastName('Doe');
     $customer->setEmail('john.doe.test@thisisatest.test');
+
+    /**
+     * Payment details
+     */
+    $paymantDetails = new \VendoSdk\Gateway\Request\Details\Pix();
+    $payment->setPaymentDetails($paymantDetails);
+    $payment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
 
 /**
  * @todo remove before merge
@@ -60,7 +66,7 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     /** CPF is necessary */
     $customer->setNationalIdentifier('723.785.048-29');
 
-    $pixPayment->setCustomerDetails($customer);
+    $payment->setCustomerDetails($customer);
 
     /**
      * Shipping details. This is required.
@@ -80,7 +86,7 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     $shippingAddress->setState('FL');
     $shippingAddress->setPostalCode('33000');
     $shippingAddress->setPhone('1000000000');
-    $pixPayment->setShippingAddress($shippingAddress);
+    $payment->setShippingAddress($shippingAddress);
 
     /**
      * User request details
@@ -88,9 +94,9 @@ $customer->setEmail('qa+epag+test@vendoservices.com');
     $request = new \VendoSdk\Gateway\Request\Details\Request();
     $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
-    $pixPayment->setRequestDetails($request);
+    $payment->setRequestDetails($request);
 
-    $response = $pixPayment->postRequest();
+    $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {

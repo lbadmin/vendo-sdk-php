@@ -4,6 +4,7 @@ namespace VendoSdkUnit\Gateway;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
+use VendoSdk\Gateway\Request\Details\Pix;
 use VendoSdk\Gateway\Request\Details\Request;
 use VendoSdk\Vendo;
 
@@ -11,18 +12,18 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function testPixPaymentSuccess()
     {
-        $pixPayment = new \VendoSdk\Gateway\PixPayment();
-        $pixPayment->setApiSecret('your_secret_api_secret');
+        $payment = new \VendoSdk\Gateway\Payment();
+        $payment->setApiSecret('your_secret_api_secret');
 
-        $pixPayment->setMerchantId(1);//Your Vendo Merchant ID
-        $pixPayment->setSiteId(1);//Your Vendo Site ID
-        $pixPayment->setAmount(10.50);
-        $pixPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-        $pixPayment->setIsTest(true);
+        $payment->setMerchantId(1);//Your Vendo Merchant ID
+        $payment->setSiteId(1);//Your Vendo Site ID
+        $payment->setAmount(10.50);
+        $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+        $payment->setIsTest(true);
 
         $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
         $externalRef->setTransactionReference('your_tx_reference_123');
-        $pixPayment->setExternalReferences($externalRef);
+        $payment->setExternalReferences($externalRef);
 
         /**
          * Add items to your request, you can add one or more
@@ -32,14 +33,14 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $cartItem->setDescription('Registration fee');//your product description
         $cartItem->setPrice(4.00);
         $cartItem->setQuantity(1);
-        $pixPayment->addItem($cartItem);
+        $payment->addItem($cartItem);
 
         $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
         $cartItem2->setId(123);//set your product id
         $cartItem2->setDescription('Unlimited video download');//your product description
         $cartItem2->setPrice(6.50);
         $cartItem2->setQuantity(1);
-        $pixPayment->addItem($cartItem2);
+        $payment->addItem($cartItem2);
 
         /**
          * Customer details
@@ -51,7 +52,9 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $customer->setLanguageCode('en');
         $customer->setCountryCode('BR');
         $customer->setNationalIdentifier('723.785.048-29');
-        $pixPayment->setCustomerDetails($customer);
+        $payment->setCustomerDetails($customer);
+
+        $payment->setPaymentDetails(new Pix());
 
         /**
          * Shipping details. This is required.
@@ -71,10 +74,10 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $shippingAddress->setState('FL');
         $shippingAddress->setPostalCode('33000');
         $shippingAddress->setPhone('1000000000');
-        $pixPayment->setShippingAddress($shippingAddress);
+        $payment->setShippingAddress($shippingAddress);
 
         $requestDetails = $this->createMock(Request::class);
-        $pixPayment->setRequestDetails($requestDetails);
+        $payment->setRequestDetails($requestDetails);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -99,30 +102,32 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         ]));
         $httpClient->method('send')->willReturn($response);
 
-        $pixPayment->setHttpClient($httpClient);
-        $pixPayment->postRequest();
+        $payment->setHttpClient($httpClient);
+        $payment->postRequest();
 
-        $this->assertEquals(true, $pixPayment->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/payment', $pixPayment->getApiEndpoint());
-        $this->assertEquals('your_secret_api_secret', $pixPayment->getApiSecret());
-        $this->assertEquals(1, $pixPayment->getMerchantId());
-        $this->assertEquals('{"status":2,"external_references":{"transaction_reference":"your_tx_reference_123"},"transaction":{"id":240168518,"amount":"10.50","currency":"USD","datetime":"2022-06-15T15:31:14+01:00"},"result":{"code":6307,"message":"Vendo Risk rules requires verification for this transaction.","verification_url":"https:\/\/secure.vend-o.com\/v\/verification?transaction_id=240168641&systemsignature=PyZaal0pUxehT2A-MfSgNSH0mfA"},"request_id":"yij_234"}', $pixPayment->getRawResponse());
+        $this->assertEquals(true, $payment->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/payment', $payment->getApiEndpoint());
+        $this->assertEquals('your_secret_api_secret', $payment->getApiSecret());
+        $this->assertEquals(1, $payment->getMerchantId());
+        $this->assertEquals('{"status":2,"external_references":{"transaction_reference":"your_tx_reference_123"},"transaction":{"id":240168518,"amount":"10.50","currency":"USD","datetime":"2022-06-15T15:31:14+01:00"},"result":{"code":6307,"message":"Vendo Risk rules requires verification for this transaction.","verification_url":"https:\/\/secure.vend-o.com\/v\/verification?transaction_id=240168641&systemsignature=PyZaal0pUxehT2A-MfSgNSH0mfA"},"request_id":"yij_234"}', $payment->getRawResponse());
     }
 
     public function testPixPaymentError()
     {
-        $pixPayment = new \VendoSdk\Gateway\PixPayment();
-        $pixPayment->setApiSecret('your_secret_api_secret');
+        $payment = new \VendoSdk\Gateway\Payment();
+        $payment->setApiSecret('your_secret_api_secret');
 
-        $pixPayment->setMerchantId(1);//Your Vendo Merchant ID
-        $pixPayment->setSiteId(0);//Your Vendo Site ID (invalid value)
-        $pixPayment->setAmount(10.50);
-        $pixPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-        $pixPayment->setIsTest(true);
+        $payment->setMerchantId(1);//Your Vendo Merchant ID
+        $payment->setSiteId(0);//Your Vendo Site ID (invalid value)
+        $payment->setAmount(10.50);
+        $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+        $payment->setIsTest(true);
 
         $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
         $externalRef->setTransactionReference('your_tx_reference_123');
-        $pixPayment->setExternalReferences($externalRef);
+        $payment->setExternalReferences($externalRef);
+
+        $payment->setPaymentDetails(new Pix());
 
         /**
          * Add items to your request, you can add one or more
@@ -132,14 +137,14 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $cartItem->setDescription('Registration fee');//your product description
         $cartItem->setPrice(4.00);
         $cartItem->setQuantity(1);
-        $pixPayment->addItem($cartItem);
+        $payment->addItem($cartItem);
 
         $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
         $cartItem2->setId(123);//set your product id
         $cartItem2->setDescription('Unlimited video download');//your product description
         $cartItem2->setPrice(6.50);
         $cartItem2->setQuantity(1);
-        $pixPayment->addItem($cartItem2);
+        $payment->addItem($cartItem2);
 
         /**
          * Customer details
@@ -151,7 +156,7 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $customer->setLanguageCode('en');
         $customer->setCountryCode('US');
         $customer->setNationalIdentifier('723.785.048-29');
-        $pixPayment->setCustomerDetails($customer);
+        $payment->setCustomerDetails($customer);
 
         /**
          * Shipping details. This is required.
@@ -171,10 +176,10 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $shippingAddress->setState('FL');
         $shippingAddress->setPostalCode('33000');
         $shippingAddress->setPhone('1000000000');
-        $pixPayment->setShippingAddress($shippingAddress);
+        $payment->setShippingAddress($shippingAddress);
 
         $requestDetails = $this->createMock(Request::class);
-        $pixPayment->setRequestDetails($requestDetails);
+        $payment->setRequestDetails($requestDetails);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -189,13 +194,13 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         ]));
         $httpClient->method('send')->willReturn($response);
 
-        $pixPayment->setHttpClient($httpClient);
-        $pixPayment->postRequest();
+        $payment->setHttpClient($httpClient);
+        $payment->postRequest();
 
-        $this->assertEquals(true, $pixPayment->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/payment', $pixPayment->getApiEndpoint());
-        $this->assertEquals('your_secret_api_secret', $pixPayment->getApiSecret());
-        $this->assertEquals(1, $pixPayment->getMerchantId());
-        $this->assertEquals('{"status":0,"error":{"code":8105,"message":"Invalid siteId value"},"request_id":"yij_234"}', $pixPayment->getRawResponse());
+        $this->assertEquals(true, $payment->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/payment', $payment->getApiEndpoint());
+        $this->assertEquals('your_secret_api_secret', $payment->getApiSecret());
+        $this->assertEquals(1, $payment->getMerchantId());
+        $this->assertEquals('{"status":0,"error":{"code":8105,"message":"Invalid siteId value"},"request_id":"yij_234"}', $payment->getRawResponse());
     }
 }

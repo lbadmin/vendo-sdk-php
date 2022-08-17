@@ -2,7 +2,7 @@
 
 namespace VendoSdkUnit\Gateway;
 
-use VendoSdk\Gateway\CreditCardPayment;
+use VendoSdk\Gateway\Payment;
 use VendoSdk\Gateway\Request\Details\CreditCard;
 use VendoSdk\Gateway\Request\Details\Customer;
 use VendoSdk\Gateway\Request\Details\ExternalReferences;
@@ -10,51 +10,12 @@ use VendoSdk\Gateway\Request\Details\Item;
 use VendoSdk\Gateway\Request\Details\Request;
 use VendoSdk\Gateway\Request\Details\ShippingAddress;
 
-class TestCreditCardPayment extends CreditCardPayment
-{
-    public function getBaseFields(): array // expose protected method for testing
-    {
-        return parent::getBaseFields();
-    }
-}
-
 class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function testApiEndpoint()
     {
-        $payment = new CreditCardPayment();
+        $payment = new Payment();
         self::assertEquals('https://secure.vend-o.com/api/gateway/payment', $payment->getApiEndpoint());
-    }
-
-    public function testSetCreditCardDetails()
-    {
-        $payment = $this->createPartialMock(CreditCardPayment::class, [
-            'getBaseFields'
-        ]);
-
-        $payment->method('getBaseFields')->willReturn([
-            'base key1' => 'base value 1',
-        ]);
-
-        $payment->setSiteId(12345);
-        $payment->setIsPreAuth(true);
-
-        $creditCardDetails = new CreditCard();
-        $creditCardDetails->setCardNumber('4111111111111111');
-        $creditCardDetails->setCvv('123');
-        $creditCardDetails->setExpirationMonth('12');
-        $payment->setCreditCardDetails($creditCardDetails);
-        $creditCardDetails->setExpirationYear('2999');
-        $creditCardDetails->setNameOnCard('Jan Testovitch');
-
-        $payment->setCreditCardDetails($creditCardDetails);
-        self::assertEquals($creditCardDetails, $payment->getCreditCardDetails());
-        self::assertEquals([
-            'base key1' => 'base value 1',
-            'site_id' => 12345,
-            'preauth_only' => true,
-            'payment_details' => $creditCardDetails,
-        ], $payment->jsonSerialize());
     }
 
     public function testGetBaseFields()
@@ -65,7 +26,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
         $shippingAddress = $this->createMock(ShippingAddress::class);
         $requestDetails = $this->createMock(Request::class);
 
-        $payment = new TestCreditCardPayment();
+        $payment = new Payment();
         $payment->setApiSecret('test-api-secret');
         $payment->setIsTest(1);
         $payment->setMerchantId(123);
@@ -76,6 +37,18 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setCustomerDetails($customerDetails);
         $payment->setRequestDetails($requestDetails);
         $payment->setItems($items);
+        $payment->setSiteId(123);
+
+        $paymentDetails = $this->createPartialMock(CreditCard::class, [
+            'jsonSerialize',
+        ]);
+        $paymentDetails->method('jsonSerialize')->willReturn([
+           'payment_method' => 'card',
+           'card_number' => '4111111111111111',
+           'name_on_card' => 'Joe Doe',
+        ]);
+        $paymentDetails->setIsPreAuth(true);
+        $payment->setPaymentDetails($paymentDetails);
 
         $expectedResult = [
             'api_secret' => 'test-api-secret',
@@ -89,8 +62,15 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
             'shipping_address' => $shippingAddress,
             'request_details' => $requestDetails,
             'mit' => false,
+            'site_id' => 123,
+            'payment_details' => [
+                'payment_method' => 'card',
+                'card_number' => '4111111111111111',
+                'name_on_card' => 'Joe Doe',
+            ],
+            'is_preauth' => true,
         ];
 
-        $this->assertEquals($expectedResult, $payment->getBaseFields());
+        $this->assertEquals($expectedResult, $payment->jsonSerialize());
     }
 }
