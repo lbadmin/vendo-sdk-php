@@ -94,12 +94,6 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $creditCardPayment->setRequestDetails($request);
 
-/**
- * @todo remove before merge
- */
-$creditCardPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
-$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
-$ccDetails->setIsPreAuth(true);
     $response = $creditCardPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";

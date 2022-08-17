@@ -55,11 +55,6 @@ try {
     $payment->setPaymentDetails($paymentDetails);
     $payment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
 
-/**
- * @todo remove before merge
- */
-$customer->setEmail('qa+epag+test@vendoservices.com');
-
     $customer->setLanguageCode('en');
     /** PIX payments are supported for Brazil only */
     $customer->setCountryCode('BR');

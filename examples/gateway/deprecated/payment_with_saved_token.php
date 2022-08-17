@@ -70,14 +70,6 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $tokenPayment->setRequestDetails($request);
 
-/**
- * @todo remove before merge
- */
-$tokenPayment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
-$tokenPayment->setSiteId(85133);//Your Vendo Site ID
-$token->setToken('97aa5f20e8a163d97c30fb67bfc048d8');//this is a dummy example, get it from your database or use a token from a previous test
-
-
     $response = $tokenPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
