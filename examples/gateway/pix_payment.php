@@ -16,7 +16,6 @@ try {
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $payment->setIsTest(true);
 
-    //You must set the flag below to TRUE if you're processing a recurring billing transaction
     $payment->setIsMerchantInitiatedTransaction(false);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
@@ -98,7 +97,7 @@ try {
         echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
         echo "\nThe payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
         echo "\nThe Payment Details Token is: ". $response->getPaymentToken();
-        echo "\nYou must save the payment details token if you need or want to process future recurring billing or one-clicks\n";
+        echo "\nYou must save the payment details token if you need or want to process one-clicks\n";
         echo "\nThis is your transaction reference (the one you set it in the request): " . $response->getExternalReferences()->getTransactionReference();
     } elseif ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_NOT_OK) {
         echo "The transaction failed.";
