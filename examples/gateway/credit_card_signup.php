@@ -7,7 +7,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardSignup = new \VendoSdk\Gateway\Signup();
+    $creditCardSignup = new \VendoSdk\Gateway\Payment();
     $creditCardSignup->setApiSecret('your_secret_api_secret');
 
     $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
