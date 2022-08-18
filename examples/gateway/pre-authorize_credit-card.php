@@ -15,6 +15,11 @@ try {
     $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardPayment->setIsTest(true);
 
+    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
+    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
+    // the CapturePayment class.
+    $creditCardPayment->setIsPreAuth(true);
+
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_999');
     $creditCardPayment->setExternalReferences($externalRef);
@@ -38,11 +43,6 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-
-    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
-    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
-    // the CapturePayment class.
-    $ccDetails->setIsPreAuth(true);
     $creditCardPayment->setPaymentDetails($ccDetails);
 
     /**

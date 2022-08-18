@@ -18,6 +18,11 @@ try {
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
     $creditCardPayment->setIsMerchantInitiatedTransaction(false);
 
+    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
+    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
+    // the CapturePayment class.
+    $creditCardPayment->setIsPreAuth(false);
+
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
     $creditCardPayment->setExternalReferences($externalRef);
@@ -48,11 +53,6 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-
-    //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
-    // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
-    // the CapturePayment class.
-    $ccDetails->setIsPreAuth(false);
     $creditCardPayment->setPaymentDetails($ccDetails);
 
     /**

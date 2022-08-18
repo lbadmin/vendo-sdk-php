@@ -16,8 +16,6 @@ class CreditCard implements PaymentDetails, \JsonSerializable
     protected $cvv;
     /** @var string */
     protected $nameOnCard;
-    /** @var bool */
-    protected $isPreAuth = false;
 
     /**
      * @return string
@@ -100,22 +98,6 @@ class CreditCard implements PaymentDetails, \JsonSerializable
     public function setNameOnCard(string $nameOnCard): void
     {
         $this->nameOnCard = $nameOnCard;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPreAuth(): bool
-    {
-        return $this->isPreAuth;
-    }
-
-    /**
-     * @param bool $isPreAuth
-     */
-    public function setIsPreAuth(bool $isPreAuth)
-    {
-        $this->isPreAuth = $isPreAuth;
     }
 
     /**

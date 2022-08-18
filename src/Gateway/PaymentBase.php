@@ -87,6 +87,28 @@ abstract class PaymentBase
     }
 
     /**
+     * @return bool
+     */
+    public function isPreAuth(): bool
+    {
+        return $this->isPreAuth;
+    }
+
+    /**
+     * Set this flag to true when you do not want to capture the transaction amount immediately but only validate the
+     * payment details and block (reserve) the amount.
+     * The capture of a preauth-only transaction can be performed with the CapturePayment class.
+     *
+     * Should be used only with payment methods that support pre-auth e.g. CreditCard.
+     *
+     * @param bool $isPreAuth
+     */
+    public function setIsPreAuth(bool $isPreAuth): void
+    {
+        $this->isPreAuth = $isPreAuth;
+    }
+
+    /**
      * @return float
      */
     public function getAmount(): float

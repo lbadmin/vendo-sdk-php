@@ -10,6 +10,9 @@ use VendoSdk\Exception;
  */
 class Payment extends PaymentBase implements \JsonSerializable
 {
+    /** @var bool */
+    protected $isPreAuth = false;
+
     /**
      * @inheritdoc
      */
@@ -27,10 +30,7 @@ class Payment extends PaymentBase implements \JsonSerializable
         $fields = $this->getBaseFields();
         $fields['site_id'] = $this->getSiteId();
         $fields['payment_details'] = $this->getPaymentDetails()->jsonSerialize();
-
-        if (method_exists($this->paymentDetails, 'isPreAuth')) {
-            $fields['preauth_only'] = $this->paymentDetails->isPreAuth();
-        }
+        $fields['preauth_only'] = $this->isPreAuth();
 
         return $fields;
     }

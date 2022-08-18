@@ -38,6 +38,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setRequestDetails($requestDetails);
         $payment->setItems($items);
         $payment->setSiteId(123);
+        $payment->setIsPreAuth(true);
 
         $paymentDetails = $this->createPartialMock(CreditCard::class, [
             'jsonSerialize',
@@ -47,7 +48,6 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
            'card_number' => '4111111111111111',
            'name_on_card' => 'Joe Doe',
         ]);
-        $paymentDetails->setIsPreAuth(true);
         $payment->setPaymentDetails($paymentDetails);
 
         $expectedResult = [

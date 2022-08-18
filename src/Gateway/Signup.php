@@ -83,9 +83,7 @@ class Signup extends PaymentBase implements \JsonSerializable
     {
         $fields = $this->getBaseFields();
         $fields['site_id'] = $this->getSiteId();
-        if (method_exists($this->paymentDetails, 'isPreAuth')) {
-            $fields['preauth_only'] = $this->paymentDetails->isPreAuth();
-        }
+        $fields['preauth_only'] = $this->isPreAuth();
         $fields['payment_details'] = $this->getPaymentDetails();
         $fields['subscription_schedule'] = $this->getSubscriptionSchedule();
 

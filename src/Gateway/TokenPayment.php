@@ -2,7 +2,6 @@
 namespace VendoSdk\Gateway;
 
 use VendoSdk\Exception;
-use VendoSdk\Gateway\Request\Details\CreditCard;
 use VendoSdk\Gateway\Request\Details\Token;
 
 /**
