@@ -7,7 +7,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardSignup = new \VendoSdk\Gateway\CreditCardSignup();
+    $creditCardSignup = new \VendoSdk\Gateway\Payment();
     $creditCardSignup->setApiSecret('your_secret_api_secret');
 
     $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
@@ -54,7 +54,7 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardSignup->setCreditCardDetails($ccDetails);
+    $creditCardSignup->setPaymentDetails($ccDetails);
 
     /**
      * Customer details

@@ -7,7 +7,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $tokenPayment = new \VendoSdk\Gateway\TokenPayment();
+    $tokenPayment = new \VendoSdk\Gateway\Payment();
     $tokenPayment->setApiSecret('your_secret_api_secret');
     $tokenPayment->setMerchantId(1);//Your Vendo Merchant ID
     $tokenPayment->setSiteId(1);//Your Vendo Site ID
@@ -45,7 +45,7 @@ try {
      */
     $token = new \VendoSdk\Gateway\Request\Details\Token();
     $token->setToken('cfc715414b5231e1302ef559be109d38');//this is a dummy example, get it from your database or use a token from a previous test
-    $tokenPayment->setPaymentDetailsToken($token);
+    $tokenPayment->setPaymentDetails($token);
 
     /**
      * Shipping details. This is required.

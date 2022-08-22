@@ -4,6 +4,12 @@ namespace VendoSdk\Gateway;
 use VendoSdk\Exception;
 use VendoSdk\Gateway\Request\Details\CreditCard;
 
+/**
+ * Class CreditCardPayment
+ * @package VendoSdk\Gateway
+ *
+ * @deprecated please use VendoSdk\Gateway\Payment instead
+ */
 class CreditCardPayment extends PaymentBase implements \JsonSerializable
 {
     /** @var CreditCard */

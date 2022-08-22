@@ -5,6 +5,12 @@ use VendoSdk\Exception;
 use VendoSdk\Gateway\Request\Details\CreditCard;
 use VendoSdk\Gateway\Request\Details\SubscriptionSchedule;
 
+/**
+ * Class CreditCardSignup
+ * @package VendoSdk\Gateway
+ *
+ * @deprecated use Payment class instead. see example: php ./examples/gateway/credit_card_signup.php
+ */
 class CreditCardSignup extends PaymentBase implements \JsonSerializable
 {
     /** @var CreditCard */

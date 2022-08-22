@@ -3,7 +3,7 @@ namespace VendoSdk\Gateway\Request\Details;
 
 use VendoSdk\Exception;
 
-class CreditCard implements \JsonSerializable
+class CreditCard implements PaymentDetails, \JsonSerializable
 {
 
     /** @var string */

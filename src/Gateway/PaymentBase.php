@@ -8,6 +8,7 @@ use VendoSdk\Exception;
 use VendoSdk\Gateway\Request\Details\Customer;
 use VendoSdk\Gateway\Request\Details\ExternalReferences;
 use VendoSdk\Gateway\Request\Details\Item;
+use VendoSdk\Gateway\Request\Details\PaymentDetails;
 use VendoSdk\Gateway\Request\Details\Request;
 use VendoSdk\Gateway\Request\Details\ShippingAddress;
 use VendoSdk\Gateway\Response\PaymentResponse;
@@ -45,6 +46,8 @@ abstract class PaymentBase
     protected $items;
     /** @var ?Customer */
     protected $customerDetails;
+    /** @var PaymentDetails */
+    protected $paymentDetails;
     /** @var ShippingAddress */
     protected $shippingAddress;
     /** @var Request */
@@ -81,6 +84,28 @@ abstract class PaymentBase
     public function setSiteId(int $siteId): void
     {
         $this->siteId = $siteId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreAuth(): bool
+    {
+        return $this->isPreAuth;
+    }
+
+    /**
+     * Set this flag to true when you do not want to capture the transaction amount immediately but only validate the
+     * payment details and block (reserve) the amount.
+     * The capture of a preauth-only transaction can be performed with the CapturePayment class.
+     *
+     * Should be used only with payment methods that support pre-auth e.g. CreditCard.
+     *
+     * @param bool $isPreAuth
+     */
+    public function setIsPreAuth(bool $isPreAuth): void
+    {
+        $this->isPreAuth = $isPreAuth;
     }
 
     /**
@@ -354,6 +379,22 @@ abstract class PaymentBase
     }
 
     /**
+     * @return PaymentDetails
+     */
+    public function getPaymentDetails()
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param PaymentDetails $paymentDetails
+     */
+    public function setPaymentDetails(PaymentDetails $paymentDetails): void
+    {
+        $this->paymentDetails = $paymentDetails;
+    }
+
+    /**
      * @return array
      */
     protected function getBaseFields(): array
@@ -369,6 +410,7 @@ abstract class PaymentBase
             'customer_details' => $this->getCustomerDetails(),
             'shipping_address' => $this->getShippingAddress(),
             'request_details' => $this->getRequestDetails(),
+            'payment_details' => $this->getPaymentDetails(),
             'mit' => $this->isMerchantInitiatedTransaction(),
         ];
     }
