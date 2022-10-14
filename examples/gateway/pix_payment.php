@@ -10,7 +10,7 @@ try {
     $payment = new \VendoSdk\Gateway\Payment();
     $payment->setApiSecret('your_secret_api_secret');
     $payment->setMerchantId(1);//Your Vendo Merchant ID
-    $payment->setSiteId(85133);//Your Vendo Site ID
+    $payment->setSiteId(1);//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
@@ -52,7 +52,6 @@ try {
      */
     $paymentDetails = new \VendoSdk\Gateway\Request\Details\Pix();
     $payment->setPaymentDetails($paymentDetails);
-    $payment->setApiSecret('c6612ce609bfa97372afe485fc35244359d693833d6bc1ba5977563e53075293');
 
     $customer->setLanguageCode('en');
     /** PIX payments are supported for Brazil only */
