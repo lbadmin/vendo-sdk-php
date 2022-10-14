@@ -8,12 +8,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $payment = new \VendoSdk\Gateway\Payment();
-    //@todo $payment->setApiSecret('your_secret_api_secret');
-    $payment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
+    $payment->setApiSecret('your_secret_api_secret');
     $payment->setMerchantId(1);//Your Vendo Merchant ID
 
-    //@todo $payment->setSiteId(1);//Your Vendo Site ID
-    $payment->setSiteId(85133);//Your Vendo Site ID
+    $payment->setSiteId(1);//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
@@ -48,8 +46,7 @@ try {
     $customer = new \VendoSdk\Gateway\Request\Details\Customer();
     $customer->setFirstName('John');
     $customer->setLastName('Doe');
-    //@todo $customer->setEmail('john.doe.test@thisisatest.test');
-    $customer->setEmail('qa+john.doe.test.' . \uniqid(). '@vendoservices.com');
+    $customer->setEmail('john.doe.test@thisisatest.test');
 
     /**
      * Payment details

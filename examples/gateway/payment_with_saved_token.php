@@ -8,9 +8,9 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $tokenPayment = new \VendoSdk\Gateway\Payment();
-    $tokenPayment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
+    $tokenPayment->setApiSecret('your_secret_api_secret');
     $tokenPayment->setMerchantId(1);//Your Vendo Merchant ID
-    $tokenPayment->setSiteId(85133);//Your Vendo Site ID
+    $tokenPayment->setSiteId(1);//Your Vendo Site ID
     $tokenPayment->setAmount(10.50);
     $tokenPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $tokenPayment->setIsTest(true);
@@ -44,7 +44,7 @@ try {
      * Provide the token of the payment details that were used by this user for this site
      */
     $token = new \VendoSdk\Gateway\Request\Details\Token();
-    $token->setToken('c955302886bdcfd5a67d1945540fcf82');//this is a dummy example, get it from your database or use a token from a previous test
+    $token->setToken('cfc715414b5231e1302ef559be109d38');//this is a dummy example, get it from your database or use a token from a previous test
     $tokenPayment->setPaymentDetails($token);
 
     /**
