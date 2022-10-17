@@ -12,7 +12,7 @@ class CryptoPaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function testCryptoPaymentSuccess()
     {
-        $payment = new \VendoSdk\Gateway\Payment();
+        $payment = self::createPartialMock(\VendoSdk\Gateway\Payment::class, ['getHttpRequest']);
         $payment->setApiSecret('your_secret_api_secret');
 
         $payment->setMerchantId(1);//Your Vendo Merchant ID
@@ -20,6 +20,7 @@ class CryptoPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setAmount(10.50);
         $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
         $payment->setIsTest(true);
+        $payment->setIsMerchantInitiatedTransaction(false);
 
         $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
         $externalRef->setTransactionReference('your_tx_reference_123');
@@ -103,6 +104,15 @@ class CryptoPaymentTest extends \PHPUnit\Framework\TestCase
         $httpClient->method('send')->willReturn($response);
 
         $payment->setHttpClient($httpClient);
+        $payment->expects(self::once())->method('getHttpRequest')
+            ->with(
+                'POST',
+                'https://secure.vend-o.com/api/gateway/payment',
+                [],
+                '{"api_secret":"your_secret_api_secret","is_test":1,"merchant_id":1,"amount":10.5,"currency":"USD","external_references":{"transaction_reference":"your_tx_reference_123"},"items":[{"item_id":123,"item_description":"Registration fee","item_price":4,"item_quantity":1},{"item_id":123,"item_description":"Unlimited video download","item_price":6.5,"item_quantity":1}],"customer_details":{"first_name":"John","last_name":"Doe","language":"en","email":"john.doe.test@thisisatest.test","country":"BR","national_identifier":"723.785.048-29"},"shipping_address":{"first_name":"John","last_name":"Doe","address":"123 Example Street","city":"Miami","state":"FL","country":"BR","postal_code":"33000","phone":"1000000000"},"request_details":null,"payment_details":{"payment_method":"crypto"},"mit":false,"site_id":1,"preauth_only":false}',
+                '1.1'
+            );
+
         $payment->postRequest();
 
         $this->assertEquals(true, $payment->isTest());
