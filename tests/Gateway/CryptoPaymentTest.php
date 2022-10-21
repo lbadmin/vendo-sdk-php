@@ -4,13 +4,13 @@ namespace VendoSdkUnit\Gateway;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\Gateway\Request\Details\Pix;
+use VendoSdk\Gateway\Request\Details\Crypto;
 use VendoSdk\Gateway\Request\Details\Request;
 use VendoSdk\Vendo;
 
-class PixPaymentTest extends \PHPUnit\Framework\TestCase
+class CryptoPaymentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testPixPaymentSuccess()
+    public function testCryptoPaymentSuccess()
     {
         $payment = self::createPartialMock(\VendoSdk\Gateway\Payment::class, ['getHttpRequest']);
         $payment->setApiSecret('your_secret_api_secret');
@@ -55,7 +55,7 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $customer->setNationalIdentifier('723.785.048-29');
         $payment->setCustomerDetails($customer);
 
-        $payment->setPaymentDetails(new Pix());
+        $payment->setPaymentDetails(new Crypto());
 
         /**
          * Shipping details. This is required.
@@ -109,7 +109,7 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
                 'POST',
                 'https://secure.vend-o.com/api/gateway/payment',
                 [],
-                '{"api_secret":"your_secret_api_secret","is_test":1,"merchant_id":1,"amount":10.5,"currency":"USD","external_references":{"transaction_reference":"your_tx_reference_123"},"items":[{"item_id":123,"item_description":"Registration fee","item_price":4,"item_quantity":1},{"item_id":123,"item_description":"Unlimited video download","item_price":6.5,"item_quantity":1}],"customer_details":{"first_name":"John","last_name":"Doe","language":"en","email":"john.doe.test@thisisatest.test","country":"BR","national_identifier":"723.785.048-29"},"shipping_address":{"first_name":"John","last_name":"Doe","address":"123 Example Street","city":"Miami","state":"FL","country":"BR","postal_code":"33000","phone":"1000000000"},"request_details":null,"payment_details":{"payment_method":"pix"},"mit":false,"site_id":1,"preauth_only":false}',
+                '{"api_secret":"your_secret_api_secret","is_test":1,"merchant_id":1,"amount":10.5,"currency":"USD","external_references":{"transaction_reference":"your_tx_reference_123"},"items":[{"item_id":123,"item_description":"Registration fee","item_price":4,"item_quantity":1},{"item_id":123,"item_description":"Unlimited video download","item_price":6.5,"item_quantity":1}],"customer_details":{"first_name":"John","last_name":"Doe","language":"en","email":"john.doe.test@thisisatest.test","country":"BR","national_identifier":"723.785.048-29"},"shipping_address":{"first_name":"John","last_name":"Doe","address":"123 Example Street","city":"Miami","state":"FL","country":"BR","postal_code":"33000","phone":"1000000000"},"request_details":null,"payment_details":{"payment_method":"crypto"},"mit":false,"site_id":1,"preauth_only":false}',
                 '1.1'
             );
 
@@ -122,7 +122,7 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('{"status":2,"external_references":{"transaction_reference":"your_tx_reference_123"},"transaction":{"id":240168518,"amount":"10.50","currency":"USD","datetime":"2022-06-15T15:31:14+01:00"},"result":{"code":6307,"message":"Vendo Risk rules requires verification for this transaction.","verification_url":"https:\/\/secure.vend-o.com\/v\/verification?transaction_id=240168641&systemsignature=PyZaal0pUxehT2A-MfSgNSH0mfA"},"request_id":"yij_234"}', $payment->getRawResponse());
     }
 
-    public function testPixPaymentError()
+    public function testCryptoPaymentError()
     {
         $payment = new \VendoSdk\Gateway\Payment();
         $payment->setApiSecret('your_secret_api_secret');
@@ -137,7 +137,7 @@ class PixPaymentTest extends \PHPUnit\Framework\TestCase
         $externalRef->setTransactionReference('your_tx_reference_123');
         $payment->setExternalReferences($externalRef);
 
-        $payment->setPaymentDetails(new Pix());
+        $payment->setPaymentDetails(new Crypto());
 
         /**
          * Add items to your request, you can add one or more
