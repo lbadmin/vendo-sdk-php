@@ -15,10 +15,6 @@ try {
     $tokenPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $tokenPayment->setIsTest(true);
 
-//@todo remove before merge
-$tokenPayment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
-$tokenPayment->setSiteId(85133);//Your Vendo Site ID
-
     //You must set the flag below to TRUE if you're processing a recurring billing transaction or if you initiated this
     //payment on behalf of your user.
     $tokenPayment->setIsMerchantInitiatedTransaction(false);
