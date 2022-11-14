@@ -52,6 +52,8 @@ abstract class PaymentBase
     protected $shippingAddress;
     /** @var Request */
     protected $requestDetails;
+    /** @var bool */
+    protected $isNonRecurring = false;
 
     public function __construct()
     {
@@ -316,6 +318,22 @@ abstract class PaymentBase
     }
 
     /**
+     * @return bool
+     */
+    public function isNonRecurring(): bool
+    {
+        return $this->isNonRecurring;
+    }
+
+    /**
+     * @param bool $isNonRecurring
+     */
+    public function setIsNonRecurring(bool $isNonRecurring): void
+    {
+        $this->isNonRecurring = $isNonRecurring;
+    }
+
+    /**
      * Post the request to Vendo's Gateway API
      *
      * @return PaymentResponse
@@ -412,8 +430,7 @@ abstract class PaymentBase
             'request_details' => $this->getRequestDetails(),
             'payment_details' => $this->getPaymentDetails(),
             'mit' => $this->isMerchantInitiatedTransaction(),
+            'non_recurring' => $this->isNonRecurring(),
         ];
     }
-
-
 }

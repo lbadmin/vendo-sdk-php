@@ -7,29 +7,30 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardPayment = new \VendoSdk\Gateway\Payment();
-    $creditCardPayment->setApiSecret('your_secret_api_secret');
-    $creditCardPayment->setMerchantId(1);//Your Vendo Merchant ID
-    $creditCardPayment->setSiteId(1);//Your Vendo Site ID
-    $creditCardPayment->setAmount(10.50);
-    $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
-    $creditCardPayment->setIsTest(true);
+    $creditCardSignup = new \VendoSdk\Gateway\Payment();
+    $creditCardSignup->setApiSecret('your_secret_api_secret');
+
+    $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
+    $creditCardSignup->setSiteId(1);//Your Vendo Site ID
+    $creditCardSignup->setAmount(10.50);
+    $creditCardSignup->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
+    $creditCardSignup->setIsTest(true);
 
 //@todo remove before merge
-$creditCardPayment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
-$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
+$creditCardSignup->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
+$creditCardSignup->setSiteId(85133);//Your Vendo Site ID
 
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $creditCardPayment->setIsMerchantInitiatedTransaction(false);
+    $creditCardSignup->setIsMerchantInitiatedTransaction(false);
 
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
     // the CapturePayment class.
-    $creditCardPayment->setIsPreAuth(false);
+    $creditCardSignup->setIsPreAuth(false);
 
     $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
-    $creditCardPayment->setExternalReferences($externalRef);
+    $creditCardSignup->setExternalReferences($externalRef);
 
     /**
      * Add items to your request, you can add one or more
@@ -39,14 +40,14 @@ $creditCardPayment->setSiteId(85133);//Your Vendo Site ID
     $cartItem->setDescription('Registration fee');//your product description
     $cartItem->setPrice(4.00);
     $cartItem->setQuantity(1);
-    $creditCardPayment->addItem($cartItem);
+    $creditCardSignup->addItem($cartItem);
 
     $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
     $cartItem2->setId(123);//set your product id
     $cartItem2->setDescription('Unlimited video download');//your product description
     $cartItem2->setPrice(6.50);
     $cartItem2->setQuantity(1);
-    $creditCardPayment->addItem($cartItem2);
+    $creditCardSignup->addItem($cartItem2);
 
     /**
      * Provide the credit card details that you collected from the user
@@ -57,7 +58,7 @@ $creditCardPayment->setSiteId(85133);//Your Vendo Site ID
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardPayment->setPaymentDetails($ccDetails);
+    $creditCardSignup->setPaymentDetails($ccDetails);
 
     /**
      * Customer details
@@ -68,7 +69,7 @@ $creditCardPayment->setSiteId(85133);//Your Vendo Site ID
     $customer->setEmail('john.doe.test@thisisatest.test');
     $customer->setLanguageCode('en');
     $customer->setCountryCode('US');
-    $creditCardPayment->setCustomerDetails($customer);
+    $creditCardSignup->setCustomerDetails($customer);
 
     /**
      * Shipping details. This is required.
@@ -88,7 +89,11 @@ $creditCardPayment->setSiteId(85133);//Your Vendo Site ID
     $shippingAddress->setState('FL');
     $shippingAddress->setPostalCode('33000');
     $shippingAddress->setPhone('1000000000');
-    $creditCardPayment->setShippingAddress($shippingAddress);
+    $creditCardSignup->setShippingAddress($shippingAddress);
+
+    //subscription schedule
+    //you need to send "non_recurring" flag set to true OR subscription_schedule, but not both
+    $creditCardSignup->setIsNonRecurring(true);
 
     /**
      * User request details
@@ -96,9 +101,9 @@ $creditCardPayment->setSiteId(85133);//Your Vendo Site ID
     $request = new \VendoSdk\Gateway\Request\Details\Request();
     $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
-    $creditCardPayment->setRequestDetails($request);
+    $creditCardSignup->setRequestDetails($request);
 
-    $response = $creditCardPayment->postRequest();
+    $response = $creditCardSignup->postRequest();
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::GATEWAY_STATUS_OK) {
