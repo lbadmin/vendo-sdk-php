@@ -44,7 +44,7 @@ try {
      * Provide the token of the payment details that were used by this user for this site
      */
     $token = new \VendoSdk\Gateway\Request\Details\Token();
-    $token->setToken('300ab4f79e037291fe748979e59c60d7');//this is a dummy example, get it from your database or use a token from a previous test
+    $token->setToken('cfc715414b5231e1302ef559be109d38');//this is a dummy example, get it from your database or use a token from a previous test
     $tokenPayment->setPaymentDetails($token);
 
     /**
