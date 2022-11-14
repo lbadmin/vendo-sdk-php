@@ -1,7 +1,6 @@
 <?php
 /**
- * This example shows you how to process a credit card transaction.
- * You can use the payment detail token returned in this example to run the example in payment_with_saved_token.php
+ * This example shows you how to process a credit card signup if no recurring fees are planned.
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
