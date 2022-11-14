@@ -88,6 +88,8 @@ try {
 
     //subscription schedule
     //you need to send "non_recurring" flag set to true OR subscription_schedule, but not both
+
+    //this is an example of non-recurring signup
     $creditCardSignup->setIsNonRecurring(true);
 
     /**
