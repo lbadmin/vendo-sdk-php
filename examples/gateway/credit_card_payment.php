@@ -15,9 +15,6 @@ try {
     $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardPayment->setIsTest(true);
 
-//$creditCardPayment->setApiSecret('23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
-//$creditCardPayment->setSiteId(85133);//Your Vendo Site ID
-
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
     $creditCardPayment->setIsMerchantInitiatedTransaction(false);
 
