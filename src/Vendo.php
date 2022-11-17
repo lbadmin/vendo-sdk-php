@@ -10,7 +10,9 @@ final class Vendo
     const CURRENCY_GBP = 'GBP';
     const CURRENCY_JPY = 'JPY';
 
-    const BASE_URL = 'https://secure.vend-o.com';
+//    const BASE_URL = 'https://secure.vend-o.com';
+
+const BASE_URL = 'https://secure.staging.aws.vend-o.com';
 
     const GATEWAY_STATUS_NOT_OK = 0;
     const GATEWAY_STATUS_OK = 1;
