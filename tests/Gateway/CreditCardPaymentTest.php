@@ -69,6 +69,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
                 'name_on_card' => 'Joe Doe',
             ],
             'preauth_only' => true,
+            'non_recurring' => false,
         ];
 
         $this->assertEquals($expectedResult, $payment->jsonSerialize());

@@ -18,6 +18,9 @@ try {
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
     $creditCardPayment->setIsMerchantInitiatedTransaction(false);
 
+    //You may add non_recurring flag to mark no merchant initiated transactions (rebills) will follow, required by some banks
+    $creditCardPayment->setIsNonRecurring(true);
+
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
     // the CapturePayment class.
