@@ -13,14 +13,11 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetTokenDetails()
     {
-        $payment = $this->createPartialMock(Payment::class, [
-            'getBaseFields',
-        ]);
+        $payment = new Payment();
 
-        $payment->method('getBaseFields')->willReturn([
-            'base key1' => 'base value 1',
-        ]);
-
+        $payment->setApiSecret('test-api-secret');
+        $payment->setIsTest(1);
+        $payment->setMerchantId(123);
         $payment->setSiteId(12345);
         $payment->setAmount(9.95);
         $payment->setCurrency('EUR');
@@ -37,7 +34,9 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
         $actualResult = $payment->jsonSerialize();
 
         self::assertSame([
-            'base key1' => 'base value 1',
+            'api_secret' => 'test-api-secret',
+            'is_test' => 1,
+            'merchant_id' => 123,
             'site_id' => 12345,
             'amount' => 9.95,
             'currency' => 'EUR',

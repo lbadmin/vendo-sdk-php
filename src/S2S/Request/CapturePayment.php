@@ -53,7 +53,7 @@ class CapturePayment extends AbstractApiBase
      */
     public function jsonSerialize()
     {
-        return array_merge($this->getBaseFields(), [
+        return array_merge(parent::jsonSerialize(), [
             'transaction_id' => $this->getTransactionId(),
         ]);
     }

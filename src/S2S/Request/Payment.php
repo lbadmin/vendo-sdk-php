@@ -314,7 +314,7 @@ class Payment extends AbstractApiBase
      */
     public function jsonSerialize()
     {
-        return array_merge($this->getBaseFields(), [
+        return array_merge(parent::jsonSerialize(), [
             'site_id' => $this->getSiteId(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),

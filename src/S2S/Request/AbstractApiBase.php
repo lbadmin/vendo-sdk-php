@@ -162,22 +162,14 @@ abstract class AbstractApiBase implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return array|mixed
      */
-    protected function getBaseFields(): array
+    public function jsonSerialize()
     {
         return [
             'api_secret' => $this->getApiSecret(),
             'is_test' => (int)$this->isTest(),
             'merchant_id' => $this->getMerchantId(),
         ];
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function jsonSerialize()
-    {
-        return $this->getBaseFields();
     }
 }
