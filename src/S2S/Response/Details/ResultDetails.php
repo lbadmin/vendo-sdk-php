@@ -1,5 +1,5 @@
 <?php
-namespace VendoSdk\S2S\Request\Response\Details;
+namespace VendoSdk\S2S\Response\Details;
 
 class ResultDetails
 {

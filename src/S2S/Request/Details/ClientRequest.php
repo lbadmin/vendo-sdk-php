@@ -3,11 +3,11 @@ namespace VendoSdk\S2S\Request\Details;
 
 use VendoSdk\Exception;
 
-class Request implements \JsonSerializable
+class ClientRequest implements \JsonSerializable
 {
     /** @var string */
     protected $ipAddress;
-    
+
     /** @var ?string */
     protected $browserUserAgent;
 

@@ -1,13 +1,13 @@
 <?php
-namespace VendoSdk\S2S\Request\Response;
+namespace VendoSdk\S2S\Response;
 
 use VendoSdk\Exception;
-use VendoSdk\S2S\Request\Response\Details\CreditCardPaymentResult;
-use VendoSdk\S2S\Request\Response\Details\ExternalReferences;
-use VendoSdk\S2S\Request\Response\Details\ResultDetails;
-use VendoSdk\S2S\Request\Response\Details\SepaPaymentResult;
-use VendoSdk\S2S\Request\Response\Details\Subscription;
-use VendoSdk\S2S\Request\Response\Details\Transaction;
+use VendoSdk\S2S\Response\Details\CreditCardPaymentResult;
+use VendoSdk\S2S\Response\Details\ExternalReferences;
+use VendoSdk\S2S\Response\Details\ResultDetails;
+use VendoSdk\S2S\Response\Details\SepaPaymentResult;
+use VendoSdk\S2S\Response\Details\Subscription;
+use VendoSdk\S2S\Response\Details\Transaction;
 use VendoSdk\Vendo;
 
 class SubscriptionResponse

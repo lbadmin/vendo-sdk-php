@@ -1,30 +1,24 @@
 <?php
 
-namespace VendoSdkUnit\Gateway;
+namespace VendoSdkUnit\S2S;
 
-use VendoSdk\Gateway\Payment;
-use VendoSdk\Gateway\Request\Details\CreditCard;
-use VendoSdk\Gateway\Request\Details\Customer;
-use VendoSdk\Gateway\Request\Details\ExternalReferences;
-use VendoSdk\Gateway\Request\Details\Item;
-use VendoSdk\Gateway\Request\Details\Request;
-use VendoSdk\Gateway\Request\Details\ShippingAddress;
+use VendoSdk\S2S\Request\Payment;
+use VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard;
+use VendoSdk\S2S\Request\Details\Customer;
+use VendoSdk\S2S\Request\Details\ExternalReferences;
+use VendoSdk\S2S\Request\Details\Item;
+use VendoSdk\S2S\Request\Details\ClientRequest;
+use VendoSdk\S2S\Request\Details\ShippingAddress;
 
 class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testApiEndpoint()
-    {
-        $payment = new Payment();
-        self::assertEquals('https://secure.vend-o.com/api/gateway/payment', $payment->getApiEndpoint());
-    }
-
     public function testGetBaseFields()
     {
         $externalReferences = $this->createMock(ExternalReferences::class);
         $items = [$this->createMock(Item::class)];
         $customerDetails = $this->createMock(Customer::class);
         $shippingAddress = $this->createMock(ShippingAddress::class);
-        $requestDetails = $this->createMock(Request::class);
+        $requestDetails = $this->createMock(ClientRequest::class);
 
         $payment = new Payment();
         $payment->setApiSecret('test-api-secret');
@@ -38,7 +32,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setRequestDetails($requestDetails);
         $payment->setItems($items);
         $payment->setSiteId(123);
-        $payment->setIsPreAuth(true);
+        $payment->setPreAuthOnly(true);
 
         $paymentDetails = $this->createPartialMock(CreditCard::class, [
             'jsonSerialize',
@@ -56,11 +50,11 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
             'merchant_id' => 123,
             'amount' => 12.34,
             'currency' => 'USD',
-            'external_references' => $externalReferences,
+            'external_references' => null,
             'items' => $items,
-            'customer_details' => $customerDetails,
-            'shipping_address' => $shippingAddress,
-            'request_details' => $requestDetails,
+            'customer_details' => null,
+            'shipping_address' => null,
+            'request_details' => null,
             'mit' => false,
             'site_id' => 123,
             'payment_details' => [
@@ -70,6 +64,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
             ],
             'preauth_only' => true,
             'non_recurring' => false,
+            'subscription_schedule' => null,
         ];
 
         $this->assertEquals($expectedResult, $payment->jsonSerialize());

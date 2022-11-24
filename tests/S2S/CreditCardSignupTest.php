@@ -1,17 +1,17 @@
 <?php
 
-namespace VendoSdkUnit\Gateway;
+namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\Gateway\Request\Details\Request;
+use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\Vendo;
 
 class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreditCardSignupSuccess()
     {
-        $creditCardSignup = new \VendoSdk\Gateway\CreditCardSignup();
+        $creditCardSignup = new \VendoSdk\S2S\Request\Payment();
         $creditCardSignup->setApiSecret('your_secret_api_secret');
 
         $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
@@ -26,23 +26,23 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
         // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
         // the CapturePayment class.
-        $creditCardSignup->setIsPreAuth(false);
+        $creditCardSignup->setPreAuthOnly(false);
 
-        $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
+        $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
         $externalRef->setTransactionReference('your_tx_reference_123');
         $creditCardSignup->setExternalReferences($externalRef);
 
         /**
          * Add items to your request, you can add one or more
          */
-        $cartItem = new \VendoSdk\Gateway\Request\Details\Item();
+        $cartItem = new \VendoSdk\S2S\Request\Details\Item();
         $cartItem->setId(123);//set your product id
         $cartItem->setDescription('Registration fee');//your product description
         $cartItem->setPrice(4.00);
         $cartItem->setQuantity(1);
         $creditCardSignup->addItem($cartItem);
 
-        $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
+        $cartItem2 = new \VendoSdk\S2S\Request\Details\Item();
         $cartItem2->setId(123);//set your product id
         $cartItem2->setDescription('Unlimited video download');//your product description
         $cartItem2->setPrice(6.50);
@@ -52,18 +52,18 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         /**
          * Provide the credit card details that you collected from the user
          */
-        $ccDetails = new \VendoSdk\Gateway\Request\Details\CreditCard();
+        $ccDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard();
         $ccDetails->setNameOnCard('John Doe');
         $ccDetails->setCardNumber('4111111111111111');//this is a test card number, it will only work for test transactions
         $ccDetails->setExpirationMonth('05');
         $ccDetails->setExpirationYear('2029');
         $ccDetails->setCvv(123);//do not store nor log the CVV
-        $creditCardSignup->setCreditCardDetails($ccDetails);
+        $creditCardSignup->setPaymentDetails($ccDetails);
 
         /**
          * Customer details
          */
-        $customer = new \VendoSdk\Gateway\Request\Details\Customer();
+        $customer = new \VendoSdk\S2S\Request\Details\Customer();
         $customer->setFirstName('John');
         $customer->setLastName('Doe');
         $customer->setEmail('john.doe.test@thisisatest.test');
@@ -74,7 +74,7 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         /**
          * Shipping details. This is required.
          */
-        $shippingAddress = new \VendoSdk\Gateway\Request\Details\ShippingAddress();
+        $shippingAddress = new \VendoSdk\S2S\Request\Details\ShippingAddress();
         $shippingAddress->setFirstName($customer->getFirstName());
         $shippingAddress->setLastName($customer->getLastName());
         $shippingAddress->setAddress($customer->getAddress());
@@ -92,19 +92,19 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         $creditCardSignup->setShippingAddress($shippingAddress);
 
         //subscription schedule
-        $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
+        $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
         $schedule->setRebillDuration(30);//days
         $schedule->setRebillAmount(2.34);//billing currency
         $creditCardSignup->setSubscriptionSchedule($schedule);
 
-        $requestDetails = $this->createMock(Request::class);
+        $requestDetails = $this->createMock(ClientRequest::class);
         $creditCardSignup->setRequestDetails($requestDetails);
 
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_OK,
+            'status' => Vendo::S2S_STATUS_OK,
             'external_references' => [
                 'transaction_reference' => "your_tx_reference_123",
             ],
@@ -134,7 +134,7 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
 
     public function testCreditCardSignupError()
     {
-        $creditCardSignup = new \VendoSdk\Gateway\CreditCardSignup();
+        $creditCardSignup = new \VendoSdk\S2S\Request\Payment();
         $creditCardSignup->setApiSecret('your_secret_api_secret');
 
         $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
@@ -149,23 +149,23 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
         // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
         // the CapturePayment class.
-        $creditCardSignup->setIsPreAuth(false);
+        $creditCardSignup->setPreAuthOnly(false);
 
-        $externalRef = new \VendoSdk\Gateway\Request\Details\ExternalReferences();
+        $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
         $externalRef->setTransactionReference('your_tx_reference_123');
         $creditCardSignup->setExternalReferences($externalRef);
 
         /**
          * Add items to your request, you can add one or more
          */
-        $cartItem = new \VendoSdk\Gateway\Request\Details\Item();
+        $cartItem = new \VendoSdk\S2S\Request\Details\Item();
         $cartItem->setId(123);//set your product id
         $cartItem->setDescription('Registration fee');//your product description
         $cartItem->setPrice(4.00);
         $cartItem->setQuantity(1);
         $creditCardSignup->addItem($cartItem);
 
-        $cartItem2 = new \VendoSdk\Gateway\Request\Details\Item();
+        $cartItem2 = new \VendoSdk\S2S\Request\Details\Item();
         $cartItem2->setId(123);//set your product id
         $cartItem2->setDescription('Unlimited video download');//your product description
         $cartItem2->setPrice(6.50);
@@ -175,18 +175,18 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         /**
          * Provide the credit card details that you collected from the user
          */
-        $ccDetails = new \VendoSdk\Gateway\Request\Details\CreditCard();
+        $ccDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard();
         $ccDetails->setNameOnCard('John Doe');
         $ccDetails->setCardNumber('4111111111111111');//this is a test card number, it will only work for test transactions
         $ccDetails->setExpirationMonth('05');
         $ccDetails->setExpirationYear('2029');
         $ccDetails->setCvv(123);//do not store nor log the CVV
-        $creditCardSignup->setCreditCardDetails($ccDetails);
+        $creditCardSignup->setPaymentDetails($ccDetails);
 
         /**
          * Customer details
          */
-        $customer = new \VendoSdk\Gateway\Request\Details\Customer();
+        $customer = new \VendoSdk\S2S\Request\Details\Customer();
         $customer->setFirstName('John');
         $customer->setLastName('Doe');
         $customer->setEmail('john.doe.test@thisisatest.test');
@@ -197,7 +197,7 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         /**
          * Shipping details. This is required.
          */
-        $shippingAddress = new \VendoSdk\Gateway\Request\Details\ShippingAddress();
+        $shippingAddress = new \VendoSdk\S2S\Request\Details\ShippingAddress();
         $shippingAddress->setFirstName($customer->getFirstName());
         $shippingAddress->setLastName($customer->getLastName());
         $shippingAddress->setAddress($customer->getAddress());
@@ -215,19 +215,19 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         $creditCardSignup->setShippingAddress($shippingAddress);
 
         //subscription schedule
-        $schedule = new \VendoSdk\Gateway\Request\Details\SubscriptionSchedule();
+        $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
         $schedule->setRebillDuration(30);//days
         $schedule->setRebillAmount(2.34);//billing currency
         $creditCardSignup->setSubscriptionSchedule($schedule);
 
-        $requestDetails = $this->createMock(Request::class);
+        $requestDetails = $this->createMock(ClientRequest::class);
         $creditCardSignup->setRequestDetails($requestDetails);
 
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_NOT_OK,
+            'status' => Vendo::S2S_STATUS_NOT_OK,
             'error' => [
                 'code' => '8105',
                 'message' => 'Invalid currency value',

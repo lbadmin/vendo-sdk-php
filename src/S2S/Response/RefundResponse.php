@@ -1,8 +1,8 @@
 <?php
-namespace VendoSdk\S2S\Request\Response;
+namespace VendoSdk\S2S\Response;
 
 use VendoSdk\Exception;
-use VendoSdk\S2S\Request\Response\Details\Transaction;
+use VendoSdk\S2S\Response\Details\Transaction;
 use VendoSdk\Vendo;
 
 class RefundResponse
@@ -39,7 +39,7 @@ class RefundResponse
             $this->setTransactionDetails(new Transaction(['id' => $responseArray['transaction_id']]));
         }
 
-        if ($responseArray['status'] == Vendo::GATEWAY_STATUS_NOT_OK) {
+        if ($responseArray['status'] == Vendo::S2S_STATUS_NOT_OK) {
             $this->setErrorCode($responseArray['error']['code'] ?? null);
             $this->setErrorMessage($responseArray['error']['message'] ?? '-unknown-');
         }

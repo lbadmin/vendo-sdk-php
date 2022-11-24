@@ -1,5 +1,5 @@
 <?php
-namespace VendoSdk\S2S;
+namespace VendoSdk\S2S\Request;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;

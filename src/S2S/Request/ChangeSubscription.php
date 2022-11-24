@@ -1,5 +1,5 @@
 <?php
-namespace VendoSdk\S2S;
+namespace VendoSdk\S2S\Request;
 
 use VendoSdk\Exception;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;

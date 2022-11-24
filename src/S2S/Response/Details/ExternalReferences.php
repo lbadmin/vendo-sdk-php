@@ -1,7 +1,7 @@
 <?php
-namespace VendoSdk\S2S\Request\Response\Details;
+namespace VendoSdk\S2S\Response\Details;
 
-class ExternalReferences extends \VendoSdk\S2S\Request\Request\Details\ExternalReferences
+class ExternalReferences extends \VendoSdk\S2S\Request\Details\ExternalReferences
 {
     /**
      * @param array $extRef

@@ -1,5 +1,7 @@
 <?php
-namespace VendoSdk\S2S\Request\Details;
+namespace VendoSdk\S2S\Request\Details\PaymentMethod;
+
+use VendoSdk\S2S\Request\Details\PaymentDetails;
 
 class Pix implements PaymentDetails, \JsonSerializable
 {

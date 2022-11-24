@@ -1,5 +1,5 @@
 <?php
-namespace VendoSdk\S2S;
+namespace VendoSdk\S2S\Request;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
@@ -8,7 +8,7 @@ use VendoSdk\Exception;
 use VendoSdk\S2S\Request\Details\Customer;
 use VendoSdk\S2S\Request\Details\ExternalReferences;
 use VendoSdk\S2S\Request\Details\Item;
-use VendoSdk\S2S\Request\Details\Request;
+use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Response\PaymentResponse;
 use VendoSdk\S2S\Response\SubscriptionResponse;
@@ -131,17 +131,17 @@ abstract class SubscriptionBase
     }
 
     /**
-     * @return Request
+     * @return ClientRequest
      */
-    public function getRequestDetails(): Request
+    public function getRequestDetails(): ClientRequest
     {
         return $this->requestDetails;
     }
 
     /**
-     * @param Request $requestDetails
+     * @param ClientRequest $requestDetails
      */
-    public function setRequestDetails(Request $requestDetails): void
+    public function setRequestDetails(ClientRequest $requestDetails): void
     {
         $this->requestDetails = $requestDetails;
     }

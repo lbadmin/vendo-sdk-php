@@ -13,7 +13,9 @@ use VendoSdk\S2S\Request\Details\Customer;
 use VendoSdk\S2S\Request\Details\ExternalReferences;
 use VendoSdk\S2S\Request\Details\Item;
 use VendoSdk\S2S\Request\Details\ClientRequest;
+use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
+use VendoSdk\S2S\Request\Payment;
 use VendoSdk\S2S\Response\PaymentResponse;
 use VendoSdk\Vendo;
 
@@ -28,11 +30,17 @@ class TestAbstractApiBase extends AbstractApiBase
     }
 }
 
-class PaymentBaseTest extends \PHPUnit\Framework\TestCase
+class PaymentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testBasePaymentSuccess()
+    public function testApiEndpoint()
     {
-        $payment = new TestAbstractApiBase();
+        $payment = new Payment();
+        self::assertEquals('https://secure.vend-o.com/api/gateway/payment', $payment->getApiEndpoint());
+    }
+
+    public function testPaymentSuccess()
+    {
+        $payment = new Payment();
         $payment->setIsTest(true);
         $payment->setApiSecret('test-secret');
         $payment->setIsTest(true);
@@ -78,45 +86,56 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
         $requestDetails->setIpAddress('10.10.10.111');
         $payment->setRequestDetails($requestDetails);
 
-        $httpClient = $this->createMock(Client::class);
+        $payment->setPaymentDetails($this->createMock(PaymentDetails::class));
 
-        $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_OK,
-            'request_id' => 234,
+        $actualResult = $payment->jsonSerialize();
+
+        $this->assertSame('https://secure.vend-o.com/api/gateway/payment', $payment->getApiEndpoint());
+
+        $this->assertSame([
+            'api_secret' => 'test-secret',
+            'is_test' => 1,
+            'merchant_id' => 1234567,
+            'site_id' => 12345,
+            'amount' => 10.23,
+            'currency' => 'USD',
             'external_references' => [
-                'affiliate_id' => 'affid-123',
-                'campaign_id' => 'campid-234',
-                'program_id' => 'prog_id',
                 'transaction_reference' => 'transref 12345',
+                'program_id' => 'progid456',
+                'campaign_id' => 'campid-234',
+                'affiliate_id' => 'affid-123',
             ],
-            'transaction' => [
-                'id' => 9876543,
-                'amount' => 10.23,
-                'currency' => 'USD',
-                'datetime' => '2021-11-10 14:52:34',
+            'items' => [],
+            'payment_details' => null,
+            'customer_details' => [
+                'first_name' => 'Jan',
+                'last_name' => 'Testovitch',
+                'language' => 'xx',
+                'email' => 'jan.test@test.local',
+                'state' => 'San Escobar',
+                'country' => 'SE',
+                'postal_code' => '00950',
+                'phone' => '+99 555 555 555',
             ],
-            'card_details' => [
-                'auth_code' => 'test-auth-code',
+            'shipping_address' => [
+                'first_name' => 'Sonia',
+                'last_name' => 'Testovitchova',
+                'address' => 'Testova 1',
+                'city' => 'Testovogrod',
+                'state' => 'Don San Escobar',
+                'country' => 'DS',
+                'postal_code' => '00951',
+                'phone' => '88 555 555 555',
             ],
-            'sepa_details' => [
-                'mandate_id' => '123-345',
-                'mandate_signed_date' => '2021-11-10 14:52:34',
+            'request_details' => [
+                'ip_address' => '10.10.10.111',
+                'browser_user_agent' => 'test browser',
             ],
-            'payment_details_token' => 'some-paymentdetails-token-1234abcd',
-        ]));
-        $httpClient->method('send')->willReturn($response);
-
-        $payment->setHttpClient($httpClient);
-        $paymentResponse = $payment->postRequest();
-
-        $this->assertInstanceOf(PaymentResponse::class, $paymentResponse);
-        $this->assertEquals(true, $payment->isTest());
-        $this->assertEquals('https://secure.vend-o.com/api/gateway/test-payment-endpoint', $payment->getApiEndpoint());
-        $this->assertEquals('test-secret', $payment->getApiSecret());
-        $this->assertEquals(1234567, $payment->getMerchantId());
-        $this->assertEquals('{"status":1,"request_id":234,"external_references":{"affiliate_id":"affid-123","campaign_id":"campid-234","program_id":"prog_id","transaction_reference":"transref 12345"},"transaction":{"id":9876543,"amount":10.23,"currency":"USD","datetime":"2021-11-10 14:52:34"},"card_details":{"auth_code":"test-auth-code"},"sepa_details":{"mandate_id":"123-345","mandate_signed_date":"2021-11-10 14:52:34"},"payment_details_token":"some-paymentdetails-token-1234abcd"}', $payment->getRawResponse());
-        $this->assertEquals('{}', $payment->getRawRequest(true));
+            'subscription_schedule' => null,
+            'mit' => false,
+            'preauth_only' => false,
+            'non_recurring' => false,
+        ], $actualResult);
     }
 
     /**
@@ -124,12 +143,12 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetCurrencyTest(string $currencyIso, ?string $exceptionMessage)
     {
-        if (isset($exceptionMessage)){
+        if (isset($exceptionMessage)) {
             self::expectException(\Exception::class);
             self::expectExceptionMessage($exceptionMessage);
         }
 
-        $payment = new TestAbstractApiBase();
+        $payment = new Payment();
         $payment->setCurrency($currencyIso);
         self::assertEquals($currencyIso, $payment->getCurrency());
     }
@@ -151,9 +170,9 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetItemsTest(?array $itemData, ?string $exceptionMessage)
     {
-        $payment = new TestAbstractApiBase();
+        $payment = new Payment();
 
-        if(is_array($itemData)){
+        if (is_array($itemData)) {
             $item = new Item();
             $item->setId($itemData[0]);
             $item->setDescription($itemData[1]);
@@ -161,7 +180,7 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
             $item->setQuantity($itemData[3]);
         }
 
-        if (isset($exceptionMessage)){
+        if (isset($exceptionMessage)) {
             self::expectException(Exception::class);
             self::expectExceptionMessage($exceptionMessage);
         }
@@ -181,7 +200,7 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
 
     public function testGetSet()
     {
-        $payment = new TestAbstractApiBase();
+        $payment = new Payment();
 
         $item = $this->createMock(Item::class);
         $payment->addItem($item);
@@ -214,7 +233,7 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_NOT_OK,
+            'status' => Vendo::S2S_STATUS_NOT_OK,
             'error_code' => 999,
             'error_message' => 'Test client exception',
         ]));
@@ -242,5 +261,5 @@ class PaymentBaseTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('A server exception occurred. If this persists then contact Vendo Client Support');
         $payment->postRequest();
-    }    
+    }
 }

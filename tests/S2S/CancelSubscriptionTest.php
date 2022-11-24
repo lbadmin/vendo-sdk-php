@@ -1,14 +1,14 @@
 <?php
-namespace VendoSdkUnit\Gateway;
+namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\Gateway\CancelSubscription;
-use VendoSdk\Gateway\CapturePayment;
-use VendoSdk\Gateway\SubscriptionBase;
+use VendoSdk\S2S\Request\CancelSubscription;
+use VendoSdk\S2S\Request\CapturePayment;
+use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
 class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
@@ -27,7 +27,7 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_OK,
+            'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'subscription' => [
                 'id' => 9876543,
@@ -68,7 +68,7 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_NOT_OK,
+            'status' => Vendo::S2S_STATUS_NOT_OK,
             'error' => [
                 'code' => '8105',
                 'message' => 'Invalid parameter xyz'

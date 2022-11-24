@@ -1,7 +1,8 @@
 <?php
-namespace VendoSdk\S2S\Request\Details;
+namespace VendoSdk\S2S\Request\Details\PaymentMethod;
 
 use VendoSdk\Exception;
+use VendoSdk\S2S\Request\Details\PaymentDetails;
 
 class Token implements PaymentDetails, \JsonSerializable
 {

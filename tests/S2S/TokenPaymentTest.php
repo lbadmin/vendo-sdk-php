@@ -1,22 +1,20 @@
 <?php
 
-namespace VendoSdkUnit\Gateway;
+namespace VendoSdkUnit\S2S;
 
-use VendoSdk\Gateway\TokenPayment;
-use VendoSdk\Gateway\Request\Details\Token;
+use VendoSdk\S2S\Request\Details\ClientRequest;
+use VendoSdk\S2S\Request\Details\Customer;
+use VendoSdk\S2S\Request\Details\ExternalReferences;
+use VendoSdk\S2S\Request\Details\ShippingAddress;
+use VendoSdk\S2S\Request\Payment;
+use VendoSdk\S2S\Request\Details\PaymentMethod\Token;
 
 class TokenPaymentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testApiEndpoint()
-    {
-        $payment = new TokenPayment();
-        self::assertEquals('https://secure.vend-o.com/api/gateway/payment', $payment->getApiEndpoint());
-    }
-
     public function testSetTokenDetails()
     {
-        $payment = $this->createPartialMock(TokenPayment::class, [
-            'getBaseFields'
+        $payment = $this->createPartialMock(Payment::class, [
+            'getBaseFields',
         ]);
 
         $payment->method('getBaseFields')->willReturn([
@@ -24,16 +22,37 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $payment->setSiteId(12345);
+        $payment->setAmount(9.95);
+        $payment->setCurrency('EUR');
 
         $tokenDetails = new Token();
-        $tokenDetails->setToken('test-payment-token');
-        $payment->setPaymentDetailsToken($tokenDetails);
-        self::assertEquals($tokenDetails, $payment->getPaymentDetailsToken());
-        self::assertEquals([
+        $tokenDetails->setToken('myPaymentDetailsToken');
+
+        $payment->setPaymentDetails($tokenDetails);
+        $payment->setExternalReferences($this->createMock(ExternalReferences::class));
+        $payment->setCustomerDetails($this->createMock(Customer::class));
+        $payment->setShippingAddress($this->createMock(ShippingAddress::class));
+        $payment->setRequestDetails($this->createMock(ClientRequest::class));
+
+        $actualResult = $payment->jsonSerialize();
+
+        self::assertSame([
             'base key1' => 'base value 1',
             'site_id' => 12345,
+            'amount' => 9.95,
+            'currency' => 'EUR',
+            'external_references' => null,
+            'items' => [],
+            'payment_details' => [
+                'token' => 'myPaymentDetailsToken',
+            ],
+            'customer_details' => null,
+            'shipping_address' => null,
+            'request_details' => null,
+            'subscription_schedule' => null,
+            'mit' => false,
             'preauth_only' => false,
-            'payment_details' => $tokenDetails,
-        ], $payment->jsonSerialize());
+            'non_recurring' => false,
+        ], $actualResult);
     }
 }

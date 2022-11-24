@@ -1,12 +1,12 @@
 <?php
-namespace VendoSdkUnit\Gateway;
+namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\Gateway\CapturePayment;
+use VendoSdk\S2S\Request\CapturePayment;
 use VendoSdk\Vendo;
 
 class CapturePaymentTest extends \PHPUnit\Framework\TestCase
@@ -24,7 +24,7 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_OK,
+            'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'transaction' => [
                 'id' => 9876543,
@@ -65,7 +65,7 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::GATEWAY_STATUS_NOT_OK,
+            'status' => Vendo::S2S_STATUS_NOT_OK,
             'error_code' => 999,
             'error_message' => 'Test client exception',
         ]));

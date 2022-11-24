@@ -1,5 +1,5 @@
 <?php
-namespace VendoSdk\S2S\Request\Request\Details;
+namespace VendoSdk\S2S\Request\Details;
 
 use VendoSdk\Exception;
 
