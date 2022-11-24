@@ -99,9 +99,9 @@ class PaymentResponse
 
     /**
      * Returns the transaction status. Potential values are:
-     * Vendo::GATEWAY_STATUS_NOT_OK - The transaction failed. Use getErrorCode and getErrorMessage for more details.
-     * Vendo::GATEWAY_STATUS_OK - The transaction was accepted. Inspect the available methods to get all available details.
-     * Vendo::GATEWAY_STATUS_VERIFICATION_REQUIRED - You must redirect the user to getResultDetails->getVerificationUrl()
+     * Vendo::S2S_STATUS_NOT_OK - The transaction failed. Use getErrorCode and getErrorMessage for more details.
+     * Vendo::S2S_STATUS_OK - The transaction was accepted. Inspect the available methods to get all available details.
+     * Vendo::S2S_STATUS_VERIFICATION_REQUIRED - You must redirect the user to getResultDetails->getVerificationUrl()
      *
      * @return int
      */

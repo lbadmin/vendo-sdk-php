@@ -14,8 +14,6 @@ use VendoSdk\Vendo;
 
 /**
  * Class Payment
- *
- * @package VendoSdk\Gateway
  */
 class Payment extends AbstractApiBase implements \JsonSerializable
 {

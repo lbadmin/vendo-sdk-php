@@ -147,7 +147,7 @@ abstract class SubscriptionBase
     }
 
     /**
-     * Post the request to Vendo's Gateway API
+     * Post the request to Vendo's S2S API
      *
      * @return SubscriptionResponse
      * @throws Exception

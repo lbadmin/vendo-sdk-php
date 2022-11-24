@@ -104,7 +104,7 @@ class CapturePayment implements \JsonSerializable
     }
 
     /**
-     * Post the request to Vendo's Gateway API
+     * Post the request to Vendo's S2S API
      *
      * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException

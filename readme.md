@@ -15,6 +15,7 @@ See on [Packagist](https://packagist.org/packages/vendoservices/vendo-sdk)
 
 - Renamed Gateway to S2S
 - Removed deprecated classes
+- Reorganized other classes and namespaces
 
 ### v1.0.7
 
