@@ -15,30 +15,10 @@ use VendoSdk\S2S\Response\SubscriptionResponse;
 use VendoSdk\Util\HttpClientTrait;
 use VendoSdk\Vendo;
 
-abstract class SubscriptionBase
+abstract class SubscriptionBase extends AbstractApiBase
 {
-    use HttpClientTrait;
-
-    /**
-     * Raw API Response
-     * @var ?string
-     */
-    protected $rawResponse;
-
-    /** Fields that will be serialized in the json request */
-    /** @var string */
-    protected $apiSecret;
-    /** @var int */
-    protected $merchantId;
-    /** @var bool */
-    protected $isTest;
     /** @var ?int */
     protected $subscriptionId;
-
-    public function __construct()
-    {
-        $this->setIsTest(false);
-    }
 
     /**
      * Returns the API endpoint for this operation

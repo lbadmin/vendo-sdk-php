@@ -6,7 +6,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $refund = new \VendoSdk\S2S\Request\RefundPayment();
+    $refund = new \VendoSdk\S2S\Request\Refund();
     $refund->setApiSecret('your_secret_api_secret');
     $refund->setIsTest(true);
     $refund->setMerchantId(1);//Your Vendo Merchant ID

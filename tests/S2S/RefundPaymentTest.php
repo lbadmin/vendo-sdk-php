@@ -6,14 +6,14 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\S2S\Request\RefundPayment;
+use VendoSdk\S2S\Request\Refund;
 use VendoSdk\Vendo;
 
 class RefundPaymentTest extends \PHPUnit\Framework\TestCase
 {
     public function testRefundPaymentSuccess()
     {
-        $payment = new RefundPayment();
+        $payment = new Refund();
         $payment->setIsTest(true);
         $payment->setApiSecret('test-secret');
         $payment->setIsTest(true);
@@ -48,8 +48,8 @@ class RefundPaymentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('{
     "api_secret": "test-secret",
-    "merchant_id": 1234567,
     "is_test": 1,
+    "merchant_id": 1234567,
     "transaction_id": 87654321,
     "partial_amount": 5.34
 }', $payment->getRawRequest(true));
@@ -57,7 +57,7 @@ class RefundPaymentTest extends \PHPUnit\Framework\TestCase
 
     public function testRefundPaymentClientException()
     {
-        $payment = new RefundPayment();
+        $payment = new Refund();
         $httpClient = $this->createMock(Client::class);
         $payment->setHttpClient($httpClient);
 
@@ -81,7 +81,7 @@ class RefundPaymentTest extends \PHPUnit\Framework\TestCase
 
     public function testRefundPaymentServerException()
     {
-        $payment = new RefundPayment();
+        $payment = new Refund();
         $httpClient = $this->createMock(Client::class);
         $payment->setHttpClient($httpClient);
 
