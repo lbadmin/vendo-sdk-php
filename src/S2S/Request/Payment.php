@@ -15,7 +15,7 @@ use VendoSdk\Vendo;
 /**
  * Class Payment
  */
-class Payment extends AbstractApiBase implements \JsonSerializable
+class Payment extends AbstractApiBase
 {
     /** @var int */
     protected $siteId;

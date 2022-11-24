@@ -47,8 +47,8 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('{
     "api_secret": "test-secret",
-    "merchant_id": 1234567,
     "is_test": 1,
+    "merchant_id": 1234567,
     "transaction_id": 87654321
 }', $payment->getRawRequest(true));
     }

@@ -16,7 +16,6 @@ use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Request\Payment;
-use VendoSdk\S2S\Response\PaymentResponse;
 use VendoSdk\Vendo;
 
 class TestAbstractApiBase extends AbstractApiBase

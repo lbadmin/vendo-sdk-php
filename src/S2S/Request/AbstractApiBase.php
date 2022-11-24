@@ -13,11 +13,14 @@ use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
+use VendoSdk\S2S\Response\CaptureResponse;
 use VendoSdk\S2S\Response\PaymentResponse;
+use VendoSdk\S2S\Response\RefundResponse;
+use VendoSdk\S2S\Response\SubscriptionResponse;
 use VendoSdk\Util\HttpClientTrait;
 use VendoSdk\Vendo;
 
-abstract class AbstractApiBase
+abstract class AbstractApiBase implements \JsonSerializable
 {
     use HttpClientTrait;
 
@@ -98,11 +101,11 @@ abstract class AbstractApiBase
     /**
      * Post the request to Vendo's S2S API
      *
-     * @return PaymentResponse
+     * @return PaymentResponse|CaptureResponse|RefundResponse|SubscriptionResponse
      * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function postRequest(): PaymentResponse
+    public function postRequest()
     {
         $client = $this->getHttpClient();
         $body = $this->getRawRequest();
@@ -153,7 +156,7 @@ abstract class AbstractApiBase
      * @return PaymentResponse
      * @throws Exception
      */
-    public function getResponse(): PaymentResponse
+    public function getResponse()
     {
         return new PaymentResponse($this->rawResponse);
     }
@@ -168,5 +171,13 @@ abstract class AbstractApiBase
             'is_test' => (int)$this->isTest(),
             'merchant_id' => $this->getMerchantId(),
         ];
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return $this->getBaseFields();
     }
 }
