@@ -6,7 +6,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardPayment = new \VendoSdk\S2S\Request\CreditCardPayment();
+    $creditCardPayment = new \VendoSdk\S2S\Request\Payment();
     $creditCardPayment->setApiSecret('your_secret_api_secret');
     $creditCardPayment->setMerchantId(1);//Your Vendo Merchant ID
     $creditCardPayment->setSiteId(1);//Your Vendo Site ID
@@ -20,7 +20,7 @@ try {
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
     // the CapturePayment class.
-    $creditCardPayment->setIsPreAuth(false);
+    $creditCardPayment->setPreAuthOnly(false);
 
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_555');
@@ -52,7 +52,7 @@ try {
     $ccDetails->setExpirationMonth('05');
     $ccDetails->setExpirationYear('2029');
     $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardPayment->setCreditCardDetails($ccDetails);
+    $creditCardPayment->setPaymentDetails($ccDetails);
 
     /**
      * Customer details
