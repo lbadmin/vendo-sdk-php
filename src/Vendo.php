@@ -12,9 +12,9 @@ final class Vendo
 
     const BASE_URL = 'https://secure.vend-o.com';
 
-    const GATEWAY_STATUS_NOT_OK = 0;
-    const GATEWAY_STATUS_OK = 1;
-    const GATEWAY_STATUS_VERIFICATION_REQUIRED = 2;
+    const S2S_STATUS_NOT_OK = 0;
+    const S2S_STATUS_OK = 1;
+    const S2S_STATUS_VERIFICATION_REQUIRED = 2;
 
     const PAYMENT_TYPE_CREDIT_CARD = 'card';
     const PAYMENT_TYPE_SEPA = 'sepa';
