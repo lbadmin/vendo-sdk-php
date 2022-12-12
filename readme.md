@@ -34,9 +34,10 @@ Example flow:
 4. After authorization is completed call [Token example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/payment_with_saved_token.php)
    - use token you have saved in step 2.
 
-Then you should see 2 successful transactions in the backoffice:
-1. Verification
-2. S2S Payment
+5. Check Backoffice, you should see 2 successful transactions:
+   
+   - Verification
+   - S2S Payment
 
 ## Changelog
 
