@@ -10,8 +10,7 @@ https://docs.vendoservices.com/reference/misc
 
 Important for 2-step payments with the authorisation step: 3DS, Cryptocurrency, PIX
  
-Please follow carefully [2 Step payment docs](https://docs.vendoservices.com/reference/payment-gateway-3ds-flow) and pay attention to close the transaction with 
-the 2nd, final request.
+Please follow carefully [2 Step payment docs](https://docs.vendoservices.com/reference/payment-gateway-3ds-flow) and pay attention to close the transaction with the 2nd, final request.
 
 Example flow:
 
