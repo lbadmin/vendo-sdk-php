@@ -5,6 +5,40 @@ Install using ```composer require vendoservices/vendo-sdk```
 
 See on [Packagist](https://packagist.org/packages/vendoservices/vendo-sdk)
 
+## API documentation
+https://docs.vendoservices.com/reference/misc
+
+Important for 2-step payments with the authorisation step: 3DS, Cryptocurrency, PIX
+ 
+Please follow carefully [2 Step payment docs](https://docs.vendoservices.com/reference/payment-gateway-3ds-flow) and pay attention to close the transaction with 
+the 2nd, final request.
+
+Example flow:
+
+1. Call [Crypto payment example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment.php)
+
+2. Save the token
+
+
+    $token = $response->getPaymentToken(); 
+
+    // something like '2093c199fc3e20ee45af8ed07af0ddf5'
+
+
+3. Redirect the user to the verification url you got in the response 
+
+    
+    $verificationUrl = $response->getResultDetails()->getVerificationUrl();
+
+    // example: 'https://secure.vend-o.com/v/verification?transaction_id=240359080&systemsignature=moJpFrKRgo5PkP9sqStN6iJC6v8'
+      
+4. After authorization is completed call [Token example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/payment_with_saved_token.php)
+   - use token you have saved in step 2.
+
+Then you should see 2 successful transactions in the backoffice:
+1. Verification
+2. S2S Payment
+
 ## Changelog
 
 ### v2.0.0
