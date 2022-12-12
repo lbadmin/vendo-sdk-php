@@ -14,7 +14,7 @@ Please follow carefully [2 Step payment docs](https://docs.vendoservices.com/ref
 
 Example flow:
 
-1. Call [Crypto payment example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment.php)
+1. Call [Cryptocurrency payment example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment.php)
 
 2. Save the token
 
