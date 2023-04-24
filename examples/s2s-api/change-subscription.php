@@ -7,10 +7,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscription();
-    $changeSubscription->setApiSecret('your_secret_api_secret');
+    $changeSubscription->setApiSecret(getenv('SECRET_API'));
 
     $changeSubscription->setIsTest(true);
-    $changeSubscription->setMerchantId(1);//Your Vendo Merchant ID
+    $changeSubscription->setMerchantId(getenv('MERCHANT_ID'));//Your Vendo Merchant ID
     $changeSubscription->setSubscriptionId(160042557);//The Vendo Subscription ID that you want to change.
     /** Set new schedule */
 

@@ -8,10 +8,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $creditCardSignup = new \VendoSdk\S2S\Request\Payment();
-    $creditCardSignup->setApiSecret('your_secret_api_secret');
+    $creditCardSignup->setApiSecret(getenv('SECRET_API'));
 
-    $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
-    $creditCardSignup->setSiteId(1);//Your Vendo Site ID
+    $creditCardSignup->setMerchantId(getenv('MERCHANT_ID'));//Your Vendo Merchant ID
+    $creditCardSignup->setSiteId(getenv('SITE_ID'));//Your Vendo Site ID
     $creditCardSignup->setAmount(10.50);
     $creditCardSignup->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardSignup->setIsTest(true);

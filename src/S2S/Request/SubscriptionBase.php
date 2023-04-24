@@ -27,7 +27,7 @@ abstract class SubscriptionBase extends AbstractApiBase
      */
     public function getApiEndpoint(): string
     {
-        return Vendo::BASE_URL . '/api/gateway';
+        return (getenv("VENDO_BASE_URL", true)?:Vendo::BASE_URL) . '/api/gateway';
     }
 
     /**

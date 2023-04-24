@@ -8,9 +8,9 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $payment = new \VendoSdk\S2S\Request\Payment();
-    $payment->setApiSecret('your_secret_api_secret');
-    $payment->setMerchantId(1);//Your Vendo Merchant ID
-    $payment->setSiteId(1);//Your Vendo Site ID
+    $payment->setApiSecret(getenv('SECRET_API'));
+    $payment->setMerchantId(getenv('MERCHANT_ID'));//Your Vendo Merchant ID
+    $payment->setSiteId(getenv('SITE_ID'));//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);

@@ -9,7 +9,7 @@ try {
     $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
 
     $cancel = new \VendoSdk\Subscription\CancelSubscription($sharedSecret);
-    $cancel->setMerchantId(1);//Your Vendo Merchant ID
+    $cancel->setMerchantId(getenv('MERCHANT_ID'));//Your Vendo Merchant ID
     $cancel->setSubscriptionId(72537045);//The Vendo Subscription ID that you want to cancel.
     $cancel->setReasonId(26);//reason 26: "test transaction"
 
