@@ -6,7 +6,7 @@ use VendoSdk\Reporting\Subscription;
 /*
  * This scripts gets the details of one specific transaction.
  */
-$sharedSecret = getenv('SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
+$sharedSecret = getenv('VENDO_SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
 
 $reporting = new \VendoSdk\Reporting\Subscription($sharedSecret);
 $reporting->setSubscriptionId(74183461);

@@ -9,10 +9,10 @@ include __DIR__ . '/../../vendor/autoload.php';
  * for Vendo Merchant Id 1 and their Vendo Site Ids 1 and 2
  * on June 28th, 2021 00:00 to July 5th, 2021 23:59:59
  */
-$sharedSecret = getenv('SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
-$siteIds = explode(",", getenv('TRANSACTION_SITE_IDS', true)?:'1,2');
+$sharedSecret = getenv('VENDO_SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
+$siteIds = explode(",", getenv('VENDO_TRANSACTION_SITE_IDS', true)?:'1,2');
 $reporting = new \VendoSdk\Reporting\Reconciliation($sharedSecret);
-$reporting->setMerchantId(getenv('MERCHANT_ID'));
+$reporting->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');
 $reporting->setSiteIds($siteIds);
 $reporting->setStartDate(DateTime::createFromFormat('Y-m-d', '2021-06-28'));
 $reporting->setEndDate(DateTime::createFromFormat('Y-m-d', '2021-07-05'));

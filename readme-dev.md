@@ -20,20 +20,20 @@ You need:
 1. run container
 
 
-`  docker-compose up --build -d`
+`  docker compose up --build -d`
 
 
 2. then install libraries:
 
-`docker-compose exec vendo-sdk-php _composer install`
+`docker compose exec vendo-sdk-php _composer install`
 
-3. Next, you have to copy the `.env.example` file to something like `.env_dev` or `.env_marchant1` and fill up parameters with correct values.
+3. Next, you have to copy the `.env.staging` file to something like `.env_dev` or `.env_merchant1` and fill up parameters with correct values.
 
 4. To run the example you have to run the command:
 
-`docker-compose exec vendo-sdk-php _examples [example name (without .php)] [yours env file postfix, for example dev]
+`docker compose exec vendo-sdk-php _examples [example name (without .php)] [yours env file postfix, for example dev]
 `
 
 Example:
 
-`docker-compose exec vendo-sdk-php _examples crypto_payment dev`
+`docker compose exec vendo-sdk-php _examples crypto_payment dev`

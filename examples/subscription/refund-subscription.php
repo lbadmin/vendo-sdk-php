@@ -6,10 +6,10 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $sharedSecret = getenv('SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
+    $sharedSecret = getenv('VENDO_SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
 
     $refund = new \VendoSdk\Subscription\RefundSubscription($sharedSecret);
-    $refund->setMerchantId(getenv('MERCHANT_ID'));//Your Vendo Merchant ID
+    $refund->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $refund->setTransactionId(72700697);//The Vendo Subscription ID that you want to cancel.
     $refund->setRefundReasonId(26);//reason 26: "test transaction"
 
