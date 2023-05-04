@@ -7,10 +7,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $cancelSubscription = new \VendoSdk\S2S\Request\CancelSubscription();
-    $cancelSubscription->setApiSecret('your_secret_api_secret');
+    $cancelSubscription->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
     $cancelSubscription->setIsTest(true);
-    $cancelSubscription->setMerchantId(1);//Your Vendo Merchant ID
+    $cancelSubscription->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $cancelSubscription->setSubscriptionId(160042564);//The Vendo Subscription ID that you want to cancel.
     $cancelSubscription->setReasonId(26);
 

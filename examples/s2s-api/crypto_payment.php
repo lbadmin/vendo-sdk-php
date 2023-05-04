@@ -8,10 +8,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $payment = new \VendoSdk\S2S\Request\Payment();
-    $payment->setApiSecret('your_secret_api_secret');
-    $payment->setMerchantId(1);//Your Vendo Merchant ID
+    $payment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');//replace getenv(... with your_secret_api_secret
+    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
 
-    $payment->setSiteId(1);//Your Vendo Site ID
+    $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
@@ -83,8 +83,8 @@ try {
      * User request details
      */
     $request = new \VendoSdk\S2S\Request\Details\ClientRequest();
-    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
-    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
+    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?: '127.0.0.1');//you must pass a valid IPv4 address
+    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
     $payment->setRequestDetails($request);
 
     $response = $payment->postRequest();

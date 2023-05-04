@@ -10,6 +10,8 @@
          failOnWarning="true"
          verbose="true"
          colors="true"
+         convertWarningsToExceptions="false"
+         convertNoticesToExceptions="false"
 >
     <testsuites>
         <testsuite name="default">

@@ -9,8 +9,8 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $capture = new \VendoSdk\S2S\Request\CapturePayment();
-    $capture->setApiSecret('your_secret_api_secret');
-    $capture->setMerchantId(1);//Your Vendo Merchant ID
+    $capture->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
+    $capture->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $capture->setIsTest(true);
     $capture->setTransactionId(70110209);//The Vendo Transaction ID that you want to capture.
 

@@ -8,10 +8,10 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $creditCardSignup = new \VendoSdk\S2S\Request\Payment();
-    $creditCardSignup->setApiSecret('your_secret_api_secret');
+    $creditCardSignup->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
-    $creditCardSignup->setMerchantId(1);//Your Vendo Merchant ID
-    $creditCardSignup->setSiteId(1);//Your Vendo Site ID
+    $creditCardSignup->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
+    $creditCardSignup->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id');//Your Vendo Site ID
     $creditCardSignup->setAmount(10.50);
     $creditCardSignup->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardSignup->setIsTest(true);
@@ -97,8 +97,8 @@ try {
      * User request details
      */
     $request = new \VendoSdk\S2S\Request\Details\ClientRequest();
-    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
-    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
+    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?: '127.0.0.1');//you must pass a valid IPv4 address
+    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
     $creditCardSignup->setRequestDetails($request);
 
     $response = $creditCardSignup->postRequest();

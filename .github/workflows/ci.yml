@@ -30,3 +30,4 @@ jobs:
           php_version: 7.4
           php_extensions: intl openssl simplexml curl json
           memory_limit: 512M
+          version: 8.5.33

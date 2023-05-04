@@ -22,7 +22,7 @@ abstract class Base
     protected abstract function setAllowedUrlParameters(): void;
 
     public function getBaseUrl(): string {
-        return Vendo::BASE_URL;
+        return getenv("VENDO_BASE_URL", true)?:Vendo::BASE_URL;
     }
 
     protected function setUrlParametersValidators(): void {

@@ -7,9 +7,9 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $refund = new \VendoSdk\S2S\Request\Refund();
-    $refund->setApiSecret('your_secret_api_secret');
+    $refund->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
     $refund->setIsTest(true);
-    $refund->setMerchantId(1);//Your Vendo Merchant ID
+    $refund->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $refund->setTransactionId(770110209);//The Vendo Transaction ID that you want to refund.
     /** You can also process a partial refund using the method below */
     //$refund->setPartialAmount(5);//this amount must be less than the amount of the transaction that you need to refund.

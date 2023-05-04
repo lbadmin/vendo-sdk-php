@@ -4,3 +4,4 @@ vendor/
 .phpunit.cache/*
 !.phpunit.cache/.gitkeep
 /report/
+.env_*

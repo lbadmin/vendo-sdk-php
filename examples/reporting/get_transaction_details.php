@@ -6,9 +6,9 @@ use VendoSdk\Reporting\Transaction;
 /*
  * This scripts gets the details of one specific transaction.
  */
-$sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
+$sharedSecret = getenv('VENDO_SHARED_SECRET', true) ?: 'Your_Vendo_Shared_Secret__get_it_from_us';
 $reporting = new \VendoSdk\Reporting\Transaction($sharedSecret);
-$reporting->setMerchantId(1);
+$reporting->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');
 $reporting->setTransactionId(73768494);
 
 try {
