@@ -5,7 +5,7 @@ use VendoSdk\Exception;
 
 class Item implements \JsonSerializable
 {
-    /** @var mixed */
+    /** @var string */
     protected $id;
     /** @var string */
     protected $description;
@@ -15,7 +15,7 @@ class Item implements \JsonSerializable
     protected $quantity;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -23,7 +23,7 @@ class Item implements \JsonSerializable
     }
 
     /**
-     * @param mixed $id
+     * @param string $id
      */
     public function setId($id): void
     {
