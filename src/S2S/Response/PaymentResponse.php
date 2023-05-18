@@ -8,6 +8,7 @@ use VendoSdk\S2S\Response\Details\ResultDetails;
 use VendoSdk\S2S\Response\Details\SepaPaymentResult;
 use VendoSdk\S2S\Response\Details\Transaction;
 use VendoSdk\Vendo;
+use \VendoSdk\S2S\Response\Details\SubscriptionSchedule;
 
 class PaymentResponse
 {
@@ -44,6 +45,9 @@ class PaymentResponse
 
     /** @var ?ResultDetails */
     protected $resultDetails;
+
+    /** @var SubscriptionSchedule */
+    protected $subscriptionSchedule;
 
     /**
      * @param string $rawJsonResponse
@@ -89,6 +93,10 @@ class PaymentResponse
             $this->setErrorCode($responseArray['error']['code'] ?? null);
             $this->setErrorMessage($responseArray['error']['message'] ?? '-unknown-');
             $this->setErrorBankStatus($responseArray['error']['processor_status'] ?? null);
+        }
+
+        if (!empty($responseArray['subscription_schedule'])) {
+            $this->setSubscriptionSchedule(new SubscriptionSchedule($responseArray['subscription_schedule']));
         }
 
         if (!empty($responseArray['result'])) {
@@ -294,5 +302,17 @@ class PaymentResponse
         $this->resultDetails = $resultDetails;
     }
 
+    /**
+     * @return SubscriptionSchedule|null
+     */
+    public function getSubscriptionSchedule()
+    {
+        return $this->subscriptionSchedule;
+    }
+
+    public function setSubscriptionSchedule(SubscriptionSchedule $subscriptionSchedule): void
+    {
+        $this->subscriptionSchedule = $subscriptionSchedule;
+    }
 
 }
