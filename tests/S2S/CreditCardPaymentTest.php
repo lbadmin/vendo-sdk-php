@@ -33,6 +33,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setItems($items);
         $payment->setSiteId(123);
         $payment->setPreAuthOnly(true);
+        $payment->setSuccessUrl('http://www.somesuccessurl.com/payment');
 
         $paymentDetails = $this->createPartialMock(CreditCard::class, [
             'jsonSerialize',
@@ -65,6 +66,7 @@ class CreditCardPaymentTest extends \PHPUnit\Framework\TestCase
             'preauth_only' => true,
             'non_recurring' => false,
             'subscription_schedule' => null,
+            'success_url' => 'http://www.somesuccessurl.com/payment',
         ];
 
         $this->assertEquals($expectedResult, $payment->jsonSerialize());

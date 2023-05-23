@@ -48,6 +48,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setCurrency('USD');
         $payment->setSiteId(12345);
         $payment->setIsMerchantInitiatedTransaction(false);
+        $payment->setSuccessUrl('http://www.somesuccessurl.com/payment');
 
         $shippingAddress = new ShippingAddress();
         $shippingAddress->setState('Don San Escobar');
@@ -134,6 +135,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
             'mit' => false,
             'preauth_only' => false,
             'non_recurring' => false,
+            'success_url' => 'http://www.somesuccessurl.com/payment',
         ], $actualResult);
     }
 

@@ -30,6 +30,7 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setCustomerDetails($this->createMock(Customer::class));
         $payment->setShippingAddress($this->createMock(ShippingAddress::class));
         $payment->setRequestDetails($this->createMock(ClientRequest::class));
+        $payment->setSuccessUrl('http://www.somesuccessurl.com/payment');
 
         $actualResult = $payment->jsonSerialize();
 
@@ -52,6 +53,7 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
             'mit' => false,
             'preauth_only' => false,
             'non_recurring' => false,
+            'success_url' => 'http://www.somesuccessurl.com/payment'
         ], $actualResult);
     }
 }
