@@ -56,6 +56,9 @@ class Payment extends AbstractApiBase
     /** @var bool */
     protected $preAuthOnly = false;
 
+    /** @var string */
+    protected $successUrl;
+
     /**
      * @inheritdoc
      */
@@ -309,6 +312,22 @@ class Payment extends AbstractApiBase
     }
 
     /**
+     * @return string
+     */
+    public function getSuccessUrl(): string
+    {
+        return $this->successUrl ?? '';
+    }
+
+    /**
+     * @param string $successUrl
+     */
+    public function setSuccessUrl(string $successUrl): void
+    {
+        $this->successUrl = $successUrl;
+    }
+
+    /**
      * @return array
      * @throws Exception
      */
@@ -328,6 +347,7 @@ class Payment extends AbstractApiBase
             'mit' => $this->isMerchantInitiatedTransaction(),
             'preauth_only' => $this->isPreAuthOnly(),
             'non_recurring' => $this->isNonRecurring(),
+            'success_url' => $this->getSuccessUrl()
         ]);
     }
 }
