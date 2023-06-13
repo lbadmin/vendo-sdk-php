@@ -314,7 +314,7 @@ class Payment extends AbstractApiBase
     /**
      * @return string|null
      */
-    public function getSuccessUrl(): mixed
+    public function getSuccessUrl()
     {
         return $this->successUrl ?? null;
     }
