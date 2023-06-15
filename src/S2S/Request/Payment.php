@@ -312,11 +312,11 @@ class Payment extends AbstractApiBase
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSuccessUrl(): string
+    public function getSuccessUrl()
     {
-        return $this->successUrl ?? '';
+        return $this->successUrl ?? null;
     }
 
     /**
