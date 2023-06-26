@@ -101,15 +101,22 @@ abstract class AbstractApiBase implements \JsonSerializable
     /**
      * Post the request to Vendo's S2S API
      *
+     * @param string|null $apiEndpoint
+     * @param array|null $headers
      * @return PaymentResponse|CaptureResponse|RefundResponse|SubscriptionResponse
-     * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \VendoSdk\Exception
      */
-    public function postRequest()
+    public function postRequest($apiEndpoint= null, $headers = null)
     {
         $client = $this->getHttpClient();
         $body = $this->getRawRequest();
-        $request = $this->getHttpRequest('POST', $this->getApiEndpoint(), [], $body);
+        $request = $this->getHttpRequest(
+            'POST',
+                $apiEndpoint ?? $this->getApiEndpoint(),
+                $headers ?? [],
+            $body
+        );
 
         try {
             $response = $client->send($request);
