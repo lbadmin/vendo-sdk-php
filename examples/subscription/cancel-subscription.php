@@ -6,7 +6,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $sharedSecret = 'Your_Vendo_Shared_Secret__get_it_from_us';
+    $sharedSecret = getenv('VENDO_SHARED_SECRET', true)?:'Your_Vendo_Shared_Secret__get_it_from_us';
 
     $cancel = new \VendoSdk\Subscription\CancelSubscription($sharedSecret);
     $cancel->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
