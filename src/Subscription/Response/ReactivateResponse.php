@@ -18,7 +18,7 @@ class ReactivateResponse
     protected $responseMessage;
 
     /**
-     * CancelResponse constructor.
+     * ReactivateResponse constructor.
      * @param Parser $xml
      */
     public function __construct(Parser $xml)

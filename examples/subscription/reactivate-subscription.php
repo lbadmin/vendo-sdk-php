@@ -15,7 +15,7 @@ try {
     $response = $reactivate->getRequest();
 
     echo "\n\nRESULT BELOW\n";
-    if ($response->getResponseCode() == \VendoSdk\Vendo::SUBSCRIPTION_CANCEL_RESPONSE_CODE_OK) {
+    if ($response->getResponseCode() == \VendoSdk\Vendo::SUBSCRIPTION_REACTIVATE_RESPONSE_CODE_OK) {
         echo "The subscription " . $response->getSubscriptionId() . " was successfully reactivated. The Vendo Transaction ID is: ";
     } else {
         echo "The subscription " . $response->getSubscriptionId() . " was not reactivated.";

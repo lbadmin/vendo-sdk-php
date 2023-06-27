@@ -2,7 +2,6 @@
 namespace VendoSdk\Subscription;
 
 use VendoSdk\Exception;
-use VendoSdk\Subscription\Response\CancelResponse;
 use VendoSdk\Subscription\Response\ReactivateResponse;
 use VendoSdk\Util\HttpClientTrait;
 use GuzzleHttp\Exception\GuzzleException;
@@ -80,12 +79,12 @@ class ReactivateSubscription extends Base
     }
 
     /**
-     * Queries Vendo's Cancel Subscription API.
+     * Queries Vendo's Reactivate Subscription API.
      *
      * @return bool
      * @throws GuzzleException
      * @throws \Exception
-     * @return CancelResponse
+     * @return ReactivateResponse
      */
     public function getRequest(): ReactivateResponse
     {
