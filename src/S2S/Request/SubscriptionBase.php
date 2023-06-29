@@ -129,15 +129,22 @@ abstract class SubscriptionBase extends AbstractApiBase
     /**
      * Post the request to Vendo's S2S API
      *
+     * @param null $apiEndpoint
+     * @param null $headers
      * @return SubscriptionResponse
      * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function postRequest(): SubscriptionResponse
+    public function postRequest($apiEndpoint = null, $headers = null): SubscriptionResponse
     {
         $client = $this->getHttpClient();
         $body = $this->getRawRequest();
-        $request = $this->getHttpRequest('POST', $this->getApiEndpoint(), [], $body);
+        $request = $this->getHttpRequest(
+            'POST',
+            $apiEndpoint ?? $this->getApiEndpoint(),
+            $headers ?? [],
+            $body
+        );
 
         try {
             $response = $client->send($request);
