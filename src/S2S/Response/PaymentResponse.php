@@ -12,7 +12,7 @@ use \VendoSdk\S2S\Response\Details\SubscriptionSchedule;
 
 class PaymentResponse
 {
-    /** @var int */
+    /** @var mixed */
     protected $status;
 
     /** @var ?int */
@@ -49,6 +49,10 @@ class PaymentResponse
     /** @var SubscriptionSchedule */
     protected $subscriptionSchedule;
 
+    /** @var string|null */
+    protected $rawResponse;
+
+
     /**
      * @param string $rawJsonResponse
      * @throws Exception
@@ -64,7 +68,10 @@ class PaymentResponse
             throw new Exception('The response from Vendo\'s API cannot be decoded');
         }
 
-        $this->status = $responseArray['status'];
+        $this->setRawResponse($rawJsonResponse);
+
+        $this->setStatus($responseArray['status'] ?? Vendo::S2S_STATUS_NOT_OK);
+
         $this->requestId = $responseArray['request_id'] ?? null;
 
         if (!empty($responseArray['external_references'])) {
@@ -89,7 +96,7 @@ class PaymentResponse
             $this->setPaymentToken($responseArray['payment_details_token']);
         }
 
-        if ($responseArray['status'] == Vendo::S2S_STATUS_NOT_OK) {
+        if ($this->status == Vendo::S2S_STATUS_NOT_OK) {
             $this->setErrorCode($responseArray['error']['code'] ?? null);
             $this->setErrorMessage($responseArray['error']['message'] ?? '-unknown-');
             $this->setErrorBankStatus($responseArray['error']['processor_status'] ?? null);
@@ -110,16 +117,17 @@ class PaymentResponse
      * Vendo::S2S_STATUS_NOT_OK - The transaction failed. Use getErrorCode and getErrorMessage for more details.
      * Vendo::S2S_STATUS_OK - The transaction was accepted. Inspect the available methods to get all available details.
      * Vendo::S2S_STATUS_VERIFICATION_REQUIRED - You must redirect the user to getResultDetails->getVerificationUrl()
+     * or custom status from custom API
      *
-     * @return int
+     * @return mixed
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param mixed $status
      */
     public function setStatus($status): void
     {
@@ -313,6 +321,23 @@ class PaymentResponse
     public function setSubscriptionSchedule(SubscriptionSchedule $subscriptionSchedule): void
     {
         $this->subscriptionSchedule = $subscriptionSchedule;
+    }
+
+    /**
+     * @param string $response
+     * @return void
+     */
+    public function setRawResponse(string $response): void
+    {
+        $this->rawResponse = $response;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRawResponse(): ?string
+    {
+        return $this->rawResponse;
     }
 
 }
