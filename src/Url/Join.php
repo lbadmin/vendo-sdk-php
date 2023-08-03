@@ -83,8 +83,8 @@ class Join extends Base
     public function __set(string $paramName, $paramValue): void
     {
         if ($paramName === 'password') {
-            $paramName = 'password_encrypted';
             $paramValue = Aes128Ecb::encrypt($paramValue, $this->getSharedSecret());
+            parent::__set('password_encrypted', 1);
         }
         if ($paramName === 'offers') {
             if (is_array($paramValue)) {
