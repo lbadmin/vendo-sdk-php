@@ -15,7 +15,7 @@ try {
     /** Set new payment details */
 
     $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verificationDetails->setVerificationId(4407);
+    $verificationDetails->setVerificationId(4426);//use verification_id returned in change-subscription-payment-details-request
     $changeSubscription->setPaymentDetails($verificationDetails);
 
     /**

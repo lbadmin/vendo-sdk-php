@@ -5,8 +5,6 @@
 
 include __DIR__ . '/../../vendor/autoload.php';
 
-var_dump(getenv('XDEBUG_SESSION'));
-
 try {
     $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscription();
     $changeSubscription->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
