@@ -11,11 +11,11 @@ try {
 
     $changeSubscription->setIsTest(true);
     $changeSubscription->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
-    $changeSubscription->setSubscriptionId(160116338);//The Vendo Subscription ID that you want to change.
+    $changeSubscription->setSubscriptionId(160116496);//The Vendo Subscription ID that you want to change.
     /** Set new payment details */
 
     $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verificationDetails->setVerificationId(4426);//use verification_id returned in change-subscription-payment-details-request
+    $verificationDetails->setVerificationId(4481);//use verification_id returned in change-subscription-payment-details-request
     $changeSubscription->setPaymentDetails($verificationDetails);
 
     /**
