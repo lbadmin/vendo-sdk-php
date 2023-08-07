@@ -1,13 +1,18 @@
 <?php
+
 namespace VendoSdk\S2S\Request;
 
 use VendoSdk\Exception;
+use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
 
 class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
 {
     /** @var SubscriptionSchedule */
-    protected $subscriptionSchedule;
+    protected $subscriptionSchedule = null;
+
+    /** @var PaymentDetails */
+    protected $paymentDetails = null;
 
     /**
      * @inheritdoc
@@ -20,7 +25,7 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     /**
      * @return SubscriptionSchedule
      */
-    public function getSubscriptionSchedule(): SubscriptionSchedule
+    public function getSubscriptionSchedule(): ?SubscriptionSchedule
     {
         return $this->subscriptionSchedule;
     }
@@ -31,6 +36,22 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     public function setSubscriptionSchedule(SubscriptionSchedule $subscriptionSchedule): void
     {
         $this->subscriptionSchedule = $subscriptionSchedule;
+    }
+
+    /**
+     * @return PaymentDetails
+     */
+    public function getPaymentDetails(): ?PaymentDetails
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param PaymentDetails $paymentDetails
+     */
+    public function setPaymentDetails(PaymentDetails $paymentDetails): void
+    {
+        $this->paymentDetails = $paymentDetails;
     }
 
     /**
@@ -47,7 +68,17 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     public function getBaseFields(): array
     {
         $result = parent::getBaseFields();
-        $result['subscription_schedule'] = $this->getSubscriptionSchedule();
+        if (!empty($this->getSubscriptionSchedule())) {
+            $result['subscription_schedule'] = $this->getSubscriptionSchedule();
+        }
+
+        if (!empty($this->getPaymentDetails())) {
+            $result['payment_details'] = $this->getPaymentDetails();
+        }
+
+        if (!empty($this->getRequestDetails())) {
+            $result['request_details'] = $this->getRequestDetails();
+        }
 
         return $result;
     }

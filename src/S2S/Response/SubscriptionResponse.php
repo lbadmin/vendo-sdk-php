@@ -1,4 +1,5 @@
 <?php
+
 namespace VendoSdk\S2S\Response;
 
 use VendoSdk\Exception;
@@ -29,6 +30,12 @@ class SubscriptionResponse
     /** @var ?ResultDetails */
     protected $resultDetails;
 
+    /** @var ?string */
+    protected $verificationUrl;
+
+    /** @var ?int */
+    protected $verificationId;
+
     /**
      * @param string $rawJsonResponse
      * @throws Exception
@@ -52,6 +59,10 @@ class SubscriptionResponse
             $this->setSubscriptionDetails(new Subscription($responseArray['subscription']));
         }
 
+        if (!empty($responseArray['subscription'])) {
+            $this->setSubscriptionDetails(new Subscription($responseArray['subscription']));
+        }
+
         if (!empty($responseArray['error']['code'])) {
             $this->setErrorCode($responseArray['error']['code']);
         }
@@ -59,11 +70,20 @@ class SubscriptionResponse
         if (!empty($responseArray['error']['message'])) {
             $this->setErrorMessage($responseArray['error']['message']);
         }
+
+        if (!empty($responseArray['verification_id'])) {
+            $this->setVerificationId($responseArray['verification_id']);
+        }
+
+        if (!empty($responseArray['verification_url'])) {
+            $this->setVerificationUrl($responseArray['verification_url']);
+        }
     }
 
     /**
      * Returns the request status. Potential values are:
      * Vendo::S2S_STATUS_NOT_OK - The transaction failed. Use getErrorCode and getErrorMessage for more details.
+     * Vendo::S2S_VERIFICATION_REQUIRED
      * Vendo::S2S_STATUS_OK - The transaction was accepted. Inspect the available methods to get all available details.
      *
      * @return int
@@ -161,5 +181,35 @@ class SubscriptionResponse
         $this->resultDetails = $resultDetails;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getVerificationUrl(): ?string
+    {
+        return $this->verificationUrl;
+    }
 
+    /**
+     * @param string|null $verificationUrl
+     */
+    public function setVerificationUrl(?string $verificationUrl): void
+    {
+        $this->verificationUrl = $verificationUrl;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getVerificationId(): ?int
+    {
+        return $this->verificationId;
+    }
+
+    /**
+     * @param int|null $verificationId
+     */
+    public function setVerificationId(?int $verificationId): void
+    {
+        $this->verificationId = $verificationId;
+    }
 }

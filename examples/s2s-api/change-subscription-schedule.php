@@ -5,13 +5,15 @@
 
 include __DIR__ . '/../../vendor/autoload.php';
 
+var_dump(getenv('XDEBUG_SESSION'));
+
 try {
     $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscription();
     $changeSubscription->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
     $changeSubscription->setIsTest(true);
     $changeSubscription->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
-    $changeSubscription->setSubscriptionId(160042557);//The Vendo Subscription ID that you want to change.
+    $changeSubscription->setSubscriptionId(160116338);//The Vendo Subscription ID that you want to change.
     /** Set new schedule */
 
     $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();

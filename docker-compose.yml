@@ -8,7 +8,8 @@ services:
         networks:
             default: ~
         environment:
-            - .env_local
+            - PHP_IDE_CONFIG="serverName=vendosdkphp"
+            - XDEBUG_SESSION=PHPSTORM
         extra_hosts:
             - "${VENDO_BASE_HOST_LOCAL}:host-gateway"
 networks:

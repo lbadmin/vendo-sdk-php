@@ -9,6 +9,8 @@ class ResultDetails
     protected $message;
     /** @var ?string */
     protected $verificationUrl;
+    /** @var ?int */
+    protected $verificationId;
 
     /**
      * @param array $resultDetails
