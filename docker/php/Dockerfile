@@ -1,9 +1,8 @@
-FROM php:8.1.2-fpm
+FROM php:7.4-fpm
 
 RUN apt update \
     && apt-get install -y nano git curl libxml2-dev librabbitmq-dev zlib1g-dev libicu-dev g++ iputils-ping libzip-dev zip unzip libpq-dev \
-    && docker-php-ext-install zip soap \
-    && pecl install xdebug && docker-php-ext-enable xdebug
+    && pecl install xdebug-2.9.2 && docker-php-ext-enable xdebug
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
