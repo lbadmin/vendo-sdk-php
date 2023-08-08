@@ -171,6 +171,52 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
 }', $changeSubscription->getRawRequest(true));
     }
 
+    public function testChangeSubscriptionPaymentMethodSuccessCommit()
+    {
+        $changeSubscription = new ChangeSubscription();
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setApiSecret('test-secret');
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setMerchantId(1234567);
+        $changeSubscription->setSubscriptionId(87654321);
+
+        $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
+        $verificationDetails->setVerificationId(4481);//use verification_id returned in change-subscription-payment-details-request
+        $changeSubscription->setPaymentDetails($verificationDetails);
+
+        $httpClient = $this->createMock(Client::class);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getBody')->willReturn(json_encode([
+            'status' => Vendo::S2S_STATUS_OK,
+            'request_id' => 234,
+            'subscription' => [
+                'id' => 9876543,
+            ],
+        ]));
+        $httpClient->method('send')->willReturn($response);
+
+        $changeSubscription->setHttpClient($httpClient);
+        $changeSubscription->postRequest();
+
+        $this->assertEquals(true, $changeSubscription->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription', $changeSubscription->getApiEndpoint());
+        $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
+        $this->assertEquals(1234567, $changeSubscription->getMerchantId());
+        $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
+        $this->assertEquals('{"status":1,"request_id":234,"subscription":{"id":9876543}}', $changeSubscription->getRawResponse());
+
+        $this->assertEquals('{
+    "api_secret": "test-secret",
+    "is_test": 1,
+    "merchant_id": 1234567,
+    "subscription_id": 87654321,
+    "payment_details": {
+        "verification_id": 4481
+    }
+}', $changeSubscription->getRawRequest(true));
+    }
+
     public function testChangeSubscriptionScheduleErrorBadParam()
     {
         $changeSubscription = new ChangeSubscription();
