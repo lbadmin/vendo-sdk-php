@@ -12,9 +12,9 @@ use VendoSdk\S2S\Request\ChangeSubscription;
 use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
-class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
+class ChangeSubscriptionScheduleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCancelSubscriptionSuccess()
+    public function testChangeSubscriptionScheduleSuccess()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);

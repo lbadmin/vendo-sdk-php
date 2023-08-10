@@ -1,4 +1,5 @@
 <?php
+
 namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
@@ -12,9 +13,9 @@ use VendoSdk\S2S\Request\ChangeSubscription;
 use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
-class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
+class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCancelSubscriptionSuccess()
+    public function testChangeSubscriptionPaymentMethodSuccessNoVerificationRequired()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);
@@ -23,11 +24,13 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->setMerchantId(1234567);
         $changeSubscription->setSubscriptionId(87654321);
 
-        $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
-        $schedule->setNextRebillDate('2025-10-11');
-        $schedule->setRebillDuration(12);//days
-        $schedule->setRebillAmount(10.34);//billing currency
-        $changeSubscription->setSubscriptionSchedule($schedule);
+        $ccDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard();
+        $ccDetails->setNameOnCard('John Doe');
+        $ccDetails->setCardNumber('4111111111111111');
+        $ccDetails->setExpirationMonth('05');
+        $ccDetails->setExpirationYear('2029');
+        $ccDetails->setCvv(123);
+        $changeSubscription->setPaymentDetails($ccDetails);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -56,60 +59,13 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
     "is_test": 1,
     "merchant_id": 1234567,
     "subscription_id": 87654321,
-    "subscription_schedule": {
-        "next_rebill_date": "2025-10-11",
-        "rebill_amount": 10.34,
-        "rebill_duration": 12
-    }
-}', $changeSubscription->getRawRequest(true));
-    }
-
-    public function testChangeSubscriptionScheduleSuccess()
-    {
-        $changeSubscription = new ChangeSubscription();
-        $changeSubscription->setIsTest(true);
-        $changeSubscription->setApiSecret('test-secret');
-        $changeSubscription->setIsTest(true);
-        $changeSubscription->setMerchantId(1234567);
-        $changeSubscription->setSubscriptionId(87654321);
-
-        $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
-        $schedule->setNextRebillDate('2025-10-11');
-        $schedule->setRebillDuration(12);//days
-        $schedule->setRebillAmount(10.34);//billing currency
-        $changeSubscription->setSubscriptionSchedule($schedule);
-
-        $httpClient = $this->createMock(Client::class);
-
-        $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::S2S_STATUS_OK,
-            'request_id' => 234,
-            'subscription' => [
-                'id' => 9876543,
-            ],
-        ]));
-        $httpClient->method('send')->willReturn($response);
-
-        $changeSubscription->setHttpClient($httpClient);
-        $changeSubscription->postRequest();
-
-        $this->assertEquals(true, $changeSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription', $changeSubscription->getApiEndpoint());
-        $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
-        $this->assertEquals(1234567, $changeSubscription->getMerchantId());
-        $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
-        $this->assertEquals('{"status":1,"request_id":234,"subscription":{"id":9876543}}', $changeSubscription->getRawResponse());
-
-        $this->assertEquals('{
-    "api_secret": "test-secret",
-    "is_test": 1,
-    "merchant_id": 1234567,
-    "subscription_id": 87654321,
-    "subscription_schedule": {
-        "next_rebill_date": "2025-10-11",
-        "rebill_amount": 10.34,
-        "rebill_duration": 12
+    "payment_details": {
+        "payment_method": "card",
+        "card_number": "4111111111111111",
+        "expiration_month": "05",
+        "expiration_year": "2029",
+        "cvv": "123",
+        "name_on_card": "John Doe"
     }
 }', $changeSubscription->getRawRequest(true));
     }
@@ -239,7 +195,7 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
             'status' => Vendo::S2S_STATUS_NOT_OK,
             'error' => [
                 'code' => '8105',
-                'message' => 'Invalid parameter xyz'
+                'message' => 'Invalid parameter xyz',
             ],
             'request_id' => 234,
             'subscription' => [
