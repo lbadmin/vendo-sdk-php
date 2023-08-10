@@ -127,7 +127,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
 }', $changeSubscription->getRawRequest(true));
     }
 
-    public function testChangeSubscriptionPaymentMethodSuccessCommit()
+    public function testChangeSubscriptionPaymentMethodSuccessVerificationRequest()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);
