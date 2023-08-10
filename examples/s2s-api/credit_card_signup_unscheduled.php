@@ -16,7 +16,7 @@ try {
     $creditCardSignup->setIsTest(true);
 
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $creditCardSignup->setIsMerchantInitiatedTransaction(false);
+    $creditCardSignup->setIsMerchantInitiatedTransaction(true);
 
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
