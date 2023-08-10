@@ -59,6 +59,9 @@ class Payment extends AbstractApiBase
     /** @var string */
     protected $successUrl;
 
+    /** @var bool */
+    protected $unscheduled = false;
+
     /**
      * @inheritdoc
      */
@@ -325,6 +328,22 @@ class Payment extends AbstractApiBase
     public function setSuccessUrl(string $successUrl): void
     {
         $this->successUrl = $successUrl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnscheduled(): bool
+    {
+        return $this->unscheduled;
+    }
+
+    /**
+     * @param bool $unscheduled
+     */
+    public function setUnscheduled(bool $unscheduled): void
+    {
+        $this->unscheduled = $unscheduled;
     }
 
     /**

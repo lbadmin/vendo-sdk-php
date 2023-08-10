@@ -16,6 +16,8 @@ class ExternalReferences implements \JsonSerializable
     protected $campaignId;
     /** @var ?string */
     protected $affiliateId;
+    /** @var ?int */
+    protected $initialTransactionId;
 
     /**
      * @return string
@@ -81,6 +83,21 @@ class ExternalReferences implements \JsonSerializable
         $this->affiliateId = $affiliateId;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getInitialTransactionId(): ?int
+    {
+        return $this->initialTransactionId;
+    }
+
+    /**
+     * @param int|null $initialTransactionId
+     */
+    public function setInitialTransactionId(?string $initialTransactionId): void
+    {
+        $this->initialTransactionId = $initialTransactionId;
+    }
 
     /**
      * @return array
