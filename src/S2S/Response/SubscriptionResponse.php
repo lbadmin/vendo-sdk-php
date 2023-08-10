@@ -3,13 +3,8 @@
 namespace VendoSdk\S2S\Response;
 
 use VendoSdk\Exception;
-use VendoSdk\S2S\Response\Details\CreditCardPaymentResult;
-use VendoSdk\S2S\Response\Details\ExternalReferences;
 use VendoSdk\S2S\Response\Details\ResultDetails;
-use VendoSdk\S2S\Response\Details\SepaPaymentResult;
 use VendoSdk\S2S\Response\Details\Subscription;
-use VendoSdk\S2S\Response\Details\Transaction;
-use VendoSdk\Vendo;
 
 class SubscriptionResponse
 {
@@ -54,10 +49,6 @@ class SubscriptionResponse
 
         $this->status = $responseArray['status'];
         $this->requestId = $responseArray['request_id'] ?? null;
-
-        if (!empty($responseArray['subscription'])) {
-            $this->setSubscriptionDetails(new Subscription($responseArray['subscription']));
-        }
 
         if (!empty($responseArray['subscription'])) {
             $this->setSubscriptionDetails(new Subscription($responseArray['subscription']));
