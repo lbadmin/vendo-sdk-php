@@ -11,11 +11,11 @@ try {
 
     $changeSubscription->setIsTest(true);
     $changeSubscription->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
-    $changeSubscription->setSubscriptionId(160116496);//The Vendo Subscription ID that you want to change.
+    $changeSubscription->setSubscriptionId(160116532);//The Vendo Subscription ID that you want to change.
     /** Set new payment details */
 
     $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verificationDetails->setVerificationId(4481);//use verification_id returned in change-subscription-payment-details-request
+    $verificationDetails->setVerificationId(4558);//use verification_id returned in change-subscription-payment-details-request
     $changeSubscription->setPaymentDetails($verificationDetails);
 
     /**
@@ -31,13 +31,6 @@ try {
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
         echo "The subscription payment details were successfully updated. The Vendo Subscription ID is: " . $response->getSubscriptionDetails()->getId();
-    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
-        echo "The change must be verified";
-        echo "\nYou MUST :";
-        echo "\n   1. Save the verification_id: " . $response->getVerificationId();
-        echo "\n   2. Redirect the user to the verification URL: " . $response->getVerificationUrl();
-        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the commit request to vendo, for that you will need saved verification_id.";
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
         echo "The operation failed.";
         echo "\nError message: " . $response->getErrorMessage();
