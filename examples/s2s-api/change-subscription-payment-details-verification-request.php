@@ -6,7 +6,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscription();
+    $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscriptionPaymentDetails();
     $changeSubscription->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
     $changeSubscription->setIsTest(true);
@@ -15,7 +15,7 @@ try {
     /** Set new payment details */
 
     $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verificationDetails->setVerificationId(4558);//use verification_id returned in change-subscription-payment-details-request
+    $verificationDetails->setVerificationId(4561);//use verification_id returned in change-subscription-payment-details-request
     $changeSubscription->setPaymentDetails($verificationDetails);
 
     /**

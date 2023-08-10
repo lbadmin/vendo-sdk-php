@@ -6,7 +6,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscription();
+    $changeSubscription = new \VendoSdk\S2S\Request\ChangeSubscriptionPaymentDetails();
     $changeSubscription->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
     $changeSubscription->setIsTest(true);
