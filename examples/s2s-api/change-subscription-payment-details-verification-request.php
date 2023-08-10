@@ -1,6 +1,6 @@
 <?php
 /**
- * This example shows you how to change a subscription schedule
+ * This example shows you how to change payment details of the subscription
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
