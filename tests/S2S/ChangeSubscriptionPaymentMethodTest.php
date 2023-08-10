@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use VendoSdk\S2S\Request\CancelSubscription;
 use VendoSdk\S2S\Request\CapturePayment;
 use VendoSdk\S2S\Request\ChangeSubscription;
-use VendoSdk\S2S\Request\ChangeSubscriptionPaymentDetails;
+use VendoSdk\S2S\Request\UpdatePaymentMethod;
 use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
@@ -18,7 +18,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
 {
     public function testChangeSubscriptionPaymentMethodSuccessNoVerificationRequired()
     {
-        $changeSubscription = new ChangeSubscriptionPaymentDetails();
+        $changeSubscription = new UpdatePaymentMethod();
         $changeSubscription->setIsTest(true);
         $changeSubscription->setApiSecret('test-secret');
         $changeSubscription->setIsTest(true);
@@ -73,7 +73,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
 
     public function testChangeSubscriptionPaymentMethodSuccessVerificationRequired()
     {
-        $changeSubscription = new ChangeSubscriptionPaymentDetails();
+        $changeSubscription = new UpdatePaymentMethod();
         $changeSubscription->setIsTest(true);
         $changeSubscription->setApiSecret('test-secret');
         $changeSubscription->setIsTest(true);
@@ -130,7 +130,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
 
     public function testChangeSubscriptionPaymentMethodSuccessVerificationRequest()
     {
-        $changeSubscription = new ChangeSubscriptionPaymentDetails();
+        $changeSubscription = new UpdatePaymentMethod();
         $changeSubscription->setIsTest(true);
         $changeSubscription->setApiSecret('test-secret');
         $changeSubscription->setIsTest(true);

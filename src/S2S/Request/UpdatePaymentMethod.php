@@ -6,7 +6,7 @@ use VendoSdk\Exception;
 use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
 
-class ChangeSubscriptionPaymentDetails extends SubscriptionBase implements \JsonSerializable
+class UpdatePaymentMethod extends SubscriptionBase implements \JsonSerializable
 {
     /** @var PaymentDetails */
     protected $paymentDetails = null;
@@ -16,7 +16,7 @@ class ChangeSubscriptionPaymentDetails extends SubscriptionBase implements \Json
      */
     public function getApiEndpoint(): string
     {
-        return parent::getApiEndpoint() . '/change-subscription-payment-details';
+        return parent::getApiEndpoint() . '/update-payment-method';
     }
 
     /**
