@@ -49,7 +49,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->postRequest();
 
         $this->assertEquals(true, $changeSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription-payment-details', $changeSubscription->getApiEndpoint());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/update-payment-method', $changeSubscription->getApiEndpoint());
         $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
         $this->assertEquals(1234567, $changeSubscription->getMerchantId());
         $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
@@ -106,7 +106,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->postRequest();
 
         $this->assertEquals(true, $changeSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription-payment-details', $changeSubscription->getApiEndpoint());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/update-payment-method', $changeSubscription->getApiEndpoint());
         $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
         $this->assertEquals(1234567, $changeSubscription->getMerchantId());
         $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
@@ -138,7 +138,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->setSubscriptionId(87654321);
 
         $verificationDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-        $verificationDetails->setVerificationId(4481);//use verification_id returned in change-subscription-payment-details-request
+        $verificationDetails->setVerificationId(4481);//use verification_id returned in update-payment-method-request
         $changeSubscription->setPaymentDetails($verificationDetails);
 
         $httpClient = $this->createMock(Client::class);
@@ -157,7 +157,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->postRequest();
 
         $this->assertEquals(true, $changeSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription-payment-details', $changeSubscription->getApiEndpoint());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/update-payment-method', $changeSubscription->getApiEndpoint());
         $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
         $this->assertEquals(1234567, $changeSubscription->getMerchantId());
         $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
