@@ -12,9 +12,9 @@ use VendoSdk\S2S\Request\ChangeSubscription;
 use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
-class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
+class ChangeSubscriptionScheduleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCancelSubscriptionSuccess()
+    public function testChangeSubscriptionScheduleSuccess()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);
@@ -64,7 +64,7 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
 }', $changeSubscription->getRawRequest(true));
     }
 
-    public function testChangeSubscriptionErrorBadParam()
+    public function testChangeSubscriptionScheduleErrorBadParam()
     {
         $changeSubscription = new ChangeSubscription();
         $changeSubscription->setIsTest(true);
@@ -86,7 +86,7 @@ class ChangeSubscriptionTest extends \PHPUnit\Framework\TestCase
             'status' => Vendo::S2S_STATUS_NOT_OK,
             'error' => [
                 'code' => '8105',
-                'message' => 'Invalid parameter xyz'
+                'message' => 'Invalid parameter xyz',
             ],
             'request_id' => 234,
             'subscription' => [

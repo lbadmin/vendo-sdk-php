@@ -111,9 +111,9 @@ abstract class SubscriptionBase extends AbstractApiBase
     }
 
     /**
-     * @return ClientRequest
+     * @return ?ClientRequest
      */
-    public function getRequestDetails(): ClientRequest
+    public function getRequestDetails(): ?ClientRequest
     {
         return $this->requestDetails;
     }

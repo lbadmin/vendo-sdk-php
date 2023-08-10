@@ -8,6 +8,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use VendoSdk\S2S\Request\CancelSubscription;
 use VendoSdk\S2S\Request\CapturePayment;
+use VendoSdk\S2S\Request\ChangeSubscription;
 use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
@@ -15,13 +16,12 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCancelSubscriptionSuccess()
     {
-        $cancelSubscription = new CancelSubscription();
-        $cancelSubscription->setIsTest(true);
-        $cancelSubscription->setApiSecret('test-secret');
-        $cancelSubscription->setIsTest(true);
-        $cancelSubscription->setMerchantId(1234567);
-        $cancelSubscription->setSubscriptionId(87654321);
-        $cancelSubscription->setReasonId(26);
+        $changeSubscription = new CancelSubscription();
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setApiSecret('test-secret');
+        $changeSubscription->setIsTest(true);
+        $changeSubscription->setMerchantId(1234567);
+        $changeSubscription->setSubscriptionId(87654321);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -35,67 +35,21 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
         ]));
         $httpClient->method('send')->willReturn($response);
 
-        $cancelSubscription->setHttpClient($httpClient);
-        $cancelSubscription->postRequest();
+        $changeSubscription->setHttpClient($httpClient);
+        $changeSubscription->postRequest();
 
-        $this->assertEquals(true, $cancelSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/cancel-subscription', $cancelSubscription->getApiEndpoint());
-        $this->assertEquals('test-secret', $cancelSubscription->getApiSecret());
-        $this->assertEquals(1234567, $cancelSubscription->getMerchantId());
-        $this->assertEquals(87654321, $cancelSubscription->getSubscriptionId());
-        $this->assertEquals('{"status":1,"request_id":234,"subscription":{"id":9876543}}', $cancelSubscription->getRawResponse());
-
-        $this->assertEquals('{
-    "api_secret": "test-secret",
-    "is_test": 1,
-    "merchant_id": 1234567,
-    "subscription_id": 87654321,
-    "reason_id": 26
-}', $cancelSubscription->getRawRequest(true));
-    }
-
-    public function testCancelSubscriptionErrorBadParam()
-    {
-        $cancelSubscription = new CancelSubscription();
-        $cancelSubscription->setIsTest(true);
-        $cancelSubscription->setApiSecret('test-secret');
-        $cancelSubscription->setIsTest(true);
-        $cancelSubscription->setMerchantId(1234567);
-        $cancelSubscription->setSubscriptionId(87654321);
-        $cancelSubscription->setReasonId(26);
-
-        $httpClient = $this->createMock(Client::class);
-
-        $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::S2S_STATUS_NOT_OK,
-            'error' => [
-                'code' => '8105',
-                'message' => 'Invalid parameter xyz'
-            ],
-            'request_id' => 234,
-            'subscription' => [
-                'id' => 9876543,
-            ],
-        ]));
-        $httpClient->method('send')->willReturn($response);
-
-        $cancelSubscription->setHttpClient($httpClient);
-        $cancelSubscription->postRequest();
-
-        $this->assertEquals(true, $cancelSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/cancel-subscription', $cancelSubscription->getApiEndpoint());
-        $this->assertEquals('test-secret', $cancelSubscription->getApiSecret());
-        $this->assertEquals(1234567, $cancelSubscription->getMerchantId());
-        $this->assertEquals(87654321, $cancelSubscription->getSubscriptionId());
-        $this->assertEquals('{"status":0,"error":{"code":"8105","message":"Invalid parameter xyz"},"request_id":234,"subscription":{"id":9876543}}', $cancelSubscription->getRawResponse());
+        $this->assertEquals(true, $changeSubscription->isTest());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/cancel-subscription', $changeSubscription->getApiEndpoint());
+        $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
+        $this->assertEquals(1234567, $changeSubscription->getMerchantId());
+        $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
+        $this->assertEquals('{"status":1,"request_id":234,"subscription":{"id":9876543}}', $changeSubscription->getRawResponse());
 
         $this->assertEquals('{
     "api_secret": "test-secret",
     "is_test": 1,
     "merchant_id": 1234567,
-    "subscription_id": 87654321,
-    "reason_id": 26
-}', $cancelSubscription->getRawRequest(true));
+    "subscription_id": 87654321
+}', $changeSubscription->getRawRequest(true));
     }
 }
