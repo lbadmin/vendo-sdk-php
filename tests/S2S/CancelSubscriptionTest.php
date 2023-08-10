@@ -16,18 +16,12 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCancelSubscriptionSuccess()
     {
-        $changeSubscription = new ChangeSubscription();
+        $changeSubscription = new CancelSubscription();
         $changeSubscription->setIsTest(true);
         $changeSubscription->setApiSecret('test-secret');
         $changeSubscription->setIsTest(true);
         $changeSubscription->setMerchantId(1234567);
         $changeSubscription->setSubscriptionId(87654321);
-
-        $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
-        $schedule->setNextRebillDate('2025-10-11');
-        $schedule->setRebillDuration(12);//days
-        $schedule->setRebillAmount(10.34);//billing currency
-        $changeSubscription->setSubscriptionSchedule($schedule);
 
         $httpClient = $this->createMock(Client::class);
 
@@ -45,7 +39,7 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
         $changeSubscription->postRequest();
 
         $this->assertEquals(true, $changeSubscription->isTest());
-        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/change-subscription', $changeSubscription->getApiEndpoint());
+        $this->assertEquals(Vendo::BASE_URL . '/api/gateway/cancel-subscription', $changeSubscription->getApiEndpoint());
         $this->assertEquals('test-secret', $changeSubscription->getApiSecret());
         $this->assertEquals(1234567, $changeSubscription->getMerchantId());
         $this->assertEquals(87654321, $changeSubscription->getSubscriptionId());
@@ -55,12 +49,7 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
     "api_secret": "test-secret",
     "is_test": 1,
     "merchant_id": 1234567,
-    "subscription_id": 87654321,
-    "subscription_schedule": {
-        "next_rebill_date": "2025-10-11",
-        "rebill_amount": 10.34,
-        "rebill_duration": 12
-    }
+    "subscription_id": 87654321
 }', $changeSubscription->getRawRequest(true));
     }
 }

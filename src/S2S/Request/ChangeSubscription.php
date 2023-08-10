@@ -11,9 +11,6 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     /** @var SubscriptionSchedule */
     protected $subscriptionSchedule = null;
 
-    /** @var PaymentDetails */
-    protected $paymentDetails = null;
-
     /**
      * @inheritdoc
      */
@@ -39,22 +36,6 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
     }
 
     /**
-     * @return PaymentDetails
-     */
-    public function getPaymentDetails(): ?PaymentDetails
-    {
-        return $this->paymentDetails;
-    }
-
-    /**
-     * @param PaymentDetails $paymentDetails
-     */
-    public function setPaymentDetails(PaymentDetails $paymentDetails): void
-    {
-        $this->paymentDetails = $paymentDetails;
-    }
-
-    /**
      * @return array
      * @throws Exception
      */
@@ -70,14 +51,6 @@ class ChangeSubscription extends SubscriptionBase implements \JsonSerializable
         $result = parent::getBaseFields();
         if (!empty($this->getSubscriptionSchedule())) {
             $result['subscription_schedule'] = $this->getSubscriptionSchedule();
-        }
-
-        if (!empty($this->getPaymentDetails())) {
-            $result['payment_details'] = $this->getPaymentDetails();
-        }
-
-        if (!empty($this->getRequestDetails())) {
-            $result['request_details'] = $this->getRequestDetails();
         }
 
         return $result;
