@@ -1,6 +1,6 @@
 <?php
 /**
- * This example shows you how to process a credit card transaction.
+ * This example shows you how to process a credit card signup with unscheduled request.
  * You can use the payment detail token returned in this example to run the example in payment_with_saved_token.php
  */
 
