@@ -26,9 +26,6 @@ try {
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
 
-    //reference initial CIT transaction id for this unscheduled one
-    $externalRef->setInitialTransactionId(4626);
-
     $creditCardSignup->setExternalReferences($externalRef);
 
     /**
@@ -106,7 +103,10 @@ try {
     $creditCardSignup->setRequestDetails($request);
 
     //set it to mark the transaction as unscheduled one
-    $creditCardSignup->setUnscheduled(true);
+    $unscheduled = new \VendoSdk\S2S\Request\Details\Unscheduled();
+    //reference initial CIT transaction id for this unscheduled one
+    $unscheduled->setInitialTransactionId(240438239);
+    $creditCardSignup->setUnscheduled($unscheduled);
 
     $response = $creditCardSignup->postRequest();
 

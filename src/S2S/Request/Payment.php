@@ -10,6 +10,7 @@ use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
+use VendoSdk\S2S\Request\Details\Unscheduled;
 use VendoSdk\Vendo;
 
 /**
@@ -59,8 +60,8 @@ class Payment extends AbstractApiBase
     /** @var string */
     protected $successUrl;
 
-    /** @var bool */
-    protected $unscheduled = false;
+    /** @var ?Unscheduled */
+    protected $unscheduled;
 
     /**
      * @inheritdoc
@@ -331,17 +332,17 @@ class Payment extends AbstractApiBase
     }
 
     /**
-     * @return bool
+     * @return ?Unscheduled
      */
-    public function isUnscheduled(): bool
+    public function getUnscheduled(): ?Unscheduled
     {
         return $this->unscheduled;
     }
 
     /**
-     * @param bool $unscheduled
+     * @param ?Unscheduled $unscheduled
      */
-    public function setUnscheduled(bool $unscheduled): void
+    public function setUnscheduled(?Unscheduled $unscheduled): void
     {
         $this->unscheduled = $unscheduled;
     }
@@ -352,7 +353,7 @@ class Payment extends AbstractApiBase
      */
     public function jsonSerialize()
     {
-        return array_merge(parent::jsonSerialize(), [
+        $result = array_merge(parent::jsonSerialize(), [
             'site_id' => $this->getSiteId(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
@@ -366,7 +367,13 @@ class Payment extends AbstractApiBase
             'mit' => $this->isMerchantInitiatedTransaction(),
             'preauth_only' => $this->isPreAuthOnly(),
             'non_recurring' => $this->isNonRecurring(),
-            'success_url' => $this->getSuccessUrl()
+            'success_url' => $this->getSuccessUrl(),
         ]);
+
+        if (!empty($this->getUnscheduled())) {
+            $result['unscheduled'] = $this->getUnscheduled();
+        }
+
+        return $result;
     }
 }
