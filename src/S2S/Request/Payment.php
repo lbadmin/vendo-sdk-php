@@ -367,7 +367,8 @@ class Payment extends AbstractApiBase
             'mit' => $this->isMerchantInitiatedTransaction(),
             'preauth_only' => $this->isPreAuthOnly(),
             'non_recurring' => $this->isNonRecurring(),
-            'success_url' => $this->getSuccessUrl()
+            'success_url' => $this->getSuccessUrl(),
+            'unscheduled' => $this->getUnscheduled(),
         ]);
     }
 }

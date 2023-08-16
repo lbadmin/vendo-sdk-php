@@ -107,7 +107,7 @@ try {
     //reference initial CIT transaction id for this unscheduled one
     $unscheduled->setInitialTransactionId(240438239);
     $creditCardSignup->setUnscheduled($unscheduled);
-var_dump($creditCardSignup->getRawRequest());
+
     $response = $creditCardSignup->postRequest();
 
     echo "\n\nRESULT BELOW\n";
