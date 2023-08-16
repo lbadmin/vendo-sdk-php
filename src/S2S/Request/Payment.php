@@ -353,7 +353,7 @@ class Payment extends AbstractApiBase
      */
     public function jsonSerialize()
     {
-        return array_merge(parent::jsonSerialize(), [
+        $result = array_merge(parent::jsonSerialize(), [
             'site_id' => $this->getSiteId(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
@@ -368,7 +368,12 @@ class Payment extends AbstractApiBase
             'preauth_only' => $this->isPreAuthOnly(),
             'non_recurring' => $this->isNonRecurring(),
             'success_url' => $this->getSuccessUrl(),
-            'unscheduled' => $this->getUnscheduled(),
         ]);
+
+        if (!empty($this->getUnscheduled())) {
+            $result['unscheduled'] = $this->getUnscheduled();
+        }
+
+        return $result;
     }
 }
