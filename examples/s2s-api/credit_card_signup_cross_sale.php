@@ -15,9 +15,6 @@ try {
     $creditCardSignup->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardSignup->setIsTest(true);
 
-    //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $creditCardSignup->setIsMerchantInitiatedTransaction(true);
-
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
     // the CapturePayment class.
@@ -102,11 +99,11 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
     $creditCardSignup->setRequestDetails($request);
 
-    //set it to mark the transaction as unscheduled one
-    $unscheduled = new \VendoSdk\S2S\Request\Details\Unscheduled();
-    //reference initial CIT transaction id for this unscheduled one
-    $unscheduled->setInitialTransactionId(240438239);
-    $creditCardSignup->setUnscheduled($unscheduled);
+    //set it to mark the transaction as a cross_sale initial
+    $crossSale = new \VendoSdk\S2S\Request\Details\CrossSale();
+    //reference initial CIT transaction id for this cross-sale
+    $crossSale->setInitialTransactionId(4630);
+    $creditCardSignup->setCrossSale($crossSale);
 
     $response = $creditCardSignup->postRequest();
 
