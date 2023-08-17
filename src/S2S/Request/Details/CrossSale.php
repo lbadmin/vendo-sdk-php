@@ -3,7 +3,7 @@ namespace VendoSdk\S2S\Request\Details;
 
 use VendoSdk\Exception;
 
-class Unscheduled implements \JsonSerializable
+class CrossSale implements \JsonSerializable
 {
     /** @var ?int */
     protected $initialTransactionId;

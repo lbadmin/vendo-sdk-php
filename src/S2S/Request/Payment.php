@@ -10,7 +10,7 @@ use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ClientRequest;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
-use VendoSdk\S2S\Request\Details\Unscheduled;
+use VendoSdk\S2S\Request\Details\CrossSale;
 use VendoSdk\Vendo;
 
 /**
@@ -60,8 +60,8 @@ class Payment extends AbstractApiBase
     /** @var string */
     protected $successUrl;
 
-    /** @var ?Unscheduled */
-    protected $unscheduled;
+    /** @var ?CrossSale */
+    protected $crossSale;
 
     /**
      * @inheritdoc
@@ -332,19 +332,19 @@ class Payment extends AbstractApiBase
     }
 
     /**
-     * @return ?Unscheduled
+     * @return ?CrossSale
      */
-    public function getUnscheduled(): ?Unscheduled
+    public function getCrossSale(): ?CrossSale
     {
-        return $this->unscheduled;
+        return $this->crossSale;
     }
 
     /**
-     * @param ?Unscheduled $unscheduled
+     * @param ?CrossSale $crossSale
      */
-    public function setUnscheduled(?Unscheduled $unscheduled): void
+    public function setCrossSale(?CrossSale $crossSale): void
     {
-        $this->unscheduled = $unscheduled;
+        $this->crossSale = $crossSale;
     }
 
     /**
@@ -370,8 +370,8 @@ class Payment extends AbstractApiBase
             'success_url' => $this->getSuccessUrl(),
         ]);
 
-        if (!empty($this->getUnscheduled())) {
-            $result['unscheduled'] = $this->getUnscheduled();
+        if (!empty($this->getCrossSale())) {
+            $result['cross_sale'] = $this->getCrossSale();
         }
 
         return $result;

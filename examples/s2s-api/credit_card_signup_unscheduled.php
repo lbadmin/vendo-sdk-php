@@ -102,11 +102,11 @@ try {
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
     $creditCardSignup->setRequestDetails($request);
 
-    //set it to mark the transaction as unscheduled one
-    $unscheduled = new \VendoSdk\S2S\Request\Details\Unscheduled();
-    //reference initial CIT transaction id for this unscheduled one
-    $unscheduled->setInitialTransactionId(240438239);
-    $creditCardSignup->setUnscheduled($unscheduled);
+    //set it to mark the transaction as a cross_sale initial
+    $crossSale = new \VendoSdk\S2S\Request\Details\CrossSale();
+    //reference initial CIT transaction id for this cross-sale
+    $crossSale->setInitialTransactionId(240438239);
+    $creditCardSignup->setCrossSale($crossSale);
 
     $response = $creditCardSignup->postRequest();
 
