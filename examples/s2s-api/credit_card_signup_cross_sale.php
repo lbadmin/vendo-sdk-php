@@ -89,7 +89,7 @@ try {
     $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
     $schedule->setRebillDuration(30);//days
     $schedule->setRebillAmount(2.34);//billing currency
-    $creditCardSignup->setSubscriptionSchedule($schedule);
+//    $creditCardSignup->setSubscriptionSchedule($schedule);
 
     /**
      * User request details
