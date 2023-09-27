@@ -20,6 +20,7 @@ class ResultDetails
         $this->setCode($resultDetails['code'] ?? null);
         $this->setMessage($resultDetails['message'] ?? null);
         $this->setVerificationUrl($resultDetails['verification_url'] ?? null);
+        $this->setVerificationId($resultDetails['verification_id'] ?? null);
     }
 
     /**
@@ -68,5 +69,21 @@ class ResultDetails
     public function setVerificationUrl(?string $verificationUrl): void
     {
         $this->verificationUrl = $verificationUrl;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getVerificationId(): ?int
+    {
+        return $this->verificationId;
+    }
+
+    /**
+     * @param int|null $verificationId
+     */
+    public function setVerificationId(?int $verificationId): void
+    {
+        $this->verificationId = $verificationId;
     }
 }
