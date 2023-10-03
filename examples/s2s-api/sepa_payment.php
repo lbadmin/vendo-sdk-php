@@ -7,28 +7,28 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardPayment = new \VendoSdk\S2S\Request\Payment();
-    $creditCardPayment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
-    $creditCardPayment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
-    $creditCardPayment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id');//Your Vendo Site ID
-    $creditCardPayment->setAmount(120.00);
-    $creditCardPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_EUR);
-    $creditCardPayment->setIsTest(true);
+    $sepaPayment = new \VendoSdk\S2S\Request\Payment();
+    $sepaPayment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
+    $sepaPayment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
+    $sepaPayment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id');//Your Vendo Site ID
+    $sepaPayment->setAmount(120.00);
+    $sepaPayment->setCurrency(\VendoSdk\Vendo::CURRENCY_EUR);
+    $sepaPayment->setIsTest(true);
 
     //You must set the flag below to TRUE if you're processing a recurring billing transaction
-    $creditCardPayment->setIsMerchantInitiatedTransaction(false);
+    $sepaPayment->setIsMerchantInitiatedTransaction(false);
 
     //You may add non_recurring flag to mark no merchant initiated transactions (rebills) will follow, required by some banks
-    $creditCardPayment->setIsNonRecurring(true);
+    $sepaPayment->setIsNonRecurring(true);
 
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
     // the CapturePayment class.
-    $creditCardPayment->setPreAuthOnly(false);
+    $sepaPayment->setPreAuthOnly(false);
 
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
-    $creditCardPayment->setExternalReferences($externalRef);
+    $sepaPayment->setExternalReferences($externalRef);
 
     /**
      * Add items to your request, you can add one or more
@@ -38,21 +38,21 @@ try {
     $cartItem->setDescription('Registration fee');//your product description
     $cartItem->setPrice(4.00);
     $cartItem->setQuantity(1);
-    $creditCardPayment->addItem($cartItem);
+    $sepaPayment->addItem($cartItem);
 
     $cartItem2 = new \VendoSdk\S2S\Request\Details\Item();
     $cartItem2->setId(123);//set your product id
     $cartItem2->setDescription('Unlimited video download');//your product description
     $cartItem2->setPrice(6.50);
     $cartItem2->setQuantity(1);
-    $creditCardPayment->addItem($cartItem2);
+    $sepaPayment->addItem($cartItem2);
 
     /**
      * Provide the Direct Debit (SEPA) details that you collected from the user
      */
     $sepaDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Sepa();
     $sepaDetails->setIban("DE89370400440532013000");
-    $creditCardPayment->setPaymentDetails($sepaDetails);
+    $sepaPayment->setPaymentDetails($sepaDetails);
 
     /**
      * Customer details
@@ -63,7 +63,7 @@ try {
     $customer->setEmail('qa+bpsepa+test@vendoservices.com');
     $customer->setLanguageCode('en');
     $customer->setCountryCode('DE');
-    $creditCardPayment->setCustomerDetails($customer);
+    $sepaPayment->setCustomerDetails($customer);
 
     /**
      * Shipping details. This is required.
@@ -83,7 +83,7 @@ try {
     $shippingAddress->setState('FL');
     $shippingAddress->setPostalCode('33000');
     $shippingAddress->setPhone('1000000000');
-    $creditCardPayment->setShippingAddress($shippingAddress);
+    $sepaPayment->setShippingAddress($shippingAddress);
 
     /**
      * User request details
@@ -91,9 +91,9 @@ try {
     $request = new \VendoSdk\S2S\Request\Details\ClientRequest();
     $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?: '127.0.0.1');//you must pass a valid IPv4 address
     $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
-    $creditCardPayment->setRequestDetails($request);
+    $sepaPayment->setRequestDetails($request);
 
-    $response = $creditCardPayment->postRequest();
+    $response = $sepaPayment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
