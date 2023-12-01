@@ -3,15 +3,8 @@
 namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use VendoSdk\S2S\Request\CancelSubscription;
-use VendoSdk\S2S\Request\CapturePayment;
-use VendoSdk\S2S\Request\ChangeSubscription;
 use VendoSdk\S2S\Request\UpdatePaymentMethod;
-use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
 class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase

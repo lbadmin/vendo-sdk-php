@@ -1,24 +1,20 @@
 <?php
 namespace VendoSdk\S2S\Request;
 
-use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use VendoSdk\Exception;
-use VendoSdk\S2S\Request\Details\Customer;
-use VendoSdk\S2S\Request\Details\ExternalReferences;
-use VendoSdk\S2S\Request\Details\Item;
 use VendoSdk\S2S\Request\Details\ClientRequest;
-use VendoSdk\S2S\Request\Details\ShippingAddress;
-use VendoSdk\S2S\Response\PaymentResponse;
 use VendoSdk\S2S\Response\SubscriptionResponse;
-use VendoSdk\Util\HttpClientTrait;
 use VendoSdk\Vendo;
 
 abstract class SubscriptionBase extends AbstractApiBase
 {
     /** @var ?int */
     protected $subscriptionId;
+
+    /** @var ClientRequest  */
+    protected $requestDetails;
 
     /**
      * Returns the API endpoint for this operation
