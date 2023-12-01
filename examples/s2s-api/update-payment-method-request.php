@@ -26,8 +26,8 @@ try {
      * User request details, mandatory for payment details change
      */
     $request = new \VendoSdk\S2S\Request\Details\ClientRequest();
-    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?: '127.0.0.1');//you must pass a valid IPv4 address
-    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
+    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');//you must pass a valid IPv4 address
+    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?? null);
     $changeSubscription->setRequestDetails($request);
 
     $response = $changeSubscription->postRequest();
