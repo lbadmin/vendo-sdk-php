@@ -41,7 +41,7 @@ Example flow:
 
 ## Changelog
 ### v2.0.10
-- Fixed password encruption algorithm
+- Fixed password encryption algorithm
 - A minor fix
 ### v2.0.9
 - Added cross-sale support
