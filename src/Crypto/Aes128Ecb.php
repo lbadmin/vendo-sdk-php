@@ -15,7 +15,7 @@ class Aes128Ecb
      */
     public static function encrypt(string $uncryptedData, string $key): string
     {
-        return openssl_encrypt($uncryptedData, self::ALGO, $key, OPENSSL_RAW_DATA);
+        return bin2hex(openssl_encrypt($uncryptedData, self::ALGO, $key, OPENSSL_RAW_DATA));
     }
 
     /**
@@ -28,6 +28,6 @@ class Aes128Ecb
      */
     public static function decrypt(string $encryptedData, string $key): string
     {
-        return openssl_decrypt($encryptedData, self::ALGO, $key, OPENSSL_RAW_DATA);
+        return openssl_decrypt(hex2bin($encryptedData), self::ALGO, $key, OPENSSL_RAW_DATA);
     }
 }
