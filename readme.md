@@ -40,7 +40,28 @@ Example flow:
    - S2S Payment
 
 ## Changelog
-
+### v2.0.10
+- Fixed password encruption algorithm
+- A minor fix
+### v2.0.9
+- Added cross-sale support
+### v2.0.8
+- A minor fix
+### v2.0.7
+- Support for custom PaymentResponse
+### v2.0.6
+- Bugfix: added missed parameters in SubscriptionBase::postRequest
+### v2.0.5
+- New feature: Reactivate API endpoint support
+### v2.0.4
+- New feature: added sucess_url parameter
+### v2.0.3
+- Bug fix: added missing subscription_id
+### v2.0.2
+- New feature: S2S Payment API - item id can now hold any string value
+- Dockerized examples
+### v2.0.1
+- Updated the internal version number
 ### v2.0.0
 
 - Fixed support for **SEPA** payment method in S2S Payment API
