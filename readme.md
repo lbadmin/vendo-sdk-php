@@ -40,6 +40,9 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.0.11
+- Added support for "Pay by Bank" transactions
+- A minor fix
 ### v2.0.10
 - Fixed password encryption algorithm
 - A minor fix
