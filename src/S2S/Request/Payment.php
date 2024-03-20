@@ -376,7 +376,7 @@ class Payment extends AbstractApiBase
 
         $xsale = $this->getCrossSale();
         if (!empty($xsale)) {
-            $localParams['cross_sale'] = $this->getCrossSale();
+            $localParams['cross_sale'] = $xsale;
         }
 
         $mit = $this->isMerchantInitiatedTransaction();
