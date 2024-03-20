@@ -132,10 +132,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
                 'browser_user_agent' => 'test browser',
             ],
             'subscription_schedule' => null,
-            'mit' => false,
             'preauth_only' => false,
             'non_recurring' => false,
             'success_url' => 'http://www.somesuccessurl.com/payment',
+            'mit' => false,
         ], $actualResult);
     }
 

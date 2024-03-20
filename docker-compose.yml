@@ -9,8 +9,8 @@ services:
             default: ~
         environment:
             - XDEBUG_SESSION=PHPSTORM
-        extra_hosts:
-            - "${VENDO_BASE_HOST_LOCAL}:host-gateway"
+        #extra_hosts:
+            #- "${VENDO_BASE_HOST_LOCAL}:host-gateway"
 networks:
     default:
         name: localdev

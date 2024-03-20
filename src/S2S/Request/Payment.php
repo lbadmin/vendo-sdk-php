@@ -8,6 +8,7 @@ use VendoSdk\S2S\Request\Details\ExternalReferences;
 use VendoSdk\S2S\Request\Details\Item;
 use VendoSdk\S2S\Request\Details\PaymentDetails;
 use VendoSdk\S2S\Request\Details\ClientRequest;
+use VendoSdk\S2S\Request\Details\PaymentMethod\Verification;
 use VendoSdk\S2S\Request\Details\ShippingAddress;
 use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
 use VendoSdk\S2S\Request\Details\CrossSale;
@@ -48,7 +49,7 @@ class Payment extends AbstractApiBase
     /** @var SubscriptionSchedule */
     protected $subscriptionSchedule;
 
-    /** @var bool */
+    /** @var ?bool */
     protected $isMerchantInitiatedTransaction = false;
 
     /** @var bool */
@@ -159,7 +160,7 @@ class Payment extends AbstractApiBase
     /**
      * @return bool
      */
-    public function isMerchantInitiatedTransaction(): bool
+    public function isMerchantInitiatedTransaction(): ?bool
     {
         return $this->isMerchantInitiatedTransaction;
     }
@@ -167,7 +168,7 @@ class Payment extends AbstractApiBase
     /**
      * @param bool $isMerchantInitiatedTransaction
      */
-    public function setIsMerchantInitiatedTransaction(bool $isMerchantInitiatedTransaction): void
+    public function setIsMerchantInitiatedTransaction(?bool $isMerchantInitiatedTransaction): void
     {
         $this->isMerchantInitiatedTransaction = $isMerchantInitiatedTransaction;
     }
@@ -313,6 +314,10 @@ class Payment extends AbstractApiBase
     public function setPaymentDetails(PaymentDetails $paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;
+
+        if ($paymentDetails instanceof Verification) {
+            $this->setIsMerchantInitiatedTransaction(null);
+        }
     }
 
     /**
@@ -353,7 +358,7 @@ class Payment extends AbstractApiBase
      */
     public function jsonSerialize()
     {
-        $result = array_merge(parent::jsonSerialize(), [
+        $localParams = [
             'site_id' => $this->getSiteId(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
@@ -364,16 +369,21 @@ class Payment extends AbstractApiBase
             'shipping_address' => $this->getShippingAddress()->jsonSerialize(),
             'request_details' => $this->getRequestDetails()->jsonSerialize(),
             'subscription_schedule' => $this->getSubscriptionSchedule() ? $this->getSubscriptionSchedule()->jsonSerialize() : null,
-            'mit' => $this->isMerchantInitiatedTransaction(),
             'preauth_only' => $this->isPreAuthOnly(),
             'non_recurring' => $this->isNonRecurring(),
             'success_url' => $this->getSuccessUrl(),
-        ]);
+        ];
 
-        if (!empty($this->getCrossSale())) {
-            $result['cross_sale'] = $this->getCrossSale();
+        $xsale = $this->getCrossSale();
+        if (!empty($xsale)) {
+            $localParams['cross_sale'] = $xsale;
         }
 
-        return $result;
+        $mit = $this->isMerchantInitiatedTransaction();
+        if (isset($mit)) {
+            $localParams['mit'] = $mit;
+        }
+
+        return array_merge(parent::jsonSerialize(), $localParams);
     }
 }

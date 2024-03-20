@@ -50,10 +50,10 @@ class TokenPaymentTest extends \PHPUnit\Framework\TestCase
             'shipping_address' => null,
             'request_details' => null,
             'subscription_schedule' => null,
-            'mit' => false,
             'preauth_only' => false,
             'non_recurring' => false,
-            'success_url' => 'http://www.somesuccessurl.com/payment'
+            'success_url' => 'http://www.somesuccessurl.com/payment',
+            'mit' => false,
         ], $actualResult);
     }
 }
