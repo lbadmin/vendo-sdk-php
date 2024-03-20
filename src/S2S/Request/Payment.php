@@ -50,7 +50,7 @@ class Payment extends AbstractApiBase
     protected $subscriptionSchedule;
 
     /** @var ?bool */
-    protected $isMerchantInitiatedTransaction = null;
+    protected $isMerchantInitiatedTransaction = false;
 
     /** @var bool */
     protected $isNonRecurring = false;
