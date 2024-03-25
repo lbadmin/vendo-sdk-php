@@ -37,7 +37,7 @@ try {
      * Provide the verification_id that you got when you ran pay_by_bank_step1.php
      */
     $verification = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verification->setVerificationId(240513138); //verificationId from pay_by_bank_step1.php
+    $verification->setVerificationId(240516098); //verificationId from pay_by_bank_step1.php
     $paymentVerificationObject->setPaymentDetails($verification);
 
     /**

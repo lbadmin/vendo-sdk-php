@@ -2,9 +2,9 @@
 namespace VendoSdk\Util;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\UriInterface;
 use VendoSdk\Vendo;
+use GuzzleHttp\Message\RequestInterface;
 
 trait HttpClientTrait
 {
@@ -36,18 +36,22 @@ trait HttpClientTrait
      * @param array $headers
      * @param ?string $body
      * @param string $version
-     * @return Request
+     * @return RequestInterface
      */
     public function getHttpRequest(
         string $method,
         string $uri,
         array $headers = [],
-        ?string $body = null,
+        ?string $body = '',
         string $version = '1.1'
-    ): Request
+    ): RequestInterface
     {
         $headers['X-VENDO-PHP-SDK-VERSION'] = Vendo::SDK_VERSION;
-        return new Request($method, $uri, $headers, $body, $version);
+        return $this->getHttpClient()->createRequest(
+            $method,
+            $uri,
+            ['headers' => $headers, 'body' => $body, 'version' => $version]
+        );
     }
 
 }

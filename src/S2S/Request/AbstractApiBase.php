@@ -104,7 +104,6 @@ abstract class AbstractApiBase implements \JsonSerializable
      * @param string|null $apiEndpoint
      * @param array|null $headers
      * @return PaymentResponse|CaptureResponse|RefundResponse|SubscriptionResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \VendoSdk\Exception
      */
     public function postRequest($apiEndpoint= null, $headers = null)

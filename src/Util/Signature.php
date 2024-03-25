@@ -3,6 +3,7 @@
 namespace VendoSdk\Util;
 
 use League\Uri;
+use function League\Uri\build as uribuild;
 use VendoSdk\Crypto\HmacSha1;
 
 /**
@@ -100,7 +101,7 @@ class Signature
      */
     public function sign(string $url): string
     {
-        $urlParser = new Uri\UriString();
+        $urlParser = new Uri\Parser();
 
         $allComponents = $urlParser->parse($url);
 
@@ -124,8 +125,6 @@ class Signature
         parse_str($allComponents['query'], $params);
         $params['signature'] = $signature;
         $allComponents['query'] = http_build_query($params);
-        $signedUrl = $urlParser->build($allComponents);
-
-        return (string)$signedUrl;
+        return uribuild($allComponents);
     }
 }
