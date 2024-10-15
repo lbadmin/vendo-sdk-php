@@ -149,6 +149,7 @@ class Payment extends AbstractApiBase
             Vendo::CURRENCY_EUR,
             Vendo::CURRENCY_GBP,
             Vendo::CURRENCY_JPY,
+            Vendo::CURRENCY_MXN,
         ];
         if (!in_array($currency, $validCurrencies)) {
             throw new Exception('The currency ' . $currency . ' is not valid.');
