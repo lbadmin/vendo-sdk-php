@@ -9,6 +9,7 @@ final class Vendo
     const CURRENCY_EUR = 'EUR';
     const CURRENCY_GBP = 'GBP';
     const CURRENCY_JPY = 'JPY';
+    const CURRENCY_MXN = 'MXN';
 
     const BASE_URL = 'https://secure.vend-o.com';
 
@@ -18,6 +19,7 @@ final class Vendo
 
     const PAYMENT_TYPE_CREDIT_CARD = 'card';
     const PAYMENT_TYPE_SEPA = 'sepa';
+    const PAYMENT_TYPE_OXXO = 'oxxo';
 
     const SUBSCRIPTION_CANCEL_RESPONSE_CODE_OK = '5915';
     const SUBSCRIPTION_REFUND_CODE_OK = '5907';

@@ -4,6 +4,7 @@ namespace VendoSdk\S2S\Response;
 use VendoSdk\Exception;
 use VendoSdk\S2S\Response\Details\CreditCardPaymentResult;
 use VendoSdk\S2S\Response\Details\ExternalReferences;
+use VendoSdk\S2S\Response\Details\OxxoPaymentResult;
 use VendoSdk\S2S\Response\Details\ResultDetails;
 use VendoSdk\S2S\Response\Details\SepaPaymentResult;
 use VendoSdk\S2S\Response\Details\Transaction;
@@ -51,6 +52,9 @@ class PaymentResponse
 
     /** @var string|null */
     protected $rawResponse;
+
+    /** @var OxxoPaymentResult|null */
+    protected $oxxoPaymentResult;
 
 
     /**
@@ -108,6 +112,11 @@ class PaymentResponse
 
         if (!empty($responseArray['result'])) {
             $this->setResultDetails(new ResultDetails($responseArray['result']));
+        }
+
+        if (!empty($responseArray['oxxo_details'])) {
+            $this->setPaymentType(Vendo::PAYMENT_TYPE_OXXO);
+            $this->setOxxoPaymentResult(new OxxoPaymentResult($responseArray['oxxo_details']));
         }
 
     }
@@ -338,6 +347,16 @@ class PaymentResponse
     public function getRawResponse(): ?string
     {
         return $this->rawResponse;
+    }
+
+    public function getOxxoPaymentResult(): ?OxxoPaymentResult
+    {
+        return $this->oxxoPaymentResult;
+    }
+
+    public function setOxxoPaymentResult(?OxxoPaymentResult $oxxoPaymentResult): void
+    {
+        $this->oxxoPaymentResult = $oxxoPaymentResult;
     }
 
 }
