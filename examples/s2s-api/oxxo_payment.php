@@ -1,6 +1,6 @@
 <?php
 /**
- * This example shows you how to process a PIX transaction.
+ * This example shows you how to process a OXXO transaction.
  * You need to redirect user to the url returned by API to let her/him finish the operation
  */
 
@@ -43,8 +43,8 @@ try {
      * Customer details
      */
     $customer = new \VendoSdk\S2S\Request\Details\Customer();
-    $customer->setFirstName('Oxxo');
-    $customer->setLastName('Paid');
+    $customer->setFirstName('Paid');
+    $customer->setLastName('Oxxo');
     $customer->setEmail('qa+oxxo+'.rand(100000,999999).'@vendoservices.com');
 
     /**
@@ -53,7 +53,7 @@ try {
     $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Oxxo();
     $payment->setPaymentDetails($paymentDetails);
 
-    $customer->setLanguageCode('en');
+    $customer->setLanguageCode('es');
     /** OXXO payments are supported for Mexico only */
     $customer->setCountryCode('MX');
 
