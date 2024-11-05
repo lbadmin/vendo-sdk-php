@@ -12,6 +12,7 @@ try {
     $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
+
     $payment->setAmount(624.95);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_MXN);
     $payment->setIsTest(true);
@@ -100,6 +101,7 @@ try {
         echo "The transaction failed.";
         echo "\nError message: " . $response->getErrorMessage();
         echo "\nError code: " . $response->getErrorCode();
+
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
         echo "The transaction must be verified";
         echo "\nYou MUST :";
@@ -109,8 +111,6 @@ try {
         echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class.";
     }
     echo "\n\n\n";
-
-
 } catch (\VendoSdk\Exception $exception) {
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
