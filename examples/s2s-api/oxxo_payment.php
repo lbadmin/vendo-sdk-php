@@ -1,6 +1,6 @@
 <?php
 /**
- * This example shows you how to process a PIX transaction.
+ * This example shows you how to process a OXXO transaction.
  * You need to redirect user to the url returned by API to let her/him finish the operation
  */
 
@@ -12,7 +12,8 @@ try {
     $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
-    $payment->setAmount(10.50);
+
+    $payment->setAmount(624.95);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_MXN);
     $payment->setIsTest(true);
 
@@ -43,8 +44,8 @@ try {
      * Customer details
      */
     $customer = new \VendoSdk\S2S\Request\Details\Customer();
-    $customer->setFirstName('Oxxo');
-    $customer->setLastName('Paid');
+    $customer->setFirstName('Paid');
+    $customer->setLastName('Oxxo');
     $customer->setEmail('qa+oxxo+'.rand(100000,999999).'@vendoservices.com');
 
     /**
@@ -53,7 +54,7 @@ try {
     $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Oxxo();
     $payment->setPaymentDetails($paymentDetails);
 
-    $customer->setLanguageCode('en');
+    $customer->setLanguageCode('es');
     /** OXXO payments are supported for Mexico only */
     $customer->setCountryCode('MX');
 
@@ -90,17 +91,21 @@ try {
     $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
+    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
         echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
-        echo "\nThe OXXO PDF (gzipped and base64 encoded): " . $response->getOxxoPaymentResult()->getPdfGzipBase64();
-        echo "\nThe OXXO PNG (gzipped and base64 encoded): " . $response->getOxxoPaymentResult()->getPngGzipBase64();
-        echo "\nThe expiration date (gzipped and base64 encoded): " . $response->getOxxoPaymentResult()->getExpiresAt();
-        echo "\nThe OXXO barcode: " . $response->getOxxoPaymentResult()->getBarcode();
-        echo "\nThis is your transaction reference (the one you set it in the request): " . $response->getExternalReferences()->getTransactionReference();
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
         echo "The transaction failed.";
         echo "\nError message: " . $response->getErrorMessage();
         echo "\nError code: " . $response->getErrorCode();
+
+    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
+        echo "The transaction must be verified";
+        echo "\nYou MUST :";
+        echo "\n   1. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl(
+            );
+        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
+        echo "\nTo confirm the payment you have to post the request to Vendo again, using verification_id from verification_url";
+        echo "\nPlease refer to the documentation for more details: https://docs.vendoservices.com/docs/sdk-for-php";
     }
     echo "\n\n\n";
 } catch (\VendoSdk\Exception $exception) {
