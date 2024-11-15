@@ -104,6 +104,8 @@ try {
         echo "\n   1. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl(
             );
         echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
+        echo "\nTo confirm the payment you have to post the request to Vendo again, using verification_id from verification_url";
+        echo "\nPlease refer to the documentation for more details: https://docs.vendoservices.com/docs/sdk-for-php";
     }
     echo "\n\n\n";
 } catch (\VendoSdk\Exception $exception) {
