@@ -41,6 +41,9 @@ Example flow:
 
 ## Changelog
 ### v2.0.11
+- Added support for "OXXO" transactions
+- A minor fix
+### v2.0.11
 - Added support for "Pay by Bank" transactions
 - A minor fix
 ### v2.0.10
