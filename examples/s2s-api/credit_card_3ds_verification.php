@@ -46,13 +46,9 @@ try {
     /**
      * Provide the credit card details that you collected from the user
      */
-    $ccDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard();
-    $ccDetails->setNameOnCard('John Doe');
-    $ccDetails->setCardNumber('4000012892688323');//this is a test card number, it will trigger the "Verification required" status.
-    $ccDetails->setExpirationMonth('05');
-    $ccDetails->setExpirationYear('2029');
-    $ccDetails->setCvv(123);//do not store nor log the CVV
-    $creditCardPayment->setPaymentDetails($ccDetails);
+    $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
+    $paymentDetails->setVerificationId(240584188);
+    $creditCardPayment->setPaymentDetails($paymentDetails);
 
     /**
      * Customer details
@@ -63,7 +59,6 @@ try {
     $customer->setEmail('john.doe.test@thisisatest.test');
     $customer->setLanguageCode('en');
     $customer->setCountryCode('US');
-    $creditCardPayment->setCustomerDetails($customer);
 
     /**
      * Shipping details. This is required.
