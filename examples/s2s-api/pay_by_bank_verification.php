@@ -1,7 +1,7 @@
 <?php
 /**
  * This example shows you how to finish a pay by bank process.
- * You must run pay_by_bank_step1.php first.
+ * You must run pay_by_bank_request.php first.
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -34,10 +34,10 @@ try {
     $paymentVerificationObject->setShippingAddress($shippingAddress);
 
     /**
-     * Provide the verification_id that you got when you ran pay_by_bank_step1.php
+     * Provide the verification_id that you got when you ran pay_by_bank_request.php
      */
     $verification = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verification->setVerificationId(240513138); //verificationId from pay_by_bank_step1.php
+    $verification->setVerificationId(240513138); //verificationId from pay_by_bank_request.php
     $paymentVerificationObject->setPaymentDetails($verification);
 
     /**
@@ -74,4 +74,3 @@ try {
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-

@@ -1,7 +1,7 @@
 <?php
 /**
  * This example shows you how to process a "pay by bank" transaction
- * You need to run this then run pay_by_bank_step2.php after verifying and authorizing the payment by visiting the verification_url
+ * You need to run this then run pay_by_bank_verification.php after verifying and authorizing the payment by visiting the verification_url
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -78,8 +78,7 @@ try {
 
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
-        //STATUS OK is not expected in this first API call.
-
+        echo "Something went wrong. STATUS OK is not expected in this API call";
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
         echo "The transaction failed.";
         echo "\nError message: " . $response->getErrorMessage();
@@ -91,14 +90,11 @@ try {
         echo "\n   1. Save the verificationId: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
         echo "\nThe user will authorize the payment and then he will be redirected to the Success URL";
-        echo "\nWhen the user comes back you need to post the request to vendo again, like in example pay_by_bank_step2.php.";
+        echo "\nWhen the user comes back you need to post the request to vendo again, like in example pay_by_bank_verification.php.";
     }
     echo "\n\n\n";
-
-
 } catch (\VendoSdk\Exception $exception) {
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-
