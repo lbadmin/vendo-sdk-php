@@ -49,7 +49,7 @@ try {
     $customer->setEmail('qa+oxxo+'.rand(100000,999999).'@vendoservices.com');
 
     $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $paymentDetails->setVerificationId(240584173);
+    $paymentDetails->setVerificationId(240584178);
     $payment->setPaymentDetails($paymentDetails);
 
     $customer->setLanguageCode('es');
