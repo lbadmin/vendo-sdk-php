@@ -34,6 +34,9 @@ Example flow:
 4. After authorization is completed call [Crypto verification](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment_verification.php)
    - use verification_id you have saved in step 2.
 
+
+    $paymentDetails->setVerificationId(1234567890);
+
 5. Check the Backoffice 'Sales' -> 'Transactions', you should see 2 successful transactions:
    
    - Verification
