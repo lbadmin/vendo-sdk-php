@@ -9,9 +9,9 @@ include __DIR__ . '/../../vendor/autoload.php';
 try {
     $payment = new \VendoSdk\S2S\Request\Payment();
     $payment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');//replace getenv(... with your_secret_api_secret
-    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
+    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID', true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
 
-    $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
+    $payment->setSiteId(getenv('VENDO_SITE_ID', true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
@@ -84,19 +84,17 @@ try {
     $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-   if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
+    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
         echo "The payment is complete";
         echo "\nTransaction id: " . $response->getTransactionDetails()->getId();
-   } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
-       echo "The transaction failed.";
-       echo "\nError message: " . $response->getErrorMessage();
-       echo "\nError code: " . $response->getErrorCode();
-   } else {
-       echo 'Something went wrong, invalid response: ' . $response->getStatus();
-   }
+    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
+        echo "The transaction failed.";
+        echo "\nError message: " . $response->getErrorMessage();
+        echo "\nError code: " . $response->getErrorCode();
+    } else {
+        echo 'Something went wrong, invalid response: ' . $response->getStatus();
+    }
     echo "\n\n\n";
-
-
 } catch (\VendoSdk\Exception $exception) {
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
