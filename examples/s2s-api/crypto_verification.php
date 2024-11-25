@@ -21,7 +21,7 @@ try {
      * Payment details
      */
     $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $paymentDetails->setVerificationId(240584162); //verificationId from response credit_card_free_signup_with_3d
+    $paymentDetails->setVerificationId(240584166); //verificationId from response credit_card_free_signup_with_3d
     $payment->setPaymentDetails($paymentDetails);
 
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
