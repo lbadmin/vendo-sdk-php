@@ -1,7 +1,7 @@
 <?php
 /**
  * This example shows you how to finish a pay by bank process.
- * You must run pay_by_bank_request.php first.
+ * You must run pay_by_bank_payment.php first.
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -34,10 +34,10 @@ try {
     $paymentVerificationObject->setShippingAddress($shippingAddress);
 
     /**
-     * Provide the verification_id that you got when you ran pay_by_bank_request.php
+     * Provide the verification_id that you got when you ran pay_by_bank_payment.php
      */
     $verification = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verification->setVerificationId(240513138); //verificationId from pay_by_bank_request.php
+    $verification->setVerificationId(240584164); //verificationId from pay_by_bank_payment.php
     $paymentVerificationObject->setPaymentDetails($verification);
 
     /**
