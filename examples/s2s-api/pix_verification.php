@@ -9,8 +9,8 @@ include __DIR__ . '/../../vendor/autoload.php';
 try {
     $payment = new \VendoSdk\S2S\Request\Payment();
     $payment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
-    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
-    $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
+    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID', true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
+    $payment->setSiteId(getenv('VENDO_SITE_ID', true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);

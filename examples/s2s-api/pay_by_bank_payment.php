@@ -90,7 +90,7 @@ try {
         echo "\n   1. Save the verificationId: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
         echo "\nThe user will authorize the payment and then he will be redirected to the Success URL";
-        echo "\nWhen the user comes back you need to post the request to vendo again, like in example pay_by_bank_verification.php.";
+        echo "\nwhen the user comes back you need to post the request to vendo again, please use pay_by_bank_verification example.";
     }
     echo "\n\n\n";
 } catch (\VendoSdk\Exception $exception) {
