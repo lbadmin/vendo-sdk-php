@@ -16,12 +16,12 @@ Example flow:
 
 1. Call [Cryptocurrency payment example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment.php)
 
-2. Save the token
+2. Save the verification_id
 
 
-    $token = $response->getPaymentToken(); 
+    $response->getResultDetails()->getVerificationId()
 
-    // something like '2093c199fc3e20ee45af8ed07af0ddf5'
+    // something like '1234567890'
 
 
 3. Redirect the user to the verification url you got in the response 
@@ -31,8 +31,8 @@ Example flow:
 
     // example: 'https://secure.vend-o.com/v/verification?transaction_id=240359080&systemsignature=moJpFrKRgo5PkP9sqStN6iJC6v8'
       
-4. After authorization is completed call [Token example](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/payment_with_saved_token.php)
-   - use token you have saved in step 2.
+4. After authorization is completed call [Crypto verification](https://github.com/lbadmin/vendo-sdk-php/blob/master/examples/s2s-api/crypto_payment_verification.php)
+   - use verification_id you have saved in step 2.
 
 5. Check the Backoffice 'Sales' -> 'Transactions', you should see 2 successful transactions:
    
