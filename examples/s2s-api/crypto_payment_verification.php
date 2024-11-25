@@ -17,7 +17,12 @@ try {
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $payment->setIsTest(true);
 
-    $payment->setIsMerchantInitiatedTransaction(false);
+    /**
+     * Payment details
+     */
+    $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
+    $paymentDetails->setVerificationId(240584162); //verificationId from response credit_card_free_signup_with_3d
+    $payment->setPaymentDetails($paymentDetails);
 
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
@@ -40,28 +45,17 @@ try {
     $cartItem2->setQuantity(1);
     $payment->addItem($cartItem2);
 
+
     /**
-     * Customer details
+     * Shipping details. This is required.
      */
     $customer = new \VendoSdk\S2S\Request\Details\Customer();
     $customer->setFirstName('John');
     $customer->setLastName('Doe');
     $customer->setEmail('john.doe.test@thisisatest.test');
-
-    /**
-     * Payment details
-     */
-    $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Crypto();
-    $payment->setPaymentDetails($paymentDetails);
-
     $customer->setLanguageCode('en');
     $customer->setCountryCode('US');
 
-    $payment->setCustomerDetails($customer);
-
-    /**
-     * Shipping details. This is required.
-     */
     $shippingAddress = new \VendoSdk\S2S\Request\Details\ShippingAddress();
     $shippingAddress->setFirstName($customer->getFirstName());
     $shippingAddress->setLastName($customer->getLastName());
@@ -90,18 +84,14 @@ try {
     $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-   if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
-        echo "The transaction must be verified";
-        echo "\nYou MUST :";
-        echo "\n   1. Save the verification_id: " . $response->getResultDetails()->getVerificationId();
-        echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
-        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class.";
+   if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
+        echo "The payment is complete";
+        echo "\nTransaction id: " . $response->getTransactionDetails()->getId();
    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
        echo "The transaction failed.";
        echo "\nError message: " . $response->getErrorMessage();
        echo "\nError code: " . $response->getErrorCode();
-    } else {
+   } else {
        echo 'Something went wrong, invalid response: ' . $response->getStatus();
    }
     echo "\n\n\n";
