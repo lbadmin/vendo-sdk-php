@@ -9,9 +9,9 @@ include __DIR__ . '/../../vendor/autoload.php';
 try {
     $payment = new \VendoSdk\S2S\Request\Payment();
     $payment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');//replace getenv(... with your_secret_api_secret
-    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
+    $payment->setMerchantId(getenv('VENDO_MERCHANT_ID', true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
 
-    $payment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
+    $payment->setSiteId(getenv('VENDO_SITE_ID', true) ?: 'Your_vendo_site_id' ?: 'Your_vendo_site_id');//Your Vendo Site ID
 
     $payment->setAmount(10.50);
     $payment->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
@@ -90,23 +90,21 @@ try {
     $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-   if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
+    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
         echo "The transaction must be verified";
         echo "\nYou MUST :";
         echo "\n   1. Save the verification_id: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
         echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
         echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class.";
-   } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
-       echo "The transaction failed.";
-       echo "\nError message: " . $response->getErrorMessage();
-       echo "\nError code: " . $response->getErrorCode();
+    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
+        echo "The transaction failed.";
+        echo "\nError message: " . $response->getErrorMessage();
+        echo "\nError code: " . $response->getErrorCode();
     } else {
-       echo 'Something went wrong, invalid response: ' . $response->getStatus();
-   }
+        echo 'Something went wrong, invalid response: ' . $response->getStatus();
+    }
     echo "\n\n\n";
-
-
 } catch (\VendoSdk\Exception $exception) {
     die ('An error occurred when processing your API request. Error message: ' . $exception->getMessage());
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
