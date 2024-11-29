@@ -7,7 +7,7 @@
 include __DIR__ . '/../../vendor/autoload.php';
 
 try {
-    $creditCardFreSignup3d = new \VendoSdk\S2S\Request\PaymentVerification();
+    $creditCardFreSignup3d = new \VendoSdk\S2S\Request\Payment();
     $creditCardFreSignup3d->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
 
     $creditCardFreSignup3d->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
@@ -16,6 +16,8 @@ try {
     $creditCardFreSignup3d->setCurrency(\VendoSdk\Vendo::CURRENCY_USD);
     $creditCardFreSignup3d->setIsTest(true);
 
+    //You must set the flag below to TRUE if you're processing a recurring billing transaction
+    $creditCardFreSignup3d->setIsMerchantInitiatedTransaction(false);
 
     //Set this flag to true when you do not want to capture the transaction amount immediately, but only validate the
     // payment details and block (reserve) the amount. The capture of a preauth-only transaction can be performed with
@@ -25,13 +27,42 @@ try {
     $externalRef = new \VendoSdk\S2S\Request\Details\ExternalReferences();
     $externalRef->setTransactionReference('your_tx_reference_123');
     $creditCardFreSignup3d->setExternalReferences($externalRef);
+
+    /**
+     * Provide the credit card details that you collected from the user
+     */
+    $ccDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\CreditCard();
+    $ccDetails->setNameOnCard('John Doe');
+    $ccDetails->setCardNumber('4000012892688323');//this is a test card number, it will only work for test transactions
+    $ccDetails->setExpirationMonth('05');
+    $ccDetails->setExpirationYear('2029');
+    $ccDetails->setCvv(123);//do not store nor log the CVV
+    $creditCardFreSignup3d->setPaymentDetails($ccDetails);
+
+    /**
+     * Customer details
+     */
+    $customer = new \VendoSdk\S2S\Request\Details\Customer();
+    $customer->setFirstName('John');
+    $customer->setLastName('Doe');
+    $customer->setEmail('qa+opp3d+test34@vendoservices.com');
+    $customer->setLanguageCode('en');
+    $customer->setCountryCode('US');
+    $creditCardFreSignup3d->setCustomerDetails($customer);
+
     /**
      * Shipping details. This is required.
      */
     $shippingAddress = new \VendoSdk\S2S\Request\Details\ShippingAddress();
-    $shippingAddress->setFirstName('John');
-    $shippingAddress->setLastName('Doe');
-    $shippingAddress->setCountryCode('US');
+    $shippingAddress->setFirstName($customer->getFirstName());
+    $shippingAddress->setLastName($customer->getLastName());
+    $shippingAddress->setAddress($customer->getAddress());
+    $shippingAddress->setCountryCode($customer->getCountryCode());
+    $shippingAddress->setCity($customer->getCity());
+    $shippingAddress->setState($customer->getState());
+    $shippingAddress->setPostalCode($customer->getPostalCode());
+    $shippingAddress->setPhone($customer->getPhone());
+    //If you're selling digital content then you are allowed to use dummy details like the ones below
     $shippingAddress->setAddress('123 Example Street');
     $shippingAddress->setCity('Miami');
     $shippingAddress->setState('FL');
@@ -43,14 +74,8 @@ try {
     $schedule = new \VendoSdk\S2S\Request\Details\SubscriptionSchedule();
     $schedule->setRebillDuration(30);//days
     $schedule->setRebillAmount(10.00);//billing currency
-    $schedule->setNextRebillDate('2023-12-01');//trial time for 0.00, set date in the feature
+    $schedule->setNextRebillDate('2026-12-01');//trial time for 0.00, set date in the feature
     $creditCardFreSignup3d->setSubscriptionSchedule($schedule);
-    /**
-     * Provide the credit card details that you collected from the user
-     */
-    $verification = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $verification->setVerificationId(240327416); //verificationId from response credit_card_free_signup_with_3d
-    $creditCardFreSignup3d->setPaymentDetails($verification);
 
     /**
      * User request details
@@ -76,10 +101,10 @@ try {
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
         echo "The transaction must be verified";
         echo "\nYou MUST :";
-        echo "\n   1. Save the verificationId: " . $response->getResultDetails()?->getVerificationId();
+        echo "\n   1. Save the verificationId: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
         echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the request to vendo again, like in example credit_card_free_signup_post_3d_request.php.";
+        echo "\nwhen the user comes back you need to post the request to vendo again, like in example credit_card_3ds_free_signup.php.";
     }
     echo "\n\n\n";
 
@@ -89,4 +114,3 @@ try {
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-

@@ -117,10 +117,10 @@ try {
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
         echo "The transaction must be verified";
         echo "\nYou MUST :";
-        echo "\n   1. Save the payment token: " . $response->getPaymentToken();
+        echo "\n   1. Save the verificationId: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
         echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the request to vendo again, you can use the TokenPayment class.";
+        echo "\nwhen the user comes back you need to post the request to vendo again, please call credit_card_3ds_verifiction example.";
     }
     echo "\n\n\n";
 
@@ -130,4 +130,3 @@ try {
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-

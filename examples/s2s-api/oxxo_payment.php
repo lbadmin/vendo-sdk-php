@@ -91,21 +91,19 @@ try {
     $response = $payment->postRequest();
 
     echo "\n\nRESULT BELOW\n";
-    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
-        echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
+    if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
+        echo "The transaction must be verified";
+        echo "\nYou MUST :";
+        echo "\n   1. Save the verification_id: " . $response->getResultDetails()->getVerificationId();
+        echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
+        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
+        echo "\nwhen the user comes back you need to post the request to vendo again, please use oxxo_verification example.";
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
         echo "The transaction failed.";
         echo "\nError message: " . $response->getErrorMessage();
         echo "\nError code: " . $response->getErrorCode();
-
-    } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_VERIFICATION_REQUIRED) {
-        echo "The transaction must be verified";
-        echo "\nYou MUST :";
-        echo "\n   1. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl(
-            );
-        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nTo confirm the payment you have to post the request to Vendo again, using verification_id from verification_url";
-        echo "\nPlease refer to the documentation for more details: https://docs.vendoservices.com/docs/sdk-for-php";
+    } else {
+        echo 'Something went wrong, invalid response: ' . $response->getStatus();
     }
     echo "\n\n\n";
 } catch (\VendoSdk\Exception $exception) {
@@ -113,4 +111,3 @@ try {
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-
