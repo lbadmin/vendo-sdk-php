@@ -240,7 +240,7 @@ class Payment extends AbstractApiBase
     /**
      * @return ShippingAddress
      */
-    public function getShippingAddress(): ShippingAddress
+    public function getShippingAddress(): ?ShippingAddress
     {
         return $this->shippingAddress;
     }
@@ -367,7 +367,8 @@ class Payment extends AbstractApiBase
             'items' => $this->getItems(),
             'payment_details' => $this->getPaymentDetails()->jsonSerialize(),
             'customer_details' => $this->getCustomerDetails() ? $this->getCustomerDetails()->jsonSerialize() : null,
-            'shipping_address' => $this->getShippingAddress()->jsonSerialize(),
+            'shipping_address' => !is_null($this->getShippingAddress()) ? $this->getShippingAddress()->jsonSerialize(
+            ) : null,
             'request_details' => $this->getRequestDetails()->jsonSerialize(),
             'subscription_schedule' => $this->getSubscriptionSchedule() ? $this->getSubscriptionSchedule()->jsonSerialize() : null,
             'preauth_only' => $this->isPreAuthOnly(),
