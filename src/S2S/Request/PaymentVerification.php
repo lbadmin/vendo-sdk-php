@@ -41,7 +41,8 @@ class PaymentVerification extends Payment
             'currency' => $this->getCurrency(),
             'external_references' => $this->getExternalReferences()->jsonSerialize(),
             'payment_details' => $this->getPaymentDetails()->jsonSerialize(),
-            'shipping_address' => $this->getShippingAddress()->jsonSerialize(),
+            'shipping_address' => !is_null($this->getShippingAddress()) ? $this->getShippingAddress()->jsonSerialize(
+            ) : null,
             'subscription_schedule' => $this->getSubscriptionSchedule() ? $this->getSubscriptionSchedule()->jsonSerialize() : null,
             'request_details' => $this->getRequestDetails()->jsonSerialize(),
         ]);
