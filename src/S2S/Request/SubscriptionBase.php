@@ -17,6 +17,11 @@ abstract class SubscriptionBase extends AbstractApiBase
     protected $requestDetails;
 
     /**
+     * @var int
+     */
+    private $siteId;
+
+    /**
      * Returns the API endpoint for this operation
      *
      * @return string

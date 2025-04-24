@@ -49,7 +49,7 @@ class Signature
      */
     public function isValidUrl(string $url): bool
     {
-        $urlObject = Uri\Http::createFromString($url);
+        $urlObject = Uri\Uri::new($url);
 
         $path = $urlObject->getPath();
         $query = $urlObject->getQuery();
@@ -73,7 +73,7 @@ class Signature
                 $components['query'] = http_build_query($params);
             }
 
-            $data = (string)Uri\Http::createFromComponents($components);
+            $data = (string)Uri\Uri::fromComponents($components);
             $isValid = $this->isValid($data, $signature);
         }
         return $isValid ?? false;
