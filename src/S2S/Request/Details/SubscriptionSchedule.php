@@ -14,6 +14,8 @@ class SubscriptionSchedule implements \JsonSerializable
     /** @var int -- 15, in days */
     protected $rebillDuration;
 
+    protected $reactivateSubscription;
+
     /**
      * @return string
      */
@@ -63,11 +65,28 @@ class SubscriptionSchedule implements \JsonSerializable
     }
 
     /**
-     * @return mixed
-     * @throws Exception
+     * Only expired and expiring subscriptions can be reactivated.
+     *
+     * @param bool $reactivateSubscription
+     * @return void
+     */
+    public function setReactivateSubscription(bool $reactivateSubscription): void
+    {
+        $this->reactivateSubscription = $reactivateSubscription;
+    }
+
+    public function getReactivateSubscription(): bool
+    {
+        return $this->reactivateSubscription;
+    }
+
+    /**
+     * @return array
      */
     public function jsonSerialize()
     {
+        $result = [];
+
         if(!empty($this->nextRebillDate)){
             $result['next_rebill_date'] = $this->nextRebillDate;
         }
@@ -80,6 +99,10 @@ class SubscriptionSchedule implements \JsonSerializable
             $result['rebill_duration'] = $this->rebillDuration;
         }
 
-        return $result ?? [];
+        if(!empty($this->reactivateSubscription)){
+            $result['reactivate_subscription'] = $this->reactivateSubscription;
+        }
+
+        return $result;
     }
 }
