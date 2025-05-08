@@ -43,6 +43,10 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.0.14
+- Added support for `reactivate_subscription` parameter in S2S Change Subscription API 
+### v2.0.13
+- Remove requirement of the Shipping Address object
 ### v2.0.12
 - Added support for "OXXO" transactions
 - A minor fix
