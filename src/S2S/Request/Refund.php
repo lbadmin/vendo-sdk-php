@@ -17,6 +17,9 @@ class Refund extends AbstractApiBase
     /** @var ?float */
     protected $partialAmount;
 
+    /** @var ?string */
+    protected $currency;
+
     public function getApiEndpoint(): string
     {
         return parent::getApiEndpoint() . '/refund';
@@ -56,6 +59,16 @@ class Refund extends AbstractApiBase
         $this->partialAmount = $partialAmount;
     }
 
+    public function setCurrency(?string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
     /**
      * @return RefundResponse
      * @throws Exception
@@ -73,6 +86,7 @@ class Refund extends AbstractApiBase
         return array_merge(parent::jsonSerialize(), [
             'transaction_id' => $this->getTransactionId(),
             'partial_amount' => $this->getPartialAmount(),
+            'currency' => $this->getCurrency(),
         ]);
     }
 }

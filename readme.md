@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.0.15
+- Added support for `currency` parameter in Refund APIs
 ### v2.0.14
 - Added support for `reactivate_subscription` parameter in S2S Change Subscription API 
 ### v2.0.13
