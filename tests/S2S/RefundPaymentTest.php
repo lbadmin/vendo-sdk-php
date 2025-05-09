@@ -51,7 +51,8 @@ class RefundPaymentTest extends \PHPUnit\Framework\TestCase
     "is_test": 1,
     "merchant_id": 1234567,
     "transaction_id": 87654321,
-    "partial_amount": 5.34
+    "partial_amount": 5.34,
+    "currency": null
 }', $payment->getRawRequest(true));
     }
 
