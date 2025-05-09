@@ -106,10 +106,8 @@ class RefundSubscription extends Base
     /**
      * Queries Vendo's Cancel Subscription API.
      *
-     * @return bool
-     * @throws GuzzleException
-     * @throws \Exception
      * @return RefundResponse
+     * @throws Exception
      */
     public function postRequest(): RefundResponse
     {
@@ -133,6 +131,7 @@ class RefundSubscription extends Base
             'actionType',
             'partial_amount',
             'refund_reason_id',
+            'currency',
         ];
     }
 
@@ -167,6 +166,12 @@ class RefundSubscription extends Base
         $this->urlParamValidators['refund_reason_id'] = function ($value) {
             if (!is_numeric($value)) {
                 throw new Exception("This reason ID is invalid: " . $value);
+            }
+        };
+
+        $this->urlParamValidators['currency'] = function ($value) {
+            if (!empty($value) && strlen($value) !== 3) {
+                throw new Exception("The currency must be a 3-letter currency code" . $value);
             }
         };
     }
