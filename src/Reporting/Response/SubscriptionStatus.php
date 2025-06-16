@@ -11,11 +11,11 @@ namespace VendoSdk\Reporting\Response;
  */
 class SubscriptionStatus
 {
-    public string|int $id;
+    public string|int|null $id;
     public ?int $code;
-    public string|int|null $message;
+    public ?string $message;
 
-    public function __construct(int $subscriptionId, ?int $code, ?string $message)
+    public function __construct(string|int|null $subscriptionId, ?int $code, ?string $message)
     {
         $this->id = $subscriptionId;
         $this->code = $code;
