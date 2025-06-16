@@ -23,7 +23,9 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'transaction' => [
@@ -32,7 +34,7 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
                 'currency' => 'USD',
                 'datetime' => '2021-11-10 14:52:34',
             ],
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $payment->setHttpClient($httpClient);

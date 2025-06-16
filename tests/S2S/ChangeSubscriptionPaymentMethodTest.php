@@ -29,13 +29,15 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'subscription' => [
                 'id' => 9876543,
             ],
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $changeSubscription->setHttpClient($httpClient);
@@ -84,7 +86,9 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_VERIFICATION_REQUIRED,
             'request_id' => 234,
             'verification_id' => 12345,
@@ -92,7 +96,7 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
             'subscription' => [
                 'id' => 9876543,
             ],
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $changeSubscription->setHttpClient($httpClient);
@@ -137,13 +141,15 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'subscription' => [
                 'id' => 9876543,
             ],
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $changeSubscription->setHttpClient($httpClient);
@@ -165,5 +171,17 @@ class ChangeSubscriptionPaymentMethodTest extends \PHPUnit\Framework\TestCase
         "verification_id": 4481
     }
 }', $changeSubscription->getRawRequest(true));
+    }
+
+    protected function returnStream(string $json): \Psr\Http\Message\StreamInterface
+    {
+        if ($f = fopen('data://text/plain,' . $json,'r')) {
+            $stream = new \GuzzleHttp\Psr7\Stream($f);
+        } else {
+            $stream = new \GuzzleHttp\Psr7\Stream(
+                fopen('php://temp', 'r+')
+            );
+        }
+        return $stream;
     }
 }
