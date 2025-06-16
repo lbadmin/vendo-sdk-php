@@ -79,9 +79,10 @@ class Item implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed
      * @throws Exception
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         if (empty($this->id) || empty($this->description) || ($this->price != 0.0 && empty($this->price))

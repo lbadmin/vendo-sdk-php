@@ -354,7 +354,7 @@ class Payment extends AbstractApiBase
     }
 
     /**
-     * @return array
+     * @return mixed
      * @throws Exception
      */
     public function jsonSerialize()

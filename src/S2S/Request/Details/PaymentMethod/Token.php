@@ -29,6 +29,7 @@ class Token implements PaymentDetails, \JsonSerializable
      * @return mixed
      * @throws Exception
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         if (empty($this->token)) {

@@ -74,7 +74,7 @@ class Customer extends ShippingAddress implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed
      * @throws Exception
      */
     public function jsonSerialize()

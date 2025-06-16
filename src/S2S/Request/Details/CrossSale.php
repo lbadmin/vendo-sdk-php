@@ -25,7 +25,7 @@ class CrossSale implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function jsonSerialize()
     {

@@ -46,9 +46,10 @@ class Sepa implements PaymentDetails, \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed
      * @throws Exception
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         if (empty($this->iban)) {

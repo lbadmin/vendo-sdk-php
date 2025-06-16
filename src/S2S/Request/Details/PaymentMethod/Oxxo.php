@@ -6,7 +6,7 @@ use VendoSdk\S2S\Request\Details\PaymentDetails;
 class Oxxo implements PaymentDetails, \JsonSerializable
 {
     /**
-     * @return array
+     * @return mixed
      */
     public function jsonSerialize()
     {

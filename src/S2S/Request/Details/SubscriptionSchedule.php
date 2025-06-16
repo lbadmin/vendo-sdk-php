@@ -81,8 +81,9 @@ class SubscriptionSchedule implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $result = [];
