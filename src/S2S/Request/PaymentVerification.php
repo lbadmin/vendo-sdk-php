@@ -31,11 +31,12 @@ class PaymentVerification extends Payment
     }
 
     /**
-     * @return array
+     * @return mixed
+     * @throws Exception
      */
-    public function jsonSerialize(): array
+    public function jsonSerialize()
     {
-        $result = array_merge($this->getBaseFields(), [
+        return array_merge($this->getBaseFields(), [
             'site_id' => $this->getSiteId(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
@@ -46,7 +47,5 @@ class PaymentVerification extends Payment
             'subscription_schedule' => $this->getSubscriptionSchedule() ? $this->getSubscriptionSchedule()->jsonSerialize() : null,
             'request_details' => $this->getRequestDetails()->jsonSerialize(),
         ]);
-
-        return $result;
     }
 }

@@ -2,17 +2,9 @@
 
 namespace VendoSdk\S2S\Request;
 
-use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use VendoSdk\Exception;
-use VendoSdk\S2S\Request\Details\Customer;
-use VendoSdk\S2S\Request\Details\ExternalReferences;
-use VendoSdk\S2S\Request\Details\Item;
-use VendoSdk\S2S\Request\Details\PaymentDetails;
-use VendoSdk\S2S\Request\Details\ClientRequest;
-use VendoSdk\S2S\Request\Details\ShippingAddress;
-use VendoSdk\S2S\Request\Details\SubscriptionSchedule;
 use VendoSdk\S2S\Response\CaptureResponse;
 use VendoSdk\S2S\Response\PaymentResponse;
 use VendoSdk\S2S\Response\RefundResponse;
@@ -169,7 +161,7 @@ abstract class AbstractApiBase implements \JsonSerializable
     }
 
     /**
-     * @return array|mixed
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()

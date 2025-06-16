@@ -23,7 +23,9 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_OK,
             'request_id' => 234,
             'transaction' => [
@@ -32,7 +34,7 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
                 'currency' => 'USD',
                 'datetime' => '2021-11-10 14:52:34',
             ],
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $payment->setHttpClient($httpClient);
@@ -64,11 +66,13 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $payment->setTransactionId(87654321);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_NOT_OK,
             'error_code' => 999,
             'error_message' => 'Test client exception',
-        ]));
+        ])));
 
         $request = $this->createMock(RequestInterface::class);
         $httpClient->method('send')->willThrowException(new ClientException('Test ServerException', $request, $response));
@@ -94,5 +98,17 @@ class CapturePaymentTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('A server exception occurred. If this persists then contact Vendo Client Support');
         $payment->postRequest();
+    }
+
+    protected function returnStream(string $json): \Psr\Http\Message\StreamInterface
+    {
+        if ($f = fopen('data://text/plain,' . $json,'r')) {
+            $stream = new \GuzzleHttp\Psr7\Stream($f);
+        } else {
+            $stream = new \GuzzleHttp\Psr7\Stream(
+                fopen('php://temp', 'r+')
+            );
+        }
+        return $stream;
     }
 }

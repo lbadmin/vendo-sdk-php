@@ -32,7 +32,7 @@ trait HttpClientTrait
 
     /**
      * @param string $method
-     * @param UriInterface|string $uri
+     * @param string $uri
      * @param array $headers
      * @param ?string $body
      * @param string $version

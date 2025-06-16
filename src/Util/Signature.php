@@ -4,6 +4,7 @@ namespace VendoSdk\Util;
 
 use League\Uri;
 use VendoSdk\Crypto\HmacSha1;
+use VendoSdk\Exception;
 
 /**
  * A helper class to generate Vendo's signed URLs
@@ -49,7 +50,7 @@ class Signature
      */
     public function isValidUrl(string $url): bool
     {
-        $urlObject = Uri\Http::createFromString($url);
+        $urlObject = Uri\Http::new($url);
 
         $path = $urlObject->getPath();
         $query = $urlObject->getQuery();
@@ -63,6 +64,8 @@ class Signature
             if (!empty($params['signature'])) {
                 $signature = $params['signature'];
                 unset($params['signature']);
+            } else {
+                throw new Exception('The signature parameter is missing from the URL');
             }
 
             $components = [];
@@ -73,10 +76,10 @@ class Signature
                 $components['query'] = http_build_query($params);
             }
 
-            $data = (string)Uri\Http::createFromComponents($components);
+            $data = (string)Uri\Http::fromComponents($components);
             $isValid = $this->isValid($data, $signature);
         }
-        return $isValid ?? false;
+        return $isValid;
     }
 
     /**
@@ -117,7 +120,7 @@ class Signature
             $signedComponents['query'] = http_build_query($params);
         }
 
-        $data = (string)Uri\Http::createFromComponents($signedComponents);
+        $data = (string)Uri\Http::fromComponents($signedComponents);
         $signature = $this->getSignature($data);
 
         $params = [];

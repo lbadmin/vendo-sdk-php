@@ -36,14 +36,11 @@ class UpdatePaymentMethod extends SubscriptionBase implements \JsonSerializable
     }
 
     /**
-     * @return array
-     * @throws Exception
+     * @return mixed
      */
     public function jsonSerialize()
     {
-        $fields = $this->getBaseFields();
-
-        return $fields;
+        return $this->getBaseFields();
     }
 
     public function getBaseFields(): array

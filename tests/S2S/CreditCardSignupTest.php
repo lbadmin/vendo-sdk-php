@@ -103,7 +103,9 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_OK,
             'external_references' => [
                 'transaction_reference' => "your_tx_reference_123",
@@ -119,7 +121,7 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
             ],
             'payment_details_token' => '67616ff84d046c83708254cac19acb67',
             'request_id' => 'yij_234',
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $creditCardSignup->setHttpClient($httpClient);
@@ -226,14 +228,16 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
             'status' => Vendo::S2S_STATUS_NOT_OK,
             'error' => [
                 'code' => '8105',
                 'message' => 'Invalid currency value',
             ],
             'request_id' => 'yij_234',
-        ]));
+        ])));
         $httpClient->method('send')->willReturn($response);
 
         $creditCardSignup->setHttpClient($httpClient);
@@ -244,5 +248,13 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('your_secret_api_secret', $creditCardSignup->getApiSecret());
         $this->assertEquals(1, $creditCardSignup->getMerchantId());
         $this->assertEquals('{"status":0,"error":{"code":"8105","message":"Invalid currency value"},"request_id":"yij_234"}', $creditCardSignup->getRawResponse());
+    }
+
+    protected function returnStream(string $json): \Psr\Http\Message\StreamInterface
+    {
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $json);
+        rewind($stream);
+        return new \GuzzleHttp\Psr7\Stream($stream);
     }
 }

@@ -6,8 +6,9 @@ use VendoSdk\S2S\Request\Details\PaymentDetails;
 class Crypto implements PaymentDetails, \JsonSerializable
 {
     /**
-     * @return array
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [
