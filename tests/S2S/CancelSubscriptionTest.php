@@ -2,14 +2,8 @@
 namespace VendoSdkUnit\S2S;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use VendoSdk\S2S\Request\CancelSubscription;
-use VendoSdk\S2S\Request\CapturePayment;
-use VendoSdk\S2S\Request\ChangeSubscription;
-use VendoSdk\S2S\Request\SubscriptionBase;
 use VendoSdk\Vendo;
 
 class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
@@ -26,13 +20,16 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
         $httpClient = $this->createMock(Client::class);
 
         $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')->willReturn(json_encode([
-            'status' => Vendo::S2S_STATUS_OK,
-            'request_id' => 234,
-            'subscription' => [
-                'id' => 9876543,
-            ],
-        ]));
+        $response->method('getBody')->willReturn(
+            $this->returnStream(
+            json_encode([
+                'status' => Vendo::S2S_STATUS_OK,
+                'request_id' => 234,
+                'subscription' => [
+                    'id' => 9876543,
+                ],])
+            )
+        );
         $httpClient->method('send')->willReturn($response);
 
         $changeSubscription->setHttpClient($httpClient);
@@ -51,5 +48,17 @@ class CancelSubscriptionTest extends \PHPUnit\Framework\TestCase
     "merchant_id": 1234567,
     "subscription_id": 87654321
 }', $changeSubscription->getRawRequest(true));
+    }
+
+    protected function returnStream(string $json): \Psr\Http\Message\StreamInterface
+    {
+        if ($f = fopen('data://text/plain,' . $json,'r')) {
+            $stream = new \GuzzleHttp\Psr7\Stream($f);
+        } else {
+            $stream = new \GuzzleHttp\Psr7\Stream(
+                fopen('php://temp', 'r+')
+            );
+        }
+        return $stream;
     }
 }
