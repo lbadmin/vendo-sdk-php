@@ -252,13 +252,9 @@ class CreditCardSignupTest extends \PHPUnit\Framework\TestCase
 
     protected function returnStream(string $json): \Psr\Http\Message\StreamInterface
     {
-        if ($f = fopen('data://text/plain,' . $json,'r')) {
-            $stream = new \GuzzleHttp\Psr7\Stream($f);
-        } else {
-            $stream = new \GuzzleHttp\Psr7\Stream(
-                fopen('php://temp', 'r+')
-            );
-        }
-        return $stream;
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $json);
+        rewind($stream);
+        return new \GuzzleHttp\Psr7\Stream($stream);
     }
 }
