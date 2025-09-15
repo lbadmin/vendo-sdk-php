@@ -23,7 +23,7 @@ try {
      * Add items to your request, you can add one or more
      */
     $paymentDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\Verification();
-    $paymentDetails->setVerificationId(240662060);
+    $paymentDetails->setVerificationId(240662070);
     $sepaPayment->setPaymentDetails($paymentDetails);
 
     //repeat the subscription schedule

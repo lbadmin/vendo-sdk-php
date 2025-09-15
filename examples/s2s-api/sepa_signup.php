@@ -1,7 +1,6 @@
 <?php
 /**
  * This example shows you how to process a Direct Debit (SEPA) initial transaction of the recurring subscription.
- * You can use the payment detail token returned in this example to run the example in payment_with_saved_token.php
  */
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -104,9 +103,8 @@ try {
     echo "\n\nRESULT BELOW\n";
     if ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_OK) {
         echo "The transactions was successfully processed. Vendo's Transaction ID is: " . $response->getTransactionDetails()->getId();
-        echo "\nThe Direct Debit (SEPA) payment Auth Code is: " . $response->getCreditCardPaymentResult()->getAuthCode();
         echo "\nThe Payment Details Token is: ". $response->getPaymentToken();
-        echo "\nYou must save the payment details token if you need or want to process future recurring billing or one-clicks\n";
+        echo "\nYou must save the payment details token if you need or want to process one-clicks\n";
         echo "\nThis is your transaction reference (the one you set it in the request): " . $response->getExternalReferences()->getTransactionReference();
     } elseif ($response->getStatus() == \VendoSdk\Vendo::S2S_STATUS_NOT_OK) {
         echo "The transaction failed.";
@@ -117,8 +115,10 @@ try {
         echo "\nYou MUST :";
         echo "\n   1. Save the verificationId: " . $response->getResultDetails()->getVerificationId();
         echo "\n   2. Redirect the user to the verification URL: " . $response->getResultDetails()->getVerificationUrl();
-        echo "\nthe user will verify his payment details, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
-        echo "\nwhen the user comes back you need to post the request to vendo again, please update sepa_verifiction example with the verification id and execute";
+        echo "\n   3. The user will verify their payment, then he will be redirected to the Success URL that's configured in your account at Vendo's back office.";
+        echo "\n   4. When the user comes back, you need to post the request to Vendo again";
+        echo "\n" . '   5. Update sepa_verification example with the verification id you received. line: $paymentDetails->setVerificationId(verificationId);';
+        echo "\n   6. execute sepa_verification example with the verification_id updated";
     }
     echo "\n\n\n";
 
