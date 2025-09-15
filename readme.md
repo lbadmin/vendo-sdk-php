@@ -43,6 +43,10 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.1.1
+- Added recurring SEPA example
+### v2.1.0
+- Upgraded PHP version, minor improvements
 ### v2.0.15
 - Added support for `currency` parameter in Refund APIs
 ### v2.0.14
