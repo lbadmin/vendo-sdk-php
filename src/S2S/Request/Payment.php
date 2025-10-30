@@ -137,7 +137,7 @@ class Payment extends AbstractApiBase
     /**
      * Set the currency for the request
      * You can use the constants set in \VendoSdk\Vendo::CURRENCY_*
-     * Valid values: USD, EUR, GBP, JPY.
+     * Valid values: USD, EUR, GBP, JPY, BRL.
      *
      * @param string $currency
      * @throws Exception
@@ -150,6 +150,7 @@ class Payment extends AbstractApiBase
             Vendo::CURRENCY_GBP,
             Vendo::CURRENCY_JPY,
             Vendo::CURRENCY_MXN,
+            Vendo::CURRENCY_BRL,
         ];
         if (!in_array($currency, $validCurrencies)) {
             throw new Exception('The currency ' . $currency . ' is not valid.');
