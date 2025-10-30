@@ -3,13 +3,14 @@ namespace VendoSdk;
 
 final class Vendo
 {
-    const SDK_VERSION = '2.1.1';
+    const SDK_VERSION = '2.1.2';
 
     const CURRENCY_USD = 'USD';
     const CURRENCY_EUR = 'EUR';
     const CURRENCY_GBP = 'GBP';
     const CURRENCY_JPY = 'JPY';
     const CURRENCY_MXN = 'MXN';
+    const CURRENCY_BRL = 'BRL';
 
     const BASE_URL = 'https://secure.vend-o.com';
 
