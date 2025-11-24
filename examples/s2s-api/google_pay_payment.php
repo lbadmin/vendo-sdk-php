@@ -53,7 +53,8 @@ try {
      * You can set it via environment variable: export VENDO_GOOGLE_PAY_TOKEN='{"signature":"...","protocolVersion":"ECv2","signedMessage":"..."}'
      */
     $googlePayDetails = new \VendoSdk\S2S\Request\Details\PaymentMethod\GooglePay();
-    $googlePayDetails->setToken(getenv('VENDO_GOOGLE_PAY_TOKEN', true) ?: '{"signature":"ME...","protocolVersion":"ECv2","signedMessage":"..."}');//fallback to test token if env var not set
+    //set your actual test Google token. ENV variable - for testing
+    $googlePayDetails->setToken(getenv('VENDO_GOOGLE_PAY_TOKEN', true));
     $googlePayPayment->setPaymentDetails($googlePayDetails);
 
     /**

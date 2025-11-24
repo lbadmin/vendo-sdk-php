@@ -79,8 +79,8 @@ try {
      * User request details
      */
     $request = new \VendoSdk\S2S\Request\Details\ClientRequest();
-    $request->setIpAddress($_SERVER['REMOTE_ADDR'] ?: '127.0.0.1');//you must pass a valid IPv4 address
-    $request->setBrowserUserAgent($_SERVER['HTTP_USER_AGENT'] ?: null);
+    $request->setIpAddress('127.0.0.1');//you must pass a valid IPv4 address
+    $request->setBrowserUserAgent('some user agent or null');
     $googlePayPayment->setRequestDetails($request);
 
     $response = $googlePayPayment->postRequest();
@@ -112,4 +112,3 @@ try {
 } catch (\GuzzleHttp\Exception\GuzzleException $e) {
     die ('An error occurred when processing the HTTP request. Error message: ' . $e->getMessage());
 }
-
