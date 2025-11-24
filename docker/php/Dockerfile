@@ -9,6 +9,11 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
+# Install Composer (official recommended method)
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
+
 COPY composer.sh /usr/local/bin/_composer
 RUN chmod +x /usr/local/bin/_composer
 
