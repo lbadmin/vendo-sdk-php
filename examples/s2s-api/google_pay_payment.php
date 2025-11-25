@@ -8,7 +8,7 @@ include __DIR__ . '/../../vendor/autoload.php';
 
 try {
     $googlePayPayment = new \VendoSdk\S2S\Request\Payment();
-    $googlePayPayment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: '23e13e591a99d4394e76bd6848236a892e961fbc78151212654b90db678a9374');
+    $googlePayPayment->setApiSecret(getenv('VENDO_SECRET_API', true) ?: 'Your_vendo_secret_api');
     $googlePayPayment->setMerchantId(getenv('VENDO_MERCHANT_ID',  true) ?: 'Your_vendo_merchant_id');//Your Vendo Merchant ID
     $googlePayPayment->setSiteId(getenv('VENDO_SITE_ID' , true) ?: 'Your_vendo_site_id');//Your Vendo Site ID
     $googlePayPayment->setAmount(10.50);
