@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-COMMAND="php /var/www/composer.phar $@"
+COMMAND="/usr/local/bin/composer $@"
 
 su -s /bin/bash www-data -p -c "$COMMAND"

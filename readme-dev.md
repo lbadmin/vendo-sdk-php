@@ -37,3 +37,20 @@ You need:
 Example:
 
 `docker compose exec vendo-sdk-php _examples crypto_payment dev`
+
+## Google Pay Token Setup
+
+For Google Pay examples (`google_pay_payment.php`, `google_pay_verification.php`), you need to set the Google Pay token environment variable:
+
+**Option 1: Set in your shell session:**
+```bash
+export VENDO_GOOGLE_PAY_TOKEN='{"signature":"ME...","protocolVersion":"ECv2","signedMessage":"..."}'
+```
+
+**Option 2: Add to your `.env` file:**
+Add the following line to your `.env_dev` or `.env_merchant1` file:
+```
+VENDO_GOOGLE_PAY_TOKEN='{"signature":"ME...","protocolVersion":"ECv2","signedMessage":"..."}'
+```
+
+**Note:** The token has a few days lifetime, so one setup should last for the entire test session. If the environment variable is not set, the example will use a test token placeholder.

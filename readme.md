@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.2.0
+- Added Google Pay support
 ### v2.1.1
 - Added recurring SEPA example
 ### v2.1.0
