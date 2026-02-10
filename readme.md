@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.3.0
+- Removed IBAN param from mandatory SEPA parameters
 ### v2.2.0
 - Added Google Pay support
 ### v2.1.1
