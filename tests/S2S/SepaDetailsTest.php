@@ -19,7 +19,7 @@ class SepaDetailsTest extends \PHPUnit\Framework\TestCase
         ], $sepa->jsonSerialize());
     }
 
-    public function testSepaDetailsWithNullIbanOmitsIbanFromPayload()
+    public function testSepaDetailsWithoutIbanOmitsIbanFromPayload()
     {
         $sepa = new Sepa();
         $sepa->setBicSwift('MYSWIFT000');
