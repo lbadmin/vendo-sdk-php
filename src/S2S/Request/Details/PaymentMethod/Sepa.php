@@ -54,7 +54,7 @@ class Sepa implements PaymentDetails, \JsonSerializable
             'payment_method' => 'sepa',
         ];
 
-        if ($this->iban !== null) {
+        if ($this->iban !== null && $this->iban !== '') {
             $data['iban'] = $this->getIban();
         }
 
