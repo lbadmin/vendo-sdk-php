@@ -44,7 +44,7 @@ Example flow:
 
 ## Changelog
 ### v2.3.0
-- Removed IBAN param from mandatory SEPA parameters
+- IBAN is no longer required for SEPA payments
 ### v2.2.0
 - Added Google Pay support
 ### v2.1.1
