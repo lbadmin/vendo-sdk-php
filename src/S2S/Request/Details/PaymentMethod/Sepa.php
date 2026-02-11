@@ -2,29 +2,28 @@
 
 namespace VendoSdk\S2S\Request\Details\PaymentMethod;
 
-use VendoSdk\Exception;
 use VendoSdk\S2S\Request\Details\PaymentDetails;
 
 class Sepa implements PaymentDetails, \JsonSerializable
 {
-    /** @var string */
+    /** @var string|null */
     protected $iban;
 
     /** @var ?string */
     protected $bicSwift;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIban(): string
+    public function getIban(): ?string
     {
         return $this->iban;
     }
 
     /**
-     * @param string $iban
+     * @param string|null $iban
      */
-    public function setIban(string $iban): void
+    public function setIban(?string $iban): void
     {
         $this->iban = $iban;
     }
@@ -38,28 +37,31 @@ class Sepa implements PaymentDetails, \JsonSerializable
     }
 
     /**
-     * @param string $bicSwift
+     * @param string|null $bicSwift
      */
-    public function setBicSwift(string $bicSwift): void
+    public function setBicSwift(?string $bicSwift): void
     {
         $this->bicSwift = $bicSwift;
     }
 
     /**
      * @return mixed
-     * @throws Exception
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-        if (empty($this->iban)) {
-            throw new Exception('You must set the field iban in ' . get_class($this));
+        $data = [
+            'payment_method' => 'sepa',
+        ];
+
+        if ($this->iban !== null && $this->iban !== '') {
+            $data['iban'] = $this->getIban();
         }
 
-        return [
-            'payment_method' => 'sepa',
-            'iban' => $this->getIban(),
-            'bic_swift' => $this->getBicSwift(),
-        ];
+        if ($this->bicSwift !== null) {
+            $data['bic_swift'] = $this->getBicSwift();
+        }
+
+        return $data;
     }
 }
