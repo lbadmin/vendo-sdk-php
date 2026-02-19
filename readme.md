@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.4.0
+- Added billing_currency param to the standard join link
 ### v2.3.0
 - IBAN is no longer required for SEPA payments
 ### v2.2.0

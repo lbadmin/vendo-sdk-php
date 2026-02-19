@@ -27,4 +27,53 @@ class JoinTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedUrl, $linkTo);
 
     }
+
+    public function testGetUrlWithBillingCurrency()
+    {
+        $sharedSecret = 'test';
+        $url = new Join($sharedSecret);
+        $url->setSite(1);
+        $url->setAffiliateId(0);
+        $url->setBillingCurrency(Vendo::CURRENCY_EUR);
+
+        $linkTo = $url->getUrl();
+
+        $this->assertStringContainsString('billing_currency=EUR', $linkTo);
+        $this->assertStringContainsString('site=1', $linkTo);
+    }
+
+    public function testBillingCurrencyValidValues()
+    {
+        $sharedSecret = 'test';
+        foreach (Vendo::getAllowedBillingCurrencies() as $currency) {
+            $url = new Join($sharedSecret);
+            $url->setSite(1);
+            $url->setBillingCurrency($currency);
+            $this->assertSame($currency, $url->getBillingCurrency());
+            $this->assertStringContainsString('billing_currency=' . $currency, $url->getUrl());
+        }
+    }
+
+    public function testBillingCurrencyInvalidValueThrows()
+    {
+        $this->expectException(\VendoSdk\Exception::class);
+        $this->expectExceptionMessage('billing_currency must be one of: USD, EUR, GBP.');
+
+        $url = new Join('test');
+        $url->setSite(1);
+        $url->setBillingCurrency('JPY');
+    }
+
+    public function testGetSignedUrlWithBillingCurrency()
+    {
+        $sharedSecret = 'test';
+        $url = new Join($sharedSecret);
+        $url->setSite(1);
+        $url->setBillingCurrency(Vendo::CURRENCY_USD);
+
+        $signedUrl = $url->getSignedUrl();
+
+        $this->assertStringContainsString('billing_currency=USD', $signedUrl);
+        $this->assertStringContainsString('signature=', $signedUrl);
+    }
 }

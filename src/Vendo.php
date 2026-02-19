@@ -12,6 +12,15 @@ final class Vendo
     const CURRENCY_MXN = 'MXN';
     const CURRENCY_BRL = 'BRL';
 
+    /**
+     * Currencies allowed for the Standard Join link billing_currency parameter.
+     * @return string[]
+     */
+    public static function getAllowedBillingCurrencies(): array
+    {
+        return [self::CURRENCY_USD, self::CURRENCY_EUR, self::CURRENCY_GBP];
+    }
+
     const BASE_URL = 'https://secure.vend-o.com';
 
     const S2S_STATUS_NOT_OK = 0;
