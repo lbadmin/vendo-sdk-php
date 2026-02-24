@@ -2,13 +2,29 @@
 
 ## Execute unit tests
 
+### Using Docker (no PHP on host)
+
+With the dev container running (see [Docker and running examples](#docker-and-running-examples)):
+
+```bash
+docker compose exec vendo-sdk-php vendor/bin/phpunit
+```
+
+Run a specific test file:
+
+```bash
+docker compose exec vendo-sdk-php vendor/bin/phpunit tests/Url/JoinTest.php
+```
+
+### Using local PHP
+
 You need:
-- php 7.4
-- xdebug 3
+- PHP 8.1+
+- Composer dev dependencies installed (`composer install`)
 
-
-    vendor/bin/phpunit
-
+```bash
+vendor/bin/phpunit
+```
 
 ## Docker and running examples 
 
