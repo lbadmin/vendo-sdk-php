@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.4.1
+- Added Custom Offer hosted payment link support (`VendoSdk\Url\CustomOffer`) and example at `examples/payment-forms/custom_offer_link.php`
 ### v2.4.0
 - Added billing_currency param to the standard join link
 ### v2.3.0
