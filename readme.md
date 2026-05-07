@@ -43,6 +43,8 @@ Example flow:
    - S2S Payment
 
 ## Changelog
+### v2.4.2
+- Added hosted checkout **`pm`** (payment method) parameter to `Join` and `CustomOffer`, with `Vendo::PAYMENT_METHOD_*` constants, `Vendo::getAllowedHostedCheckoutPaymentMethods()`, and example `examples/payment-forms/custom_offer_link_sepa.php`
 ### v2.4.1
 - Added Custom Offer hosted payment link support (`VendoSdk\Url\CustomOffer`) and example at `examples/payment-forms/custom_offer_link.php`
 ### v2.4.0

@@ -17,10 +17,12 @@ class CustomOfferTest extends \PHPUnit\Framework\TestCase
         $url->setInitialDuration(3);
         $url->setRebillAmount(30);
         $url->setRebillDuration(30);
+        $url->setPm(Vendo::PAYMENT_METHOD_SEPA);
 
         $signedUrl = $url->getSignedUrl();
 
         $this->assertStringContainsString('site=20', $signedUrl);
+        $this->assertStringContainsString('pm=sepa', $signedUrl);
         $this->assertStringContainsString('type=normal', $signedUrl);
         $this->assertStringContainsString('billing_schedule_type=trial', $signedUrl);
         $this->assertStringContainsString('initial_amount=2.95', $signedUrl);
@@ -36,5 +38,17 @@ class CustomOfferTest extends \PHPUnit\Framework\TestCase
         $url = new CustomOffer('test');
         $url->setSite(1);
         $url->setType('invalid');
+    }
+
+    public function testPmInvalidThrows()
+    {
+        $this->expectException(\VendoSdk\Exception::class);
+        $this->expectExceptionMessage('pm must be one of:');
+
+        $url = new CustomOffer('test');
+        $url->setSite(1);
+        $url->setType('normal');
+        $url->setBillingScheduleType('lifetime');
+        $url->setPm('invalid_pm');
     }
 }

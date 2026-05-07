@@ -76,4 +76,27 @@ class JoinTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString('billing_currency=USD', $signedUrl);
         $this->assertStringContainsString('signature=', $signedUrl);
     }
+
+    public function testGetUrlWithPmSepa()
+    {
+        $url = new Join('test');
+        $url->setSite(1);
+        $url->setAffiliateId(0);
+        $url->setPm(Vendo::PAYMENT_METHOD_SEPA);
+
+        $linkTo = $url->getUrl();
+
+        $this->assertStringContainsString('pm=sepa', $linkTo);
+        $this->assertStringContainsString('site=1', $linkTo);
+    }
+
+    public function testPmInvalidValueThrows()
+    {
+        $this->expectException(\VendoSdk\Exception::class);
+        $this->expectExceptionMessage('pm must be one of:');
+
+        $url = new Join('test');
+        $url->setSite(1);
+        $url->setPm('bitcoin');
+    }
 }

@@ -43,6 +43,8 @@ use VendoSdk\Vendo;
  * @method string getLanguage()
  * @method setBillingCurrency(string $currency) USD, EUR or GBP. URL must be signed.
  * @method string getBillingCurrency()
+ * @method setPm(string $method) Optional. Pre-select payment method (`pm`). Use {@see Vendo::PAYMENT_METHOD_*} constants. If omitted, all payment methods available for the geolocated country are shown.
+ * @method string getPm()
  * @method setEmail(string $email)
  * @method string getEmail()
  * @method setUsername(string $username)
@@ -163,6 +165,14 @@ class CustomOffer extends Base
                 ));
             }
         };
+        $this->urlParamValidators['pm'] = function ($value) {
+            if (!in_array($value, Vendo::getAllowedHostedCheckoutPaymentMethods(), true)) {
+                throw new Exception(sprintf(
+                    'pm must be one of: %s.',
+                    implode(', ', Vendo::getAllowedHostedCheckoutPaymentMethods())
+                ));
+            }
+        };
         $this->urlParamValidators['type'] = function ($value) {
             if (!in_array($value, ['normal', 'oneclick'], true)) {
                 throw new Exception('The type parameter must be normal or oneclick.');
@@ -191,6 +201,7 @@ class CustomOffer extends Base
             'country',
             'language',
             'billing_currency',
+            'pm',
             'email',
             'username',
             'password',
