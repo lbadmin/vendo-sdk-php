@@ -41,7 +41,7 @@ use VendoSdk\Vendo;
  * @method string getCountry()
  * @method setLanguage(string $language)
  * @method string getLanguage()
- * @method setBillingCurrency(string $currency) USD, EUR or GBP. URL must be signed.
+ * @method setBillingCurrency(string $currency) USD, EUR, GBP or BRL. URL must be signed.
  * @method string getBillingCurrency()
  * @method setPm(string $method) Optional. Pre-select payment method (`pm`). Use {@see Vendo::PAYMENT_METHOD_*} constants. If omitted, all payment methods available for the geolocated country are shown.
  * @method string getPm()

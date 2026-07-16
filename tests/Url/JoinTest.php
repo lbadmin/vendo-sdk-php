@@ -57,7 +57,7 @@ class JoinTest extends \PHPUnit\Framework\TestCase
     public function testBillingCurrencyInvalidValueThrows()
     {
         $this->expectException(\VendoSdk\Exception::class);
-        $this->expectExceptionMessage('billing_currency must be one of: USD, EUR, GBP.');
+        $this->expectExceptionMessage('billing_currency must be one of: USD, EUR, GBP, BRL.');
 
         $url = new Join('test');
         $url->setSite(1);
