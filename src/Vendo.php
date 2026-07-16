@@ -13,7 +13,8 @@ final class Vendo
     const CURRENCY_BRL = 'BRL';
 
     /**
-     * Currencies allowed for the Standard Join link billing_currency parameter.
+     * Currencies allowed for the billing_currency parameter of hosted URL generators
+     * (e.g. Join, CustomOffer).
      * @return string[]
      */
     public static function getAllowedBillingCurrencies(): array
