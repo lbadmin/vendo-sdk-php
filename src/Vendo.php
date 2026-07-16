@@ -3,7 +3,7 @@ namespace VendoSdk;
 
 final class Vendo
 {
-    const SDK_VERSION = '2.4.2';
+    const SDK_VERSION = '2.4.3';
 
     const CURRENCY_USD = 'USD';
     const CURRENCY_EUR = 'EUR';
@@ -13,12 +13,13 @@ final class Vendo
     const CURRENCY_BRL = 'BRL';
 
     /**
-     * Currencies allowed for the Standard Join link billing_currency parameter.
+     * Currencies allowed for the billing_currency parameter of hosted URL generators
+     * (e.g. Join, CustomOffer).
      * @return string[]
      */
     public static function getAllowedBillingCurrencies(): array
     {
-        return [self::CURRENCY_USD, self::CURRENCY_EUR, self::CURRENCY_GBP];
+        return [self::CURRENCY_USD, self::CURRENCY_EUR, self::CURRENCY_GBP, self::CURRENCY_BRL];
     }
 
     const BASE_URL = 'https://secure.vend-o.com';
